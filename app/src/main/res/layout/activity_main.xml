@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/edit_title"
+            app:layout_constraintStart_toStartOf="parent"
+            android:hint="제목을 입력하세요" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="#553B12"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintEnd_toStartOf="@+id/bt_Search" android:layout_marginEnd="13dp"
+            app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toLeftOf="@id/bt_Search"/>
+    <Button
+            android:text="category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bt_category" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp" android:layout_marginTop="16dp"/>
+    <TextView
+            android:text="오늘 몇권"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="29dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@+id/edit_title"
+            android:textSize="24sp" android:textColor="#553B12" app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+    <Button
+            android:text="map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bt_map"
+            app:layout_constraintBaseline_toBaselineOf="@+id/bt_mylib" android:layout_marginEnd="17dp"
+            android:layout_marginRight="17dp" app:layout_constraintEnd_toEndOf="parent"/>
+    <Button
+            android:text="MyLib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bt_mylib" android:layout_marginLeft="10dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@+id/bt_friendlib" android:layout_marginBottom="17dp"/>
+    <Button
+            android:text="FriendLib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bt_friendlib"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="108dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/bt_mylib" android:layout_marginStart="108dp"
+            app:layout_constraintEnd_toStartOf="@+id/bt_map" android:layout_marginEnd="110dp"
+            android:layout_marginRight="110dp"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="39dp"
+            android:id="@+id/bt_Search"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_title"
+            app:layout_constraintLeft_toRightOf="@id/edit_title"
+            android:textColor="#FDFCFA"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent"
+            android:background="#553B12" android:width="3dp" android:text="검색" android:textSize="24sp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
