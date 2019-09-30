@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "790698469915",
+    "firebase_url": "https://todaybook-9e211.firebaseio.com",
+    "project_id": "todaybook-9e211",
+    "storage_bucket": "todaybook-9e211.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790698469915:android:095ab45b644880d7f266be",
+        "android_client_info": {
+          "package_name": "com.example.todaybook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "790698469915-r2jh1nbnlqhjk6if3ctssmtghc6uiok2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX_OPpqjphwRRej5dXlHuyqOhU_3E7TCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "790698469915-r2jh1nbnlqhjk6if3ctssmtghc6uiok2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
