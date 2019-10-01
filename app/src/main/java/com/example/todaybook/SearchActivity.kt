@@ -14,5 +14,6 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         val bookTitle:String? = intent.getStringExtra("BookTitle").toString()
         TitleView.text = bookTitle
+
     }
 }

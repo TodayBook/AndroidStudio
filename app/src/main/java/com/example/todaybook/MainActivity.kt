@@ -11,21 +11,11 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-        val TAG="MainActivity"
-        val ref = FirebaseDatabase.getInstance().getReference("test")
+
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ref.addValueEventListener(object:ValueEventListener{
-            override fun onCancelled(error: DatabaseError){
-                error.toException().printStackTrace()
-            }
-            override fun onDataChange(snapshot: DataSnapshot){
-                val message = snapshot.value.toString()
-                Log.d(TAG,message)
-                supportActionBar?.title=message
-            }
-        })
+
         bt_Search.setOnClickListener{
             val bookTitle = edit_title.text.toString()
             val detailIntent = Intent(this,SearchActivity::class.java)
