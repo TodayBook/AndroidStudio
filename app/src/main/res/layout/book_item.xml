@@ -40,7 +40,7 @@
             android:text="Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button" android:layout_marginLeft="84dp"
+            android:id="@+id/email_login_button" android:layout_marginLeft="84dp"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="84dp"
             app:layout_constraintStart_toEndOf="@+id/textView5"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

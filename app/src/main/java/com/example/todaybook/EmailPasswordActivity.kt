@@ -2,7 +2,9 @@ package com.example.todaybook
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_email_password.*
 import kotlinx.android.synthetic.main.activity_search.*
 
 class EmailPasswordActivity : AppCompatActivity() {
@@ -13,33 +15,25 @@ class EmailPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_email_password)
         auth = FirebaseAuth.getInstance()
+        email_login_button.setOnClickListener {
+            createUser(editText_email.text.toString(),getEditText_password.text.toString())
+        }
     }
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        //updateUI(currentUser)
-    }
-    private fun createUserId(email:String, password:String){
-        auth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener(this) { task->
-                if(task.isSuccessful){
-                    TextView.text = "셍성 성공"
-                    val user=auth.currentUser
-                }else{
-                    //아이디 생성이 실패했을 경우
+    private fun createUser(email:String,password:String){
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    Toast.makeText(baseContext, "Authentication successed.", Toast.LENGTH_SHORT).show()
+                    //updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    //updateUI(null)
                 }
             }
-    }
-    private fun loginUserId(email:String, password: String){
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this){
-                if(it.isSuccessful){
-                    TextView.text = "로그인 성공"
-                }else{
-                    //로그인 실패시 이벤트 발생
-                }
-            }
-    }
 
+
+    }
 }

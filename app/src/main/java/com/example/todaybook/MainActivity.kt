@@ -3,11 +3,6 @@ package com.example.todaybook
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -38,8 +33,8 @@ class MainActivity : AppCompatActivity() {
             val detailIntent = Intent(this,FreindlibActivity::class.java)
             startActivityForResult(detailIntent,1)
         }
-        bt_category.setOnClickListener {
-            val detailIntent = Intent(this,CategoryActivity::class.java)
+        bt_login.setOnClickListener {
+            val detailIntent = Intent(this,EmailPasswordActivity::class.java)
             startActivityForResult(detailIntent,1)
         }
     }
