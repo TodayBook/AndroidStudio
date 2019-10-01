@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "790698469915",
-    "firebase_url": "https://todaybook-9e211.firebaseio.com",
-    "project_id": "todaybook-9e211",
-    "storage_bucket": "todaybook-9e211.appspot.com"
+    "project_number": "955143062605",
+    "firebase_url": "https://todaybook-5a5f6.firebaseio.com",
+    "project_id": "todaybook-5a5f6",
+    "storage_bucket": "todaybook-5a5f6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:790698469915:android:095ab45b644880d7f266be",
+        "mobilesdk_app_id": "1:955143062605:android:e880525eaf91711f1d8804",
         "android_client_info": {
           "package_name": "com.example.todaybook"
         }
       },
       "oauth_client": [
         {
-          "client_id": "790698469915-r2jh1nbnlqhjk6if3ctssmtghc6uiok2.apps.googleusercontent.com",
+          "client_id": "955143062605-71bbg72m30l11l1tv9dbitfqhb4i9be2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBX_OPpqjphwRRej5dXlHuyqOhU_3E7TCI"
+          "current_key": "AIzaSyB_QFSmTQWpCdVB4h2SpGkKFvWAF-Lguko"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "790698469915-r2jh1nbnlqhjk6if3ctssmtghc6uiok2.apps.googleusercontent.com",
+              "client_id": "955143062605-71bbg72m30l11l1tv9dbitfqhb4i9be2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
