@@ -34,6 +34,7 @@ class EmailPasswordActivity : AppCompatActivity() {
                     Userid_text.text.clear()
                     val loginIntent = Intent(this,login::class.java)
                     startActivityForResult(loginIntent,1)
+
                 } else {
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
                 }

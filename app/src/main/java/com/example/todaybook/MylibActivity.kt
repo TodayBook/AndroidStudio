@@ -17,13 +17,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_mylib.*
-import kotlinx.android.synthetic.main.lib_book.view.*
-import com.bumptech.glide.Glide
-import android.graphics.BitmapFactory
-import android.graphics.Bitmap
-import android.widget.Toast
-import java.io.BufferedInputStream
-import java.net.URL
 
 
 //import android.support.v7.widget.RecyclerView
@@ -36,9 +29,21 @@ class MylibActivity : AppCompatActivity() {
 
         displayList()
     }
-
+    val UserId = "fg"
+    fun getUser(uID: String) {
+        val database = FirebaseDatabase.getInstance().getReference("users")
+        database.child(UserId).child("didBook").addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // ...
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                }
+            })
+    }
     private fun displayList() {
-        val imageList = ArrayList<ImageDataModel>()
+         val imageList = ArrayList<ImageDataModel>()
         imageList.clear()
         imageList.add(ImageDataModel("https://conversionxl.com/wp-content/uploads/2018/09/coding-language.jpg", "Test"))
         imageList.add(ImageDataModel("https://makeawebsitehub.com/wp-content/uploads/2016/02/learn-code-e1455713167295.jpg", "Test"))
