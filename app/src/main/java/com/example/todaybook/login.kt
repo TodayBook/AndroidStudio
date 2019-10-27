@@ -27,13 +27,8 @@ class login : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(baseContext, "Authentication succeed.", Toast.LENGTH_SHORT).show()
-                    val user = auth.currentUser
-                    val libIntent = Intent(this,MylibActivity::class.java)
-                    libIntent.putExtra("user",user)
-
                     val detailIntent = Intent(this,MainActivity::class.java)
                     startActivityForResult(detailIntent,1)
-
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()

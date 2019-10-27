@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
 
         bt_map.setOnClickListener{
-            val detailIntent = Intent(this,MapActivity::class.java)
+            val detailIntent = Intent(this,MapsActivity::class.java)
             startActivityForResult(detailIntent,1)
         }
         bt_mylib.setOnClickListener {

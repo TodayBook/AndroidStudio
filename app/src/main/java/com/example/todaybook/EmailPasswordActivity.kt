@@ -1,44 +1,41 @@
 package com.example.todaybook
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.IgnoreExtraProperties
 import kotlinx.android.synthetic.main.activity_email_password.*
-import kotlinx.android.synthetic.main.activity_search.*
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 
 
 class EmailPasswordActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_email_password)
         auth = FirebaseAuth.getInstance()
         email_login_button.setOnClickListener {
-            createUser(editText_email.text.toString(),getEditText_password.text.toString(),name_text.text.toString())
+            createUser(editText_email.text.toString(),getEditText_password.text.toString(),Userid_text.text.toString())
         }
     }
-    private fun createUser(email:String,password:String,name:String){
+    private fun createUser(email:String,password:String,UserId:String){
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    Toast.makeText(baseContext, user.toString(), Toast.LENGTH_SHORT).show()
-                    val userData = FirebaseDatabase.getInstance()
-                    val UID = userData.getReference("UID")
-                    UID.setValue(user,name)
-
+                    val database = FirebaseDatabase.getInstance().reference
+                    database.child("users").child(UserId).child("Email").setValue(email)
+                    //database.child("users").child(UserId).child("didBook").setValue("aladin")
+                    //database.child("users").child(UserId).child("willBook").setValue("부자아빠")
+                    Toast.makeText(baseContext, "Success!!", Toast.LENGTH_SHORT).show()
+                    editText_email.text.clear()
+                    getEditText_password.text.clear()
+                    Userid_text.text.clear()
+                    val loginIntent = Intent(this,login::class.java)
+                    startActivityForResult(loginIntent,1)
                 } else {
-                    // If sign in fails, display a message to the user.
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                    //updateUI(null)
                 }
             }
 
