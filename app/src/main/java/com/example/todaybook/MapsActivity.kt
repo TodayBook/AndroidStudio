@@ -159,7 +159,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         else
             ok()
     }
-    // 사용자가 권한 요청<허용,비허용>한 후에 이 메소드가 호출됨
+    //
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode){
