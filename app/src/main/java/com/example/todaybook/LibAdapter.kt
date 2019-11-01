@@ -25,10 +25,11 @@ class ViewAdapter(private val imageDataModelList: ArrayList<ImageDataModel>) : R
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(imageDataModel: ImageDataModel) {
-            val textView = itemView.findViewById<TextView>(R.id.title)
+            val titleView = itemView.findViewById<TextView>(R.id.title)
+            val authorView = itemView.findViewById<TextView>(R.id.author)
             val imageView = itemView.findViewById<ImageView>(R.id.imageView)
-            textView.text = imageDataModel.name
-
+            titleView.text = imageDataModel.title
+            authorView.text = imageDataModel.author
             Glide.with(itemView.context).load(imageDataModel.url).into(imageView)
         }
     }
