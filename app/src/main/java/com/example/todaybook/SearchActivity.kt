@@ -31,15 +31,15 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
 
-        var json=(AsyncTaskBook().execute()).toString()
+        var json = (AsyncTaskBook().execute()).toString()
         var gson = Gson()
 
         val jObject = JSONObject(json)
         val jsonresult = (jObject.getJSONArray("items")).toString()
 
-        var gsonresult=gson.fromJson(jsonresult,book::class.java)////json을 gson으로 convert
+        var gsonresult = gson.fromJson(jsonresult, book::class.java)////json을 gson으로 convert
 
-        var bookList=arrayListOf<book>(gsonresult)
+        var bookList = arrayListOf<book>(gsonresult)
 
         val bookAdapter = SearchListviewAdapter(this, bookList)
         mainListView.adapter = bookAdapter
@@ -47,10 +47,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-
-
-
-    inner class AsyncTaskBook: AsyncTask<String, String, String>() {
+    inner class AsyncTaskBook : AsyncTask<String, String, String>() {
         override fun onPreExecute() {
             super.onPreExecute()
 
@@ -78,7 +75,7 @@ class SearchActivity : AppCompatActivity() {
                 var inputLine: String
                 val response = StringBuffer()
                 do {
-                    if (br.readLine() == null){
+                    if (br.readLine() == null) {
                         break
                     }
                     inputLine = br.readLine()
@@ -99,18 +96,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-
-<<<<<<< HEAD
 }
-=======
-
-
-
-
-    }
-
->>>>>>> 1281ced691be7d464099151dda3819ea61d60af0
-
 
 
 

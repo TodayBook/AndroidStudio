@@ -1,5 +1,3 @@
 package com.example.todaybook
 
-
-data class book(val title:String, val author:String, val publisher:String, val image:String)
-
+class book(var image:String, var title:String,var author:String,var publisher:String)

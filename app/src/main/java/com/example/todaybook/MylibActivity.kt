@@ -51,9 +51,9 @@ class MylibActivity : AppCompatActivity() {
         imageList.add(ImageDataModel("https://conversionxl.com/wp-content/uploads/2018/09/coding-language.jpg", "Test"))
         imageList.add(ImageDataModel("https://www.tecmint.com/wp-content/uploads/2016/11/Convert-PNG-to-JPG-Using-for-loop-Command.png", "Test"))
 
-        recyclerView_readbook.layoutManager = LinearLayoutManager(this, LinearLayout.HORIZONTAL, false)
+        recyclerView_readbook.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         recyclerView_readbook.adapter = ViewAdapter(imageList)
-        recyclerView_willbook.layoutManager = LinearLayoutManager(this, LinearLayout.HORIZONTAL, false)
+        recyclerView_willbook.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         recyclerView_willbook.adapter = ViewAdapter(imageList)
 
     }
