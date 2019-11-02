@@ -3,24 +3,22 @@ package com.example.todaybook
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-
         bt_Search.setOnClickListener {
-            val bookTitle = edit_title.text.toString()
+            var bookTitle = edit_title.text.toString()
             val detailIntent = Intent(this, SearchActivity::class.java)
             detailIntent.putExtra("BookTitle", bookTitle)
             startActivityForResult(detailIntent, 1)
-            val searchactivity=SearchActivity()
-            searchactivity.getJSON()
+
             edit_title.text.clear()
 
         }
@@ -43,8 +41,5 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(detailIntent, 1)
         }
     }
-
-
-
 
 }

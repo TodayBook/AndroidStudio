@@ -46,5 +46,13 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
+    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.4.2'
+
+    compile 'com.google.code.gson:gson:2.8.2'
+
+
+
 }
 apply plugin: 'com.google.gms.google-services'
