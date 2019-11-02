@@ -44,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
         val bookAdapter = SearchListviewAdapter(this, bookList)
         mainListView.adapter = bookAdapter
 
-        }
+    }
 
 
 
@@ -84,8 +84,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    }
-
+}
 
 
 
