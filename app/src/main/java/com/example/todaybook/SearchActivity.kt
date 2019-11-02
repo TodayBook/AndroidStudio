@@ -39,9 +39,7 @@ class SearchActivity : AppCompatActivity() {
         var gson = Gson()
         var gsonresult=gson.fromJson(jsonresult,book::class.java)////json을 gson으로 convert
 
-        var bookList=arrayListOf<book>(
-            gsonresult
-        )
+        var bookList=arrayListOf<book>(gsonresult)
 
         val bookAdapter = SearchListviewAdapter(this, bookList)
         mainListView.adapter = bookAdapter
