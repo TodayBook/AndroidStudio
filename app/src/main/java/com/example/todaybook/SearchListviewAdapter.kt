@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 
 
-class SearchListviewAdapter (val context: Context, val bookList: ArrayList<Book>) : BaseAdapter() {
+class SearchListviewAdapter (val context: Context, val bookList: ArrayList<book>) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View = LayoutInflater.from(context).inflate(R.layout.search_listview_item, null)
         val bookimage = view.findViewById<ImageView>(R.id.bookimageImg)

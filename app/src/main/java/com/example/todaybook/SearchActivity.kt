@@ -37,9 +37,9 @@ class SearchActivity : AppCompatActivity() {
 
         var jsonresult=getjson()
         var gson = Gson()
-        var gsonresult=gson.fromJson(jsonresult,Book::class.java)////json을 gson으로 convert
+        var gsonresult=gson.fromJson(jsonresult,book::class.java)////json을 gson으로 convert
 
-        var bookList=arrayListOf<Book>(
+        var bookList=arrayListOf<book>(
             gsonresult
         )
 
