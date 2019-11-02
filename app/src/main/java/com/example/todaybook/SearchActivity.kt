@@ -4,11 +4,9 @@ package com.example.todaybook
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.gson.Gson
-import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_listview_item.*
 import java.io.BufferedReader
-import java.io.DataOutputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
@@ -50,8 +48,8 @@ class SearchActivity : AppCompatActivity() {
 
     /*override*/ fun getjson():String{/////json파일 받아오는 함수
 
-        val clientId = "pQ0v12xLr1Lcz3qYOVVx"
-        val clientSecret = "aymtkJ9CUp"
+        val clientId =  "pQ0v12xLr1Lcz3qYOVVx"
+        val clientSecret =  "aymtkJ9CUp"
         try {
 
             var text = URLEncoder.encode("알라딘", "UTF-8")

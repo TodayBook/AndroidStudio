@@ -29,7 +29,7 @@ class SearchListviewAdapter (val context: Context, val gsonresult: Book) : BaseA
     }
 
     /*override fun getItem(position: Int): Any {
-        return gsonresult
+        return gsonresult[position]
     }
 
     override fun getItemId(position: Int): Long {
