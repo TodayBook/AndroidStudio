@@ -6,4 +6,76 @@
         android:layout_height="match_parent"
         tools:context=".lib_detail">
 
+    <ImageView
+            android:id="@+id/coverimage"
+            android:layout_width="165dp"
+            android:layout_height="238dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="59dp"
+            android:layout_marginRight="59dp"
+            app:layout_constraintEnd_toStartOf="@+id/authorView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+            android:id="@+id/titleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginBottom="40dp"
+            android:text="Tittle"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/authorView"
+            app:layout_constraintStart_toEndOf="@+id/coverimage"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+            android:id="@+id/pubView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="124dp"
+            android:layout_marginRight="124dp"
+            android:text="publisher"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/authorView" />
+
+    <TextView
+            android:id="@+id/authorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="168dp"
+            android:layout_marginRight="168dp"
+            android:text="author"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/coverimage"
+            app:layout_constraintTop_toBottomOf="@+id/titleView" />
+
+    <EditText
+            android:id="@+id/editText"
+            android:layout_width="367dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="후기"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coverimage" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
