@@ -1,10 +1,14 @@
 package com.example.todaybook
 
 
+import android.content.Context
+import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.google.gson.Gson
+import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_listview_item.*
 import org.json.JSONObject
@@ -15,7 +19,11 @@ import java.net.URL
 import java.net.URLEncoder
 
 
+
+
 class SearchActivity : AppCompatActivity() {
+    data class book(val title:String, val authors:String, val publisher:String, val thumbnail:String)
+
 
     /*var bookList = arrayListOf<Book>(
         Book("데이터베이스기초", "황수찬", "1", "dog00"),
@@ -28,54 +36,50 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.search_listview_item)
+        var intent = getIntent()
+        var title = intent.getExtras()?.getString("BookTitle")
 
 
-        var json=(AsyncTaskBook().execute()).toString()
-        var gson = Gson()
 
-        val jObject = JSONObject(json)
-        val jsonresult = (jObject.getJSONArray("items")).toString()
+        AsyncTaskBook().execute(title)
 
-        var gsonresult=gson.fromJson(jsonresult,book::class.java)////json을 gson으로 convert
 
-        var bookList=arrayListOf<book>(gsonresult)
 
-        val bookAdapter = SearchListviewAdapter(this, bookList)
-        mainListView.adapter = bookAdapter
-
-        }
+    }
 
 
 
 
 
     inner class AsyncTaskBook: AsyncTask<String, String, String>() {
+
         override fun onPreExecute() {
             super.onPreExecute()
 
         }
 
         override fun doInBackground(vararg params: String): String {
-            val clientId = "pQ0v12xLr1Lcz3qYOVVx"
-            val clientSecret = "aymtkJ9CUp"
+            val Authorization = "KakaoAK 7cb365cb29f6b70a0778882b0487c435"
             try {
 
-                var text = URLEncoder.encode("알라딘", "UTF-8")
-                val apiURL = "https://openapi.naver.com/v1/search/book?query=" + text
+                var text = URLEncoder.encode(params[0], "UTF-8")
+                val apiURL = "https://dapi.kakao.com/v3/search/book?query=" + text
                 val url = URL(apiURL)
                 val con = url.openConnection() as HttpURLConnection
                 con.setRequestMethod("GET")
-                con.setRequestProperty("X-Naver-Client-Id", clientId)
-                con.setRequestProperty("X-Naver-Client-Secret", clientSecret)
+                con.setRequestProperty("Authorization", Authorization)
                 val responseCode = con.responseCode
                 val br: BufferedReader
                 if (responseCode == 200) { // 정상 호출
                     br = BufferedReader(InputStreamReader(con.inputStream))
+                    return br.readLine()
+                    br.close()
                 } else {  // 에러 발생
                     br = BufferedReader(InputStreamReader(con.errorStream))
+                    return br.toString()
                 }
-                var inputLine: String
+                /*var inputLine: String
                 val response = StringBuffer()
                 do {
                     if (br.readLine() == null){
@@ -86,7 +90,7 @@ class SearchActivity : AppCompatActivity() {
                 } while (inputLine != null)
 
                 br.close()
-                return (response.toString())
+                return (response.toString())*/
 
             } catch (e: Exception) {
                 return (e.toString())
@@ -95,18 +99,27 @@ class SearchActivity : AppCompatActivity() {
         }
 
         override fun onPostExecute(result: String?) {
-            /*booktitleTv.setText(result)*/
+            booktitleTv.setText(result)
+            var json=result
+            /*booktitleTv.setText(json)*/
+
+            /*val jObject = JSONObject(json)
+            val jsonresult = jObject.getJSONArray("items")*/
+            val parser=JsonParser()
+            val rootObj=parser.parse(json.toString())
+                .getAsJsonObject().get("documents")
+
+            var gson = Gson()
+            var gsonresult=gson.fromJson(rootObj,book::class.java)////json을 gson으로 convert(jsonresult의 값을 book object로)
+            booktitleTv.setText(gsonresult.toString())
+
+            /*var bookList=arrayListOf<book>(gsonresult)
+
+            val bookAdapter = SearchListviewAdapter(this@SearchActivity, bookList)
+            mainListView.adapter = bookAdapter*/
         }
     }
-
-
-
-
-
-
-    }
-
-
+}
 
 
 
