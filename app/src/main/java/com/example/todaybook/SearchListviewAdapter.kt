@@ -19,11 +19,11 @@ class SearchListviewAdapter (val context: Context, val bookList: ArrayList<book>
 
 
         val book = bookList[position]
-        val resourceId = context.resources.getIdentifier(book.image, "drawable", context.packageName)
+        val resourceId = context.resources.getIdentifier(book.thumbnail, "drawable", context.packageName)
         bookimage.setImageResource(resourceId)
         booktitle.text = book.title
         bookpublisher.text = book.publisher
-        bookauthor.text = book.author
+        bookauthor.text = book.authors
 
         return view
     }
