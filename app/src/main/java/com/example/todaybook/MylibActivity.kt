@@ -42,7 +42,7 @@ class MylibActivity : AppCompatActivity() {
             val detailIntent = Intent(this, lib_detail::class.java)
             startActivityForResult(detailIntent, 1)
         }
-        val wbAdapter = ViewAdapter(this, readList) { imageDataModel ->
+        val wbAdapter = ViewAdapter(this, willreadList) { imageDataModel ->
             val detailIntent = Intent(this, lib_detail::class.java)
             startActivityForResult(detailIntent, 1)
         }
