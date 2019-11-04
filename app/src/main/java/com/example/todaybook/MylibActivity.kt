@@ -1,5 +1,6 @@
 package com.example.todaybook
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,24 +19,7 @@ class MylibActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mylib)
-
-        displayList()
-    }
-    val UserId = "fg"
-    fun getUser(uID: String) {
-        val database = FirebaseDatabase.getInstance().getReference("users")
-        database.child(UserId).child("didBook").addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // ...
-                }
-                override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                }
-            })
-    }
-    private fun displayList() {
-         val readList = ArrayList<ImageDataModel>()
+        val readList = ArrayList<ImageDataModel>()
         readList.clear()
         readList.add(ImageDataModel("https://image.aladin.co.kr/product/21344/20/cover500/8965963494_1.jpg",  "마음에도 근육이 붙나 봐요","AM327"))
         readList.add(ImageDataModel("https://image.aladin.co.kr/product/21292/13/cover500/8936438034_1.jpg", "일의 기쁨과 슬픔","장류진"))
@@ -52,10 +36,35 @@ class MylibActivity : AppCompatActivity() {
         willreadList.add(ImageDataModel("https://image.aladin.co.kr/product/18705/49/cover500/8950980339_2.jpg", "빈센트 나의 빈센트","정여울"))
 
         recyclerView_readbook.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-        recyclerView_readbook.adapter = ViewAdapter(readList)
         recyclerView_willbook.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-        recyclerView_willbook.adapter = ViewAdapter(willreadList)
 
+        val rbAdapter = ViewAdapter(this, readList) { imageDataModel ->
+            val detailIntent = Intent(this, lib_detail::class.java)
+            startActivityForResult(detailIntent, 1)
+        }
+        val wbAdapter = ViewAdapter(this, readList) { imageDataModel ->
+            val detailIntent = Intent(this, lib_detail::class.java)
+            startActivityForResult(detailIntent, 1)
+        }
+        recyclerView_readbook.adapter = rbAdapter
+        recyclerView_willbook.adapter = wbAdapter
     }
+    val UserId = "fg"
+    fun getUser(uID: String) {
+        val database = FirebaseDatabase.getInstance().getReference("users")
+        database.child(UserId).child("didBook").addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // ...
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                }
+            })
+    }
+
+
+
+
 }
 

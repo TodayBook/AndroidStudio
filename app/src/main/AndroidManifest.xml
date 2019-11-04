@@ -3,13 +3,12 @@
         package="com.example.todaybook">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,7 +21,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-
+        <activity android:name=".lib_detail"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,17 +36,16 @@
 
         <activity
                 android:name=".MapsActivity"
-                android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".login"></activity>
-        <activity android:name=".EmailPasswordActivity"></activity>
+                android:label="@string/title_activity_maps" />
+        <activity android:name=".login" />
+        <activity android:name=".EmailPasswordActivity" />
         <activity
                 android:name=".MylibActivity"
                 android:label="@string/title_activity_mylib"
-                android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".CategoryActivity"></activity>
-        <activity android:name=".FreindlibActivity"></activity>
-
-        <activity android:name=".SearchActivity"></activity>
+                android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".FreindlibActivity" />
+        <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
