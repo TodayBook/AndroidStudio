@@ -9,6 +9,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import noman.googleplaces.Place;
+import noman.googleplaces.PlacesException;
+import noman.googleplaces.PlacesListener;
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -40,4 +43,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
+
+    override fun onPlacesFailure(){
+
+
+    }
+
+    override fun onPlacesStart(){}
+
+    override fun  onPlacesSuccess(){}
+
+    override fun  onPlacesFinished(){}
+
 }
