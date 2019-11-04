@@ -1,3 +1,7 @@
 package com.example.todaybook
 
-class book(var image:String, var title:String,var author:String,var publisher:String)
+class Book(val title:String, val authors:String, val publisher:String, val thumbnail:String)
+
+
+data class book(val title:String, val authors:String, val publisher:String, val thumbnail:String)
+
