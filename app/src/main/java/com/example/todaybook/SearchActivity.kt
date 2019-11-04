@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.gson.Gson
-import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_listview_item.*
 import org.json.JSONObject
@@ -17,12 +16,28 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
-
-
+import com.google.gson.JsonParser
+import com.google.gson.JsonObject
+import com.google.gson.annotations.SerializedName
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class SearchActivity : AppCompatActivity() {
-    data class book(val title:String, val authors:String, val publisher:String, val thumbnail:String)
+    data class book (
+
+        @SerializedName("title")
+        var title: String? = null,
+
+        @SerializedName("authors")
+        var authors: String? = null,
+
+        @SerializedName("publisher")
+        var publisher: String? = null,
+
+        @SerializedName("thumbnail")
+        var thumbnail: String? = null
+
+    )
 
 
     /*var bookList = arrayListOf<Book>(
@@ -36,7 +51,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.search_listview_item)
+        setContentView(R.layout.activity_main)
         var intent = getIntent()
         var title = intent.getExtras()?.getString("BookTitle")
 
@@ -99,19 +114,22 @@ class SearchActivity : AppCompatActivity() {
         }
 
         override fun onPostExecute(result: String?) {
-            booktitleTv.setText(result)
+
             var json=result
-            /*booktitleTv.setText(json)*/
+
 
             /*val jObject = JSONObject(json)
-            val jsonresult = jObject.getJSONArray("items")*/
+            var jsonresult = jObject.getJSONArray("documents")*////방법1
+
             val parser=JsonParser()
             val rootObj=parser.parse(json.toString())
-                .getAsJsonObject().get("documents")
-
+                .getAsJsonObject().get("documents")///방법2
+            /*textView3.setText(rootObj.toString())*/
+**********************************************************************************************
             var gson = Gson()
             var gsonresult=gson.fromJson(rootObj,book::class.java)////json을 gson으로 convert(jsonresult의 값을 book object로)
-            booktitleTv.setText(gsonresult.toString())
+            textView3.setText(gsonresult.toString())
+
 
             /*var bookList=arrayListOf<book>(gsonresult)
 
