@@ -12,7 +12,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         bt_Search.setOnClickListener {
             var bookTitle = edit_title.text.toString()
             val detailIntent = Intent(this, SearchActivity::class.java)
