@@ -4,6 +4,7 @@ package com.example.todaybook
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_listview_item.*
@@ -31,7 +32,8 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
 
-        var json = (AsyncTaskBook().execute()).toString()
+        var json = (AsyncTaskBook().execute().get())
+        Log.i("dsfasfas",json)
         var gson = Gson()
 
         val jObject = JSONObject(json)
@@ -48,18 +50,13 @@ class SearchActivity : AppCompatActivity() {
 
 
     inner class AsyncTaskBook : AsyncTask<String, String, String>() {
-        override fun onPreExecute() {
-            super.onPreExecute()
-
-        }
 
         override fun doInBackground(vararg params: String): String {
             val clientId = "pQ0v12xLr1Lcz3qYOVVx"
             val clientSecret = "aymtkJ9CUp"
             try {
-
                 var text = URLEncoder.encode("알라딘", "UTF-8")
-                val apiURL = "https://openapi.naver.com/v1/search/book?query=" + text
+                val apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text
                 val url = URL(apiURL)
                 val con = url.openConnection() as HttpURLConnection
                 con.setRequestMethod("GET")
@@ -72,28 +69,29 @@ class SearchActivity : AppCompatActivity() {
                 } else {  // 에러 발생
                     br = BufferedReader(InputStreamReader(con.errorStream))
                 }
-                var inputLine: String
-                val response = StringBuffer()
-                do {
+                var inputLine: String = "{"
+                val sb = StringBuilder()
+                sb.append(inputLine)
+                while (inputLine != null) {
                     if (br.readLine() == null) {
                         break
                     }
                     inputLine = br.readLine()
-                    response.append(inputLine)
-                } while (inputLine != null)
-
+                    sb.append(inputLine)
+                }
+                sb.setLength(sb.length - 1)
+                sb.append("]")
+                sb.append("}")
                 br.close()
-                return (response.toString())
+
+                return (sb.toString())
 
             } catch (e: Exception) {
-                return (e.toString())
+                return(e.toString())
             }
 
         }
 
-        override fun onPostExecute(result: String?) {
-            /*booktitleTv.setText(result)*/
-        }
     }
 
 }
