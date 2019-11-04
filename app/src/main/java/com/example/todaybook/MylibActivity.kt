@@ -39,7 +39,7 @@ class MylibActivity : AppCompatActivity() {
 
         val rbAdapter = ViewAdapter(this, readList) { imageDataModel ->
             val detailIntent = Intent(this, lib_detail::class.java)
-            detailIntent.putExtra("Info",parcel_bookinfo("https://image.aladin.co.kr/product/18827/60/cover500/8954655971_2.jpg", "여행의 이유","김영하","pub"))
+            detailIntent.putExtra("Info",parcel_bookinfo("https://image.aladin.co.kr/product/21344/20/cover500/8965963494_1.jpg",  "마음에도 근육이 붙나 봐요","AM327","pub"))
             startActivityForResult(detailIntent, 1)
         }
         val wbAdapter = ViewAdapter(this, willreadList) { imageDataModel ->
