@@ -62,7 +62,7 @@
             app:layout_constraintTop_toBottomOf="@+id/titleView" />
 
     <EditText
-            android:id="@+id/editText"
+            android:id="@+id/comments"
             android:layout_width="370dp"
             android:layout_height="325dp"
             android:layout_marginStart="27dp"

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -22,8 +23,6 @@ import java.net.URLEncoder
 
 
 class SearchActivity : AppCompatActivity() {
-    data class book(val title:String, val authors:String, val publisher:String, val thumbnail:String)
-
 
     /*var bookList = arrayListOf<Book>(
         Book("데이터베이스기초", "황수찬", "1", "dog00"),
@@ -73,8 +72,9 @@ class SearchActivity : AppCompatActivity() {
                 val br: BufferedReader
                 if (responseCode == 200) { // 정상 호출
                     br = BufferedReader(InputStreamReader(con.inputStream))
-                    return br.readLine()
+                    var a= br.readLine()
                     br.close()
+                    return a
                 } else {  // 에러 발생
                     br = BufferedReader(InputStreamReader(con.errorStream))
                     return br.toString()
@@ -99,19 +99,19 @@ class SearchActivity : AppCompatActivity() {
         }
 
         override fun onPostExecute(result: String?) {
-            booktitleTv.setText(result)
+            //booktitleTv.setText(result)
             var json=result
             /*booktitleTv.setText(json)*/
 
             /*val jObject = JSONObject(json)
             val jsonresult = jObject.getJSONArray("items")*/
             val parser=JsonParser()
-            val rootObj=parser.parse(json.toString())
+            val rootObj=parser.parse(json)
                 .getAsJsonObject().get("documents")
 
             var gson = Gson()
-            var gsonresult=gson.fromJson(rootObj,book::class.java)////json을 gson으로 convert(jsonresult의 값을 book object로)
-            booktitleTv.setText(gsonresult.toString())
+            //var gsonresult=gson.fromJson(rootObj,Book::class.java)////json을 gson으로 convert(jsonresult의 값을 book object로)
+            //booktitleTv.setText(gsonresult.toString())
 
             /*var bookList=arrayListOf<book>(gsonresult)
 

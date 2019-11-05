@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_lib_detail.*
 
 class lib_detail : AppCompatActivity() {
@@ -16,11 +17,15 @@ class lib_detail : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lib_detail)
-        val BookInfo by lazy{intent.extras!!["Info"] as parcel_bookinfo}
-
-        titleView.text = BookInfo.title
-        authorView.text = BookInfo.author
-        pubView.text = BookInfo.pub
-        Glide.with(coverimage).load(BookInfo.imageurl).into(coverimage)
+        val bookinfo by lazy{intent.extras!!["Info"] as BookInfo}
+        titleView.text = bookinfo.title
+        authorView.text = bookinfo.author
+        pubView.text = bookinfo.pub
+        Glide.with(coverimage).load(bookinfo.imageurl).into(coverimage)
+        bt_complete.setOnClickListener{
+            val database = FirebaseDatabase.getInstance().reference
+            val UserId="sdfsdf"
+            //database.child("users").child(UserId).child("Books").child(bookinfo.title).setValue(comments.text)
+        }
     }
 }
