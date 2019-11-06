@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_listview_item.*
 import org.json.JSONObject
@@ -20,24 +21,19 @@ import com.google.gson.JsonParser
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.synthetic.main.activity_main.*
+import android.content.ClipData.Item
+import com.google.gson.JsonArray
+import android.R.array
+
+
+
+
+
+
 
 
 class SearchActivity : AppCompatActivity() {
-    data class book (
 
-        @SerializedName("title")
-        var title: String? = null,
-
-        @SerializedName("authors")
-        var authors: String? = null,
-
-        @SerializedName("publisher")
-        var publisher: String? = null,
-
-        @SerializedName("thumbnail")
-        var thumbnail: String? = null
-
-    )
 
 
     /*var bookList = arrayListOf<Book>(
@@ -51,19 +47,12 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_search)
         var intent = getIntent()
         var title = intent.getExtras()?.getString("BookTitle")
 
-
-
         AsyncTaskBook().execute(title)
-
-
-
     }
-
-
 
 
 
@@ -71,7 +60,6 @@ class SearchActivity : AppCompatActivity() {
 
         override fun onPreExecute() {
             super.onPreExecute()
-
         }
 
         override fun doInBackground(vararg params: String): String {
@@ -110,35 +98,28 @@ class SearchActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 return (e.toString())
             }
-
         }
-
         override fun onPostExecute(result: String?) {
 
             var json=result
 
 
             /*val jObject = JSONObject(json)
-            var jsonresult = jObject.getJSONArray("documents")*////방법1
+            var jsonresult = jObject.getJSONArray("documents")*///방법1
 
-            val parser=JsonParser()
-            val rootObj=parser.parse(json.toString())
-                .getAsJsonObject().get("documents")///방법2
+            /*val parser=JsonParser()
+            val rootObj=parser.parse(json)////type=JsonElement
+                .getAsJsonObject().get("documents")*////방법2
+
             /*textView3.setText(rootObj.toString())*/
-**********************************************************************************************
-            var gson = Gson()
-            var gsonresult=gson.fromJson(rootObj,book::class.java)////json을 gson으로 convert(jsonresult의 값을 book object로)
-            textView3.setText(gsonresult.toString())
+
+            val gson = GsonBuilder().create()
+            var gsonresult=gson.fromJson(json,FocusArea::class.java)////json을 gson으로 convert(jsonresult의 값을 book object로)
 
 
-            /*var bookList=arrayListOf<book>(gsonresult)
-
-            val bookAdapter = SearchListviewAdapter(this@SearchActivity, bookList)
-            mainListView.adapter = bookAdapter*/
+            /*var bookList=arrayListOf<book>(gsonresult)*/
+            val bookAdapter = SearchListviewAdapter(this@SearchActivity, gsonresult.documentsValue)
+            mainListView.adapter = bookAdapter
         }
     }
 }
-
-
-
-
