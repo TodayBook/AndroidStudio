@@ -25,7 +25,7 @@ class EmailPasswordActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    database.child("users").child(UserId).child("Email").setValue(email)
+                    database.child("users").child(auth.uid!!).child("UserId").setValue(UserId)
                     Toast.makeText(baseContext, "Success!!", Toast.LENGTH_SHORT).show()
                     editText_email.text.clear()
                     getEditText_password.text.clear()
