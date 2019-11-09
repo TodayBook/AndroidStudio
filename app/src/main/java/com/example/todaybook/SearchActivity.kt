@@ -6,10 +6,9 @@ import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.google.gson.Gson
-import com.google.gson.JsonParser
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_listview_item.*
 import org.json.JSONObject
@@ -18,11 +17,24 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
+import com.google.gson.JsonParser
+import com.google.gson.JsonObject
+import com.google.gson.annotations.SerializedName
+import kotlinx.android.synthetic.main.activity_main.*
+import android.content.ClipData.Item
+import com.google.gson.JsonArray
+import android.R.array
+
+
+
+
 
 
 
 
 class SearchActivity : AppCompatActivity() {
+
+
 
     /*var bookList = arrayListOf<Book>(
         Book("데이터베이스기초", "황수찬", "1", "dog00"),
@@ -35,19 +47,12 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.search_listview_item)
+        setContentView(R.layout.activity_search)
         var intent = getIntent()
         var title = intent.getExtras()?.getString("BookTitle")
 
-
-
         AsyncTaskBook().execute(title)
-
-
-
     }
-
-
 
 
 
@@ -55,7 +60,6 @@ class SearchActivity : AppCompatActivity() {
 
         override fun onPreExecute() {
             super.onPreExecute()
-
         }
 
         override fun doInBackground(vararg params: String): String {
@@ -72,9 +76,8 @@ class SearchActivity : AppCompatActivity() {
                 val br: BufferedReader
                 if (responseCode == 200) { // 정상 호출
                     br = BufferedReader(InputStreamReader(con.inputStream))
-                    var a= br.readLine()
+                    return br.readLine()
                     br.close()
-                    return a
                 } else {  // 에러 발생
                     br = BufferedReader(InputStreamReader(con.errorStream))
                     return br.toString()
@@ -95,32 +98,28 @@ class SearchActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 return (e.toString())
             }
-
         }
-
         override fun onPostExecute(result: String?) {
-            //booktitleTv.setText(result)
+
             var json=result
-            /*booktitleTv.setText(json)*/
+
 
             /*val jObject = JSONObject(json)
-            val jsonresult = jObject.getJSONArray("items")*/
-            val parser=JsonParser()
-            val rootObj=parser.parse(json)
-                .getAsJsonObject().get("documents")
+            var jsonresult = jObject.getJSONArray("documents")*///방법1
 
-            var gson = Gson()
-            //var gsonresult=gson.fromJson(rootObj,Book::class.java)////json을 gson으로 convert(jsonresult의 값을 book object로)
-            //booktitleTv.setText(gsonresult.toString())
+            /*val parser=JsonParser()
+            val rootObj=parser.parse(json)////type=JsonElement
+                .getAsJsonObject().get("documents")*////방법2
 
-            /*var bookList=arrayListOf<book>(gsonresult)
+            /*textView3.setText(rootObj.toString())*/
 
-            val bookAdapter = SearchListviewAdapter(this@SearchActivity, bookList)
-            mainListView.adapter = bookAdapter*/
+            val gson = GsonBuilder().create()
+            var gsonresult=gson.fromJson(json,FocusArea::class.java)////json을 gson으로 convert(jsonresult의 값을 book object로)
+
+
+            /*var bookList=arrayListOf<book>(gsonresult)*/
+            val bookAdapter = SearchListviewAdapter(this@SearchActivity, gsonresult.documentsValue)
+            mainListView.adapter = bookAdapter
         }
     }
 }
-
-
-
-

@@ -70,4 +70,6 @@
             app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent"
             android:background="#553B12" android:width="3dp" android:text="검색" android:textSize="24sp"/>
 
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
