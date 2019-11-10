@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -22,7 +21,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".lib_detail"></activity>
+        <activity android:name=".ReadOrRead"></activity>
+        <activity android:name=".lib_detail" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -44,7 +44,6 @@
                 android:name=".MylibActivity"
                 android:label="@string/title_activity_mylib"
                 android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CategoryActivity" />
         <activity android:name=".FreindlibActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity">

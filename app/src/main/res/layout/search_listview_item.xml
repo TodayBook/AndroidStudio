@@ -3,38 +3,56 @@
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
-android:layout_height="100dp">
-<ImageView
-        android:id="@+id/bookimageImg"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+android:layout_height="200dp">
+
+    <ImageView
+            android:id="@+id/bookimageImg"
+            android:layout_width="80dp"
+            android:layout_height="85dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.289"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <Button
+            android:id="@+id/bt_addtolib"
+            android:layout_width="44dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="348dp"
+            android:layout_marginLeft="348dp"
+            android:layout_marginEnd="110dp"
+            android:layout_marginRight="110dp"
+            android:text="+"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bt_map"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bookpublisherTv"
+            app:layout_constraintVertical_bias="0.9" />
 
     <TextView
             android:id="@+id/booktitleTv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginLeft="13dp"
             android:textSize="15sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/bookauthorTv"
             app:layout_constraintStart_toEndOf="@+id/bookimageImg"
-            app:layout_constraintTop_toTopOf="@+id/bookimageImg"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
 
     <TextView
             android:id="@+id/bookauthorTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
-            android:layout_marginLeft="76dp"
+            android:layout_marginStart="92dp"
+            android:layout_marginLeft="92dp"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/bookimageImg"
             app:layout_constraintStart_toStartOf="@+id/bookimageImg"
