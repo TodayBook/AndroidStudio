@@ -23,7 +23,22 @@ class MylibActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mylib)
+        val namelistener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    var key : String = snapshot.key.toString()
+                    var value = snapshot.value.toString()
+                    nametext.text=value+"님의 도서관"
+                    if(key=="UserId")break
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.child("users").child(cuser!!.uid).addValueEventListener(namelistener)
 
+        nametext.text="님의 도서관"
         var readList = ArrayList<ImageDataModel>()
         readList.clear()
 
