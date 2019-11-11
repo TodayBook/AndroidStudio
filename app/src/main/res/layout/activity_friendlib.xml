@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+            android:id="@+id/nametext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:text="님의 도서관"
+            android:textSize="24sp" />
+
+    <TextView
+            android:text="읽은 책"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView" android:textSize="18sp"
+            android:layout_marginTop="10dp" android:layout_marginLeft="20dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_readbook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp" >
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="읽을 책"
+            android:textSize="18sp" />
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_willbook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

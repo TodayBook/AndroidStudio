@@ -3,7 +3,6 @@ package com.example.todaybook
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(detailIntent, 1)
         }
         bt_friendlib.setOnClickListener {
-            val detailIntent = Intent(this, FreindlibActivity::class.java)
+            val detailIntent = Intent(this, FreindlstActivity::class.java)
             startActivityForResult(detailIntent, 1)
         }
         bt_login.setOnClickListener {

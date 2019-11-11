@@ -21,7 +21,9 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".ReadOrRead"></activity>
+        <activity android:name=".FriendlibActivity"></activity>
+        <activity android:name=".FriendFind" />
+        <activity android:name=".ReadOrRead" />
         <activity android:name=".lib_detail" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -44,7 +46,7 @@
                 android:name=".MylibActivity"
                 android:label="@string/title_activity_mylib"
                 android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FreindlibActivity" />
+        <activity android:name=".FreindlstActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
