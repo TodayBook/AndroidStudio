@@ -25,7 +25,7 @@ class ReadOrRead : AppCompatActivity() {
             Toast.makeText(baseContext, "Success!!", Toast.LENGTH_SHORT).show()
         }
         bt_willbook.setOnClickListener {
-            database.child("users").child(cuser?.uid!!).child("willBook").child(bookinfo.title).setValue(bookDB(bookinfo.imageurl, bookinfo.author, bookinfo.pub))
+            database.child("users").child(cuser?.uid!!).child("willBook").child(EncodeString(bookinfo.title)).setValue(bookDB(bookinfo.imageurl, bookinfo.author, bookinfo.pub))
             Toast.makeText(baseContext, "Success!!", Toast.LENGTH_SHORT).show()
         }
     }
