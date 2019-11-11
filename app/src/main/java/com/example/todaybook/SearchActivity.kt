@@ -24,12 +24,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.content.ClipData.Item
 import com.google.gson.JsonArray
 import android.R.array
-
-
-
-
-
-
+import android.view.LayoutInflater
+import android.widget.AdapterView
+import android.widget.Button
+import androidx.core.app.ActivityCompat
+import kotlinx.android.synthetic.main.search_listview_item.view.*
 
 
 class SearchActivity : AppCompatActivity() {
@@ -52,6 +51,27 @@ class SearchActivity : AppCompatActivity() {
         var title = intent.getExtras()?.getString("BookTitle")
 
         AsyncTaskBook().execute(title)
+
+        /*val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        inflater.inflate(R.layout.search_listview_item, mainListView, true)*/
+        /*var button:Button = mainListView.findViewById(R.id.bt_addtolib)
+
+        button.setOnClickListener {
+
+            val detailIntent = Intent(this@SearchActivity, ReadOrRead::class.java)
+            startActivityForResult(detailIntent, 1)
+        }*/
+
+
+        /*mainListView.setOnItemClickListener { parent, view, position, id ->
+            val element = parent.getItemAtPosition(position) // The item that was clicked
+            val intent = Intent(this, ReadOrRead::class.java)
+            startActivity(intent)
+        }*/
+
+
+
+
     }
 
 
@@ -120,6 +140,9 @@ class SearchActivity : AppCompatActivity() {
             /*var bookList=arrayListOf<book>(gsonresult)*/
             val bookAdapter = SearchListviewAdapter(this@SearchActivity, gsonresult.documentsValue)
             mainListView.adapter = bookAdapter
+
+
         }
     }
+
 }
