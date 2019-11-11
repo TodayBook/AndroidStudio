@@ -27,10 +27,6 @@ class MylibActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mylib)
-        ////////////////////////////////////////////////////////////
-        database.child("users").child(cuser?.uid!!).child("didBook").child("혼자가 혼자에게").setValue(bookDB("https://image.aladin.co.kr/product/21292/13/cover500/8936438034_1.jpg","이병률","pub2"))
-        database.child("users").child(cuser?.uid!!).child("willBook").child("혼자가 혼자에게").setValue(bookDB("https://image.aladin.co.kr/product/21292/13/cover500/8936438034_1.jpg","이병률","pub2"))
-        ////////////////////////////////////////////////////////////
         var readList = ArrayList<ImageDataModel>()
         readList.clear()
 
@@ -78,7 +74,7 @@ class MylibActivity : AppCompatActivity() {
                         var value = snapshot.getValue(bookDB::class.java)
                         willreadList.add(ImageDataModel(value!!.imageurl,key,value!!.author,value!!.publisher))
                     }
-                    rbAdapter.notifyDataSetChanged()
+                    wbAdapter.notifyDataSetChanged()
                 }
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())

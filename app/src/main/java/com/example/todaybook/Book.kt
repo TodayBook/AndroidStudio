@@ -19,16 +19,16 @@ data class book (
 
 
     @SerializedName("title")
-    var title: String?,
+    var title: String,
 
     @SerializedName("authors")
     var authors:ArrayList<String> = ArrayList(),
 
     @SerializedName("publisher")
-    var publisher: String?,
+    var publisher: String,
 
     @SerializedName("thumbnail")
-    var thumbnail: String?
+    var thumbnail: String
 
 )
 

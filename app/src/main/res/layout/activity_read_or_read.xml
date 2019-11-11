@@ -16,25 +16,25 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/bt_read1"
-            app:layout_constraintStart_toStartOf="@+id/bt_read2"
+            app:layout_constraintEnd_toEndOf="@+id/bt_didbook"
+            app:layout_constraintStart_toStartOf="@+id/bt_willbook"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.128" />
 
     <Button
-            android:id="@+id/bt_read1"
+            android:id="@+id/bt_didbook"
             android:layout_width="100dp"
             android:layout_height="70dp"
             android:text="읽은책"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.432"
-            app:layout_constraintStart_toEndOf="@+id/bt_read2"
+            app:layout_constraintStart_toEndOf="@+id/bt_willbook"
             app:layout_constraintTop_toBottomOf="@+id/dialogTitle"
             app:layout_constraintVertical_bias="0.189" />
 
     <Button
-            android:id="@+id/bt_read2"
+            android:id="@+id/bt_willbook"
             android:layout_width="100dp"
             android:layout_height="70dp"
             android:text="읽을책"
