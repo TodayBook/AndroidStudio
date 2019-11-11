@@ -1,19 +1,16 @@
 package com.example.todaybook
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_lib_detail.*
 
 class lib_detail : AppCompatActivity() {
-
+    private lateinit var auth: FirebaseAuth
+    var database = FirebaseDatabase.getInstance().reference
+    val cuser = FirebaseAuth.getInstance().currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lib_detail)
@@ -23,9 +20,7 @@ class lib_detail : AppCompatActivity() {
         pubView.text = bookinfo.pub
         Glide.with(coverimage).load(bookinfo.imageurl).into(coverimage)
         bt_complete.setOnClickListener{
-            val database = FirebaseDatabase.getInstance().reference
-            val UserId="sdfsdf"
-            //database.child("users").child(UserId).child("Books").child(bookinfo.title).setValue(comments.text)
+            database.child("users").child(cuser?.uid!!).child("didBook").child(bookinfo.title).child("comments").setValue(comments.text)
         }
     }
 }

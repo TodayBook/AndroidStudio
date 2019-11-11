@@ -27,10 +27,9 @@ class MylibActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mylib)
-        val user = FirebaseAuth.getInstance().currentUser
         ////////////////////////////////////////////////////////////
-        database.child("users").child(user?.uid!!).child("didBook").child("혼자가 혼자에게").setValue(bookDB("https://image.aladin.co.kr/product/21292/13/cover500/8936438034_1.jpg","이병률","pub2"))
-        database.child("users").child(user?.uid!!).child("willBook").child("혼자가 혼자에게").setValue(bookDB("https://image.aladin.co.kr/product/21292/13/cover500/8936438034_1.jpg","이병률","pub2"))
+        database.child("users").child(cuser?.uid!!).child("didBook").child("혼자가 혼자에게").setValue(bookDB("https://image.aladin.co.kr/product/21292/13/cover500/8936438034_1.jpg","이병률","pub2"))
+        database.child("users").child(cuser?.uid!!).child("willBook").child("혼자가 혼자에게").setValue(bookDB("https://image.aladin.co.kr/product/21292/13/cover500/8936438034_1.jpg","이병률","pub2"))
         ////////////////////////////////////////////////////////////
         var readList = ArrayList<ImageDataModel>()
         readList.clear()
@@ -56,7 +55,7 @@ class MylibActivity : AppCompatActivity() {
 
         var UserId:String
         if (cuser != null) {
-            UserId=user.uid
+            UserId=cuser.uid
             val readbooklistener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
