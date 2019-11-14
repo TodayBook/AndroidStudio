@@ -58,9 +58,7 @@ class FriendlibActivity : AppCompatActivity() {
 
         recyclerView_readbook.adapter = rbAdapter
         recyclerView_willbook.adapter = wbAdapter
-    var cuser=null
-        var UserId:String
-        if (cuser != null) {
+        if (FriendUid.toString() != null) {
 
             val readbooklistener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {

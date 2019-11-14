@@ -14,7 +14,7 @@
             android:layout_marginEnd="18dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="닉네임을 입력하세요"
+            android:text="이메일을 입력하세요"
             app:layout_constraintEnd_toStartOf="@+id/bt_search"
             app:layout_constraintTop_toTopOf="parent" />
 
