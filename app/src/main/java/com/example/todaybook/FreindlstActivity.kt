@@ -50,6 +50,8 @@ class FreindlstActivity : AppCompatActivity() {
                 for (snapshot in dataSnapshot.children) {
                     var key : String = snapshot.key.toString()
                     var value = snapshot.value.toString()
+                    println("key "+key)
+                    println("value "+value)
                     friendsUid.add(key)
                     friendsId.add(value)
                 }
