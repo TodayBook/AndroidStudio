@@ -1,225 +1,457 @@
 package com.example.todaybook
 
+import android.Manifest.permission
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
+import android.provider.Settings
+import android.util.Log
+import android.view.View
+import android.view.WindowManager.LayoutParams
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
+import androidx.core.content.ContextCompat
+import com.example.todaybook.R.id
+import com.example.todaybook.R.layout
+import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationSettingsRequest.Builder
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
+import java.io.IOException
+import java.util.*
 
 class MapsActivity : AppCompatActivity(),
-    OnMapReadyCallback {
+    OnMapReadyCallback,
+    OnRequestPermissionsResultCallback {
     private var mMap: GoogleMap? = null
+    private var currentMarker: Marker? = null
+    internal var needRequest = false
+    // 앱을 실행하기 위해 필요한 퍼미션을 정의합니다.
+    internal var REQUIRED_PERMISSIONS = arrayOf(
+        permission.ACCESS_FINE_LOCATION,
+        permission.ACCESS_COARSE_LOCATION
+    )  // 외부 저장소
+
+    internal var mCurrentLocatiion: Location? = null
+    internal var currentPosition: LatLng? = null
+    private var mFusedLocationClient: FusedLocationProviderClient? =
+        null
+    private var locationRequest: LocationRequest? = null
+    private var location: Location? = null
+    private var mLayout  // Snackbar 사용하기 위해서는 View가 필요합니다.
+            : View? = null
+    // (참고로 Toast에서는 Context가 필요했습니다.)
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
+        window.setFlags(
+            LayoutParams.FLAG_KEEP_SCREEN_ON,
+            LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
+        setContentView(layout.activity_maps)
+        mLayout = findViewById<View?>(id.layout_maps)
+        locationRequest = LocationRequest()
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            .setInterval(MapsActivity.UPDATE_INTERVAL_MS.toLong())
+            .setFastestInterval(MapsActivity.FASTEST_UPDATE_INTERVAL_MS.toLong())
+        val builder =
+            Builder()
+        builder.addLocationRequest(LocationRequest())
+        mFusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(this)
         val mapFragment =
             supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment?
+                .findFragmentById(id.map) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        Log.d(MapsActivity.TAG, "onMapReady :")
         mMap = googleMap
-        val SEOUL =
-            LatLng(37.56, 126.97)
+//런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전에
+        //지도의 초기위치를 서울로 이동
+        setDefaultLocation()
+
+
+        //런타임 퍼미션 처리
+        // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
+
+
+        val hasFineLocationPermission =
+            ContextCompat.checkSelfPermission(
+                this,
+                permission.ACCESS_FINE_LOCATION
+            )
+        val hasCoarseLocationPermission =
+            ContextCompat.checkSelfPermission(
+                this,
+                permission.ACCESS_COARSE_LOCATION
+            )
+        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED
+        ) {
+
+            // 2. 이미 퍼미션을 가지고 있다면
+            // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
+
+
+            startLocationUpdates() // 3. 위치 업데이트 시작
+        } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
+
+            // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    REQUIRED_PERMISSIONS[0]
+                )
+            ) {
+
+                // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
+
+                Snackbar.make(
+                    mLayout!!, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction("확인") {
+                    // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+
+                    ActivityCompat.requestPermissions(
+                        this@MapsActivity,
+                        REQUIRED_PERMISSIONS,
+                        MapsActivity.PERMISSIONS_REQUEST_CODE
+                    )
+                }.show()
+            } else {
+                // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
+                // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+
+                ActivityCompat.requestPermissions(
+                    this, REQUIRED_PERMISSIONS, MapsActivity.PERMISSIONS_REQUEST_CODE
+                )
+            }
+        }
+        mMap!!.uiSettings.isMyLocationButtonEnabled = true
+        mMap!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
+        mMap!!.setOnMapClickListener { Log.d(MapsActivity.TAG, "onMapClick :") }
+    }
+
+    internal var locationCallback: LocationCallback =
+        object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+                val locationList: List<Location> =
+                    locationResult.locations
+                if (locationList.size > 0) {
+                    location = locationList[locationList.size - 1]
+                    currentPosition = LatLng(
+                        location!!.latitude,
+                        location!!.longitude
+                    )
+                    val markerTitle = getCurrentAddress(currentPosition!!)
+                    val markerSnippet =
+                        "위도:" + location!!.latitude.toString() + " 경도:" + location!!.longitude.toString()
+                    Log.d(MapsActivity.TAG, "onLocationResult : $markerSnippet")
+
+
+                    //현재 위치에 마커 생성하고 이동
+
+
+                    setCurrentLocation(location, markerTitle, markerSnippet)
+                    mCurrentLocatiion = location
+                }
+            }
+        }
+
+    private fun startLocationUpdates() {
+        if (!checkLocationServicesStatus()) {
+            Log.d(
+                MapsActivity.TAG,
+                "startLocationUpdates : call showDialogForLocationServiceSetting"
+            )
+            showDialogForLocationServiceSetting()
+        } else {
+            val hasFineLocationPermission =
+                ContextCompat.checkSelfPermission(
+                    this,
+                    permission.ACCESS_FINE_LOCATION
+                )
+            val hasCoarseLocationPermission =
+                ContextCompat.checkSelfPermission(
+                    this,
+                    permission.ACCESS_COARSE_LOCATION
+                )
+            if (hasFineLocationPermission != PackageManager.PERMISSION_GRANTED ||
+                hasCoarseLocationPermission != PackageManager.PERMISSION_GRANTED
+            ) {
+                Log.d(MapsActivity.TAG, "startLocationUpdates : 퍼미션 안가지고 있음")
+                return
+            }
+            Log.d(
+                MapsActivity.TAG,
+                "startLocationUpdates : call mFusedLocationClient.requestLocationUpdates"
+            )
+            mFusedLocationClient!!.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.myLooper()
+            )
+            if (checkPermission()) mMap!!.isMyLocationEnabled = true
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(MapsActivity.TAG, "onStart")
+        if (checkPermission()) {
+            Log.d(
+                MapsActivity.TAG,
+                "onStart : call mFusedLocationClient.requestLocationUpdates"
+            )
+            mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
+            if (mMap != null) mMap!!.isMyLocationEnabled = true
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mFusedLocationClient != null) {
+            Log.d(MapsActivity.TAG, "onStop : call stopLocationUpdates")
+            mFusedLocationClient!!.removeLocationUpdates(locationCallback)
+        }
+    }
+
+    fun getCurrentAddress(latlng: LatLng): String {
+
+        //지오코더... GPS를 주소로 변환
+
+        val geocoder =
+            Geocoder(this, Locale.getDefault())
+        val addresses: List<Address>?
+        try {
+            addresses = geocoder.getFromLocation(
+                latlng.latitude,
+                latlng.longitude,
+                1
+            )
+        } catch (ioException: IOException) {
+            //네트워크 문제
+
+            Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG)
+                .show()
+            return "지오코더 서비스 사용불가"
+        } catch (illegalArgumentException: IllegalArgumentException) {
+            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG)
+                .show()
+            return "잘못된 GPS 좌표"
+        }
+        return if (addresses == null || addresses.size == 0) {
+            Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show()
+            "주소 미발견"
+        } else {
+            val address = addresses[0]
+            address.getAddressLine(0).toString()
+        }
+    }
+
+    fun checkLocationServicesStatus(): Boolean {
+        val locationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+    }
+
+    fun setCurrentLocation(
+        location: Location?,
+        markerTitle: String,
+        markerSnippet: String
+    ) {
+        if (currentMarker != null) currentMarker!!.remove()
+        val currentLatLng =
+            LatLng(
+                location!!.latitude,
+                location.longitude
+            )
         val markerOptions =
             MarkerOptions()
-        markerOptions.position(SEOUL)
-        markerOptions.title("서울")
-        markerOptions.snippet(".")
-        mMap!!.addMarker(markerOptions)
-        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(SEOUL))
-        mMap!!.animateCamera(CameraUpdateFactory.zoomTo(10f))
+        markerOptions.position(currentLatLng)
+        markerOptions.title(markerTitle)
+        markerOptions.snippet(markerSnippet)
+        markerOptions.draggable(true)
+        currentMarker = mMap!!.addMarker(markerOptions)
+        val cameraUpdate: CameraUpdate? =
+            CameraUpdateFactory.newLatLng(currentLatLng)
+        mMap!!.moveCamera(cameraUpdate)
+    }
+
+    fun setDefaultLocation() {
+
+
+        //디폴트 위치, Seoul
+
+        val DEFAULT_LOCATION =
+            LatLng(37.56, 126.97)
+        val markerTitle = "위치정보 가져올 수 없음"
+        val markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요"
+        if (currentMarker != null) currentMarker!!.remove()
+        val markerOptions =
+            MarkerOptions()
+        markerOptions.position(DEFAULT_LOCATION)
+        markerOptions.title(markerTitle)
+        markerOptions.snippet(markerSnippet)
+        markerOptions.draggable(true)
+        markerOptions.icon(
+            BitmapDescriptorFactory.defaultMarker(
+                BitmapDescriptorFactory.HUE_RED
+            )
+        )
+        currentMarker = mMap!!.addMarker(markerOptions)
+        val cameraUpdate: CameraUpdate? =
+            CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15f)
+        mMap!!.moveCamera(cameraUpdate)
+    }
+
+    //여기부터는 런타임 퍼미션 처리을 위한 메소드들
+    private fun checkPermission(): Boolean {
+        val hasFineLocationPermission =
+            ContextCompat.checkSelfPermission(
+                this,
+                permission.ACCESS_FINE_LOCATION
+            )
+        val hasCoarseLocationPermission =
+            ContextCompat.checkSelfPermission(
+                this,
+                permission.ACCESS_COARSE_LOCATION
+            )
+        return if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED
+        ) {
+            true
+        } else false
+    }
+
+    /*
+     * ActivityCompat.requestPermissions를 사용한 퍼미션 요청의 결과를 리턴받는 메소드입니다.
+     */
+    override fun onRequestPermissionsResult(
+        permsRequestCode: Int,
+        permissions: Array<String>,
+        grandResults: IntArray
+    ) {
+        if (permsRequestCode == MapsActivity.PERMISSIONS_REQUEST_CODE && grandResults.size == REQUIRED_PERMISSIONS.size) {
+
+            // 요청 코드가 PERMISSIONS_REQUEST_CODE 이고, 요청한 퍼미션 개수만큼 수신되었다면
+
+
+            var check_result = true
+
+
+            // 모든 퍼미션을 허용했는지 체크합니다.
+
+
+            for (result in grandResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    check_result = false
+                    break
+                }
+            }
+            if (check_result) {
+
+                // 퍼미션을 허용했다면 위치 업데이트를 시작합니다.
+
+                startLocationUpdates()
+            } else {
+                // 거부한 퍼미션이 있다면 앱을 사용할 수 없는 이유를 설명해주고 앱을 종료합니다.2 가지 경우가 있습니다.
+
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        this,
+                        REQUIRED_PERMISSIONS[0]
+                    )
+                    || ActivityCompat.shouldShowRequestPermissionRationale(
+                        this,
+                        REQUIRED_PERMISSIONS[1]
+                    )
+                ) {
+
+
+                    // 사용자가 거부만 선택한 경우에는 앱을 다시 실행하여 허용을 선택하면 앱을 사용할 수 있습니다.
+
+                    Snackbar.make(
+                        mLayout!!, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요. ",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).setAction("확인") { finish() }.show()
+                } else {
+
+
+                    // "다시 묻지 않음"을 사용자가 체크하고 거부를 선택한 경우에는 설정(앱 정보)에서 퍼미션을 허용해야 앱을 사용할 수 있습니다.
+
+                    Snackbar.make(
+                        mLayout!!, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).setAction("확인") { finish() }.show()
+                }
+            }
+        }
+    }
+
+    //여기부터는 GPS 활성화를 위한 메소드들
+    private fun showDialogForLocationServiceSetting() {
+        val builder =
+            AlertDialog.Builder(this@MapsActivity)
+        builder.setTitle("위치 서비스 비활성화")
+        builder.setMessage(
+            "앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
+                    + "위치 설정을 수정하실래요?"
+        )
+        builder.setCancelable(true)
+        builder.setPositiveButton("설정") { dialog, id ->
+            val callGPSSettingIntent =
+                Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivityForResult(callGPSSettingIntent, MapsActivity.GPS_ENABLE_REQUEST_CODE)
+        }
+        builder.setNegativeButton("취소") { dialog, id -> dialog.cancel() }
+        builder.create().show()
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            MapsActivity.GPS_ENABLE_REQUEST_CODE -> //사용자가 GPS 활성 시켰는지 검사
+                if (checkLocationServicesStatus()) {
+                    if (checkLocationServicesStatus()) {
+                        Log.d(MapsActivity.TAG, "onActivityResult : GPS 활성화 되있음")
+                        needRequest = true
+                        return
+                    }
+                }
+        }
+    }
+
+    companion object {
+        private const val TAG = "googlemap_example"
+        private const val GPS_ENABLE_REQUEST_CODE = 2001
+        private const val UPDATE_INTERVAL_MS = 1000  // 1초
+
+        private const val FASTEST_UPDATE_INTERVAL_MS = 500 // 0.5초
+
+        // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용됩니다.
+        private const val PERMISSIONS_REQUEST_CODE = 100
     }
 }
-//import android.content.pm.PackageManager
-//import android.location.Location
-//import androidx.appcompat.app.AppCompatActivity
-//import android.os.Bundle
-//import androidx.core.app.ActivityCompat
-//import androidx.core.content.ContextCompat
-//import com.google.android.gms.location.FusedLocationProviderClient
-//import com.google.android.gms.location.LocationCallback
-//import com.google.android.gms.location.LocationRequest
-//import com.google.android.gms.location.LocationResult
-//import com.google.android.gms.maps.CameraUpdateFactory
-//import com.google.android.gms.maps.GoogleMap
-//import com.google.android.gms.maps.OnMapReadyCallback
-//import com.google.android.gms.maps.SupportMapFragment
-//import com.google.android.gms.maps.model.LatLng
-//import com.google.android.gms.maps.model.MarkerOptions
-//import org.jetbrains.anko.alert
-//import org.jetbrains.anko.noButton
-//import org.jetbrains.anko.yesButton
-//import android.Manifest
-//import android.annotation.SuppressLint
-//import android.content.pm.ActivityInfo
-//import android.graphics.Color
-//import android.os.SystemClock
-//import android.view.WindowManager
-//import android.widget.Toast
-//import com.google.android.gms.maps.model.PolylineOptions
-//import kotlinx.android.synthetic.main.activity_maps.*
-//import org.jetbrains.anko.toast
-//class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
-//    private val polyLineOptions=PolylineOptions().width(5f).color(Color.RED) // 이동경로를 그릴 선
-//    private lateinit var mMap: GoogleMap // 마커, 카메라 지정을 위한 구글 맵 객체
-//    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient // 위치 요청 메소드 담고 있는 객체
-//    private lateinit var locationRequest:LocationRequest // 위치 요청할 때 넘겨주는 데이터에 관한 객체
-//    private lateinit var locationCallback:MyLocationCallBack // 위치 확인되고 호출되는 객체
-//    // 위치 정보를 얻기 위한 각종 초기화
-//    private fun locationInit(){
-//        // FusedLocationProviderClient 객체 생성
-//        // 이 객체의 메소드를 통해 위치 정보를 요청할 수 있음
-//        fusedLocationProviderClient=FusedLocationProviderClient(this)
-//        // 위치 갱신되면 호출되는 콜백 생성
-//        locationCallback=MyLocationCallBack()
-//        // (정보 요청할 때 넘겨줄 데이터)에 관한 객체 생성
-//        locationRequest=LocationRequest()
-//        locationRequest.priority=LocationRequest.PRIORITY_HIGH_ACCURACY // 가장 정확한 위치를 요청한다,
-//        locationRequest.interval=10000 // 위치를 갱신하는데 필요한 시간 <밀리초 기준>
-//        locationRequest.fastestInterval=5000 // 다른 앱에서 위치를 갱신했을 때 그 정보를 가져오는 시간 <밀리초 기준>
-//    }
-//    // 위치 정보를 찾고 나서 인스턴스화되는 클래스
-//    inner class MyLocationCallBack:LocationCallback(){
-//        override fun onLocationResult(locationResult: LocationResult?) {
-//            super.onLocationResult(locationResult)
-//            // lastLocation프로퍼티가 가리키는 객체 주소를 받는다.
-//            // 그 객체는 현재 경도와 위도를 프로퍼티로 갖는다.
-//            // 그러나 gps가 꺼져 있거나 위치를 찾을 수 없을 때는 lastLocation은 null을 가진다.
-//            val location = locationResult?.lastLocation
-//            //  gps가 켜져 있고 위치 정보를 찾을 수 있을 때 다음 함수를 호출한다. <?. : 안전한 호출>
-//            location?.run{
-//                // 현재 경도와 위도를 LatLng메소드로 설정한다.
-//                val latLng=LatLng(latitude,longitude)
-//                // 카메라를 이동한다.(이동할 위치,줌 수치)
-//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
-//                // 마커를 추가한다.
-//                mMap.addMarker(MarkerOptions().position(latLng).title("Changed Location"))
-//                // polyLine에 좌표 추가
-//                polyLineOptions.add(latLng)
-//                // 선 그리기
-//                mMap.addPolyline(polyLineOptions)
-//            }
-//        }
-//    }
-//    // 이 메소드부터 프로그램 시작
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_maps)
-//        // 화면이 꺼지지 않게 하기
-//        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-//        // 세로 모드로 화면 고정
-//        requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-//        // 위치 정보를 얻기 위한 각종 초기화
-//        locationInit()
-//        // 프래그먼트 매니저로부터 SupportMapFragment프래그먼트를 얻는다. 이 프래그먼트는 지도를 준비하는 기능이 있다.
-//        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-//        // 지도가 준비되면 알림을 받는다. (아마, get함수에서 다른 함수를 호출해서 처리하는 듯)
-//        mapFragment.getMapAsync(this)
-//    }
-//    // 프로그램이 켜졌을 때만 위치 정보를 요청한다
-//    override fun onResume(){
-//        super.onResume()
-//        // 사용자에게 gps키라고 알리기
-//        Toast.makeText(this,"이 앱은 GPS(위치)를 켜야 이용 가능합니다!", Toast.LENGTH_SHORT).show()
-//        // '앱이 gps사용'에 대한 권한이 있는지 체크
-//        // 거부됐으면 showPermissionInfoDialog(알림)메소드를 호출, 승인됐으면 addLocationListener(위치 요청)메소드를 호출
-//        permissionCheck(cancel={showPermissionInfoDialog()},
-//            ok={addLocationListener()})
-//    }
-//    // 프로그램이 중단되면 위치 요청을 삭제한다
-//    override fun onPause(){
-//        super.onPause()
-//        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-//    }
-//    // 위치 요청 메소드
-//    @SuppressLint("MissingPermission")
-//    private fun addLocationListener(){
-//        // 위치 정보 요청
-//        // (정보 요청할 때 넘겨줄 데이터)에 관한 객체, 위치 갱신되면 호출되는 콜백, 특정 스레드 지정(별 일 없으니 null)
-//        fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,null)
-//    }
-//    /**
-//     * 사용 가능한 맵을 조작한다.
-//     * 지도를 사용할 준비가 되면(알림을 받으면) 이 함수가 호출된다.
-//     * 이 함수에서 마커(표시)나 선을 추가하거나 카메라를 이동할 수 있다.
-//     * 기본 마커는 호주 시드니 근처이다.
-//     * GooglePlay 서비스가 기기에 설치돼있지 않은 경우,
-//     * 사용자에게 SupportMapFragment 안에 GooglePlay 서비스를 설치하라는 메시지가 표시된다.
-//     * 이 함수는 사용자가 GooglePlay 서비스를 설치하고 앱으로 돌아온 후에만 실행된다.
-//     **/
-//    override fun onMapReady(googleMap: GoogleMap) {
-//        // googleMap객체 생성
-//        // googleMap을 이용하여 마커나 카메라,선 등을 조정하는 것이다
-//        mMap = googleMap
-//        // 서울을 기준으로 위도,경도 지정
-//        val SEOUL = LatLng(37.56, 126.97)
-//        // MarkerOptions에 위치 정보를 넣을 수 있음
-//        val markerOptions = MarkerOptions()
-//        markerOptions.position(SEOUL)
-//        markerOptions.title("서울")
-//        markerOptions.snippet("한국의 수도")
-//        // 마커 추가
-//        mMap.addMarker(markerOptions)
-//        // 카메라 서울로 이동
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL))
-//        // 10만큼 줌인 하기
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(10f))
-//        // P.s. onMapReady가 호출된 후에 위치 수정이 가능하다!!
-//    }
-//    /** 아래 내용은 사용자에게 권한 부여를 받고 처리하는 메소드이다. **/
-//    private val gps_request_code=1000 // gps에 관한 권한 요청 코드(번호)
-//    private fun permissionCheck(cancel:()->Unit,ok:()->Unit){
-//        // 앱에 GPS이용하는 권한이 없을 때
-//        // <앱을 처음 실행하거나, 사용자가 이전에 권한 허용을 안 했을 때 성립>
-//        if(ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){  // <PERMISSION_DENIED가 반환됨>
-//            // 이전에 사용자가 앱 권한을 허용하지 않았을 때 -> 왜 허용해야되는지 알람을 띄움
-//            // shouldShowRequestPermissionRationale메소드는 이전에 사용자가 앱 권한을 허용하지 않았을 때 ture를 반환함
-//            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                    Manifest.permission.ACCESS_FINE_LOCATION)){
-//                cancel()
-//            }
-//            // 앱 처음 실행했을 때
-//            else
-//                // 권한 요청 알림
-//                ActivityCompat.requestPermissions(this,
-//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),gps_request_code)        }
-//        // 앱에 권한이 허용됨
-//        else
-//            ok()
-//    }
-//    // 사용자가 권한 요청<허용,비허용>한 후에 이 메소드가 호출됨
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when(requestCode){
-//            // (gps 사용에 대한 사용자의 요청)일 때
-//            gps_request_code->{
-//                // 요청이 허용일 때
-//                if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED)
-//                    addLocationListener()
-//                // 요청이 비허용일 때
-//                else{
-//                    toast("권한 거부 됨")
-//                    finish() }
-//            }
-//        }
-//    }
-//    // 사용자가 이전에 권한을 거부했을 때 호출된다.
-//    private fun showPermissionInfoDialog(){
-//        alert("지도 정보를 얻으려면 위치 권한이 필수로 필요합니다",""){
-//            yesButton{
-//                // 권한 요청
-//                ActivityCompat.requestPermissions(this@MapsActivity,
-//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),gps_request_code)
-//            }
-//            noButton { toast("권한 거부 됨")
-//                finish() }
-//        }.show()
-//    }
-//    /** 여기까지 권한에 대한 블럭이다. **/
-//}
