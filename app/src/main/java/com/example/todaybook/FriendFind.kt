@@ -1,5 +1,6 @@
 package com.example.todaybook
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,8 @@ class FriendFind : AppCompatActivity() {
             println(friendId)
             val ffl=friendfindlistener()
             ffl.friendfind(friendId)
+            val detailIntent = Intent(this, followingList::class.java)
+            startActivityForResult(detailIntent,1)
         }
     }
 }

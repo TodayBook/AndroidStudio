@@ -31,13 +31,14 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(detailIntent, 1)
         }
         bt_friendlib.setOnClickListener {
-            val detailIntent = Intent(this, FreindlstActivity::class.java)
+            val detailIntent = Intent(this, followingList::class.java)
             startActivityForResult(detailIntent, 1)
         }
         bt_login.setOnClickListener {
             val detailIntent = Intent(this, login::class.java)
             startActivityForResult(detailIntent, 1)
         }
+
     }
 
 }

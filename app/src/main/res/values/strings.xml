@@ -2,4 +2,11 @@
     <string name="app_name">TodayBook</string>
     <string name="title_activity_mylib">MylibActivity</string>
     <string name="title_activity_maps">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_friendslst">friendslst</string>
+    <string name="tab_text_1">팔로잉</string>
+    <string name="tab_text_2">팔로워</string>
+    <string name="title_activity_friends">friends</string>
 </resources>
