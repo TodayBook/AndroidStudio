@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.WindowManager.LayoutParams
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -40,8 +41,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 import kotlin.collections.MutableList
-import org.jetbrains.anko.noButton
-import org.jetbrains.anko.yesButton
+
 
 class MapsActivity : AppCompatActivity(),
     OnMapReadyCallback,
@@ -123,7 +123,7 @@ class MapsActivity : AppCompatActivity(),
             LayoutParams.FLAG_KEEP_SCREEN_ON
         )
         setContentView(layout.activity_maps)
-        previous_marker = ArrayList<Marker?>()
+        previous_marker = ArrayList<Marker>()
         val button: Button =
             findViewById<View>(id.button) as Button
         button.setOnClickListener(OnClickListener { showPlaceInformation(currentPosition) })
