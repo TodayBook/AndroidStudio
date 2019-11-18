@@ -1,15 +1,10 @@
 package com.example.todaybook
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_friend_find.*
 
 class FriendFind : AppCompatActivity() {
@@ -23,8 +18,9 @@ class FriendFind : AppCompatActivity() {
             println(friendId)
             val ffl=friendfindlistener()
             ffl.friendfind(friendId)
-            val detailIntent = Intent(this, followingList::class.java)
-            startActivityForResult(detailIntent,1)
+            val resultIntent = Intent()
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
         }
     }
 }

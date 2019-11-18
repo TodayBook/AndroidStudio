@@ -12,18 +12,15 @@ class friendfindlistener{
     val cuser = FirebaseAuth.getInstance().currentUser
     var friendUid:String?=null
     fun friendfind(friendId:String){
-        println("ffl")
+        var res=false
         if(cuser!=null) {
             val friendfindlistener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    println("SDFSDFSFDSFD")
                     for (snapshot in dataSnapshot.children) {
                         var key: String = snapshot.key.toString()
                         var value = snapshot.value.toString()
-                        println("ffl:::" + key)
                         if (key == "uid") {
                             friendUid = value
-                            println("friendUid  " + friendUid)
                             database.child("users").child(cuser.uid).child("following").child(friendUid!!).setValue(friendId)
                             val mil=MyIdfindlistener()
                             mil.MyIdfind(friendUid.toString())
