@@ -70,7 +70,7 @@ class MylibActivity : AppCompatActivity() {
                     for (snapshot in dataSnapshot.children) {
                         var key : String = snapshot.key.toString()
                         var value = snapshot.getValue(bookDB::class.java)
-                        readList.add(ImageDataModel(value!!.imageurl,key,value!!.author,value!!.publisher))
+                        readList.add(ImageDataModel(value!!.imageurl,key,value.author,value.publisher))
                     }
                     rbAdapter.notifyDataSetChanged()
                 }

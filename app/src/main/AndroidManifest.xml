@@ -47,7 +47,7 @@
                 android:name=".MylibActivity"
                 android:label="@string/title_activity_mylib"
                 android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".followingList" />
+        <activity android:name=".friendList" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -56,12 +56,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_push"/>
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/colorAccent"/>
 
-        <service android:name=".firebase.MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+
     </application>
 
 </manifest>

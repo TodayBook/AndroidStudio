@@ -14,8 +14,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_freindlist.*
+import org.jetbrains.anko.toast
 
-class followingList : AppCompatActivity() {
+class friendList : AppCompatActivity() {
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,8 +28,8 @@ class followingList : AppCompatActivity() {
         tab.setupWithViewPager(pager)
 
         bt_friendfind.setOnClickListener {
-            val Intent = Intent(this, FriendFind::class.java)
-            startActivityForResult(Intent, 1)
+            val friendfindIntent = Intent(this, FriendFind::class.java)
+            startActivityForResult(friendfindIntent, 1)
         }
         val namelistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -47,5 +48,13 @@ class followingList : AppCompatActivity() {
         database.child("users").child(cuser!!.uid).addValueEventListener(namelistener)
 
     }
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // check if the requestCode is the wanted one and if the result is what we are expecting
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+        }
+        else{
+            Toast.makeText(baseContext, "실패", Toast.LENGTH_SHORT).show()
+        }
+    }
 }

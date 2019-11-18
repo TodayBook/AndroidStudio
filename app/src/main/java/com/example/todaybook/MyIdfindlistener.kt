@@ -10,7 +10,6 @@ class MyIdfindlistener {
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser
     fun MyIdfind(friendUid:String){
-        println("ffl")
         if(cuser!=null) {
             val myIdlistener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -20,13 +19,15 @@ class MyIdfindlistener {
                         var value = snapshot.value.toString()
                         if (key == "UserId") {
                             var Myid = value
-                            println("Myid  " + Myid)
                             database.child("users").child(friendUid).child("follower").child(cuser.uid).setValue(Myid)
+                            var fcmPush=FcmPush()
+                            var message = Myid+"님이 회원님을 팔로우 했습니다."
+                            fcmPush.sendMessage(friendUid, "", message)
+                            print("sending")
                         }
                     }
                 }
                 override fun onCancelled(databaseError: DatabaseError) {
-                    println("no friend")
                 }
             }
             database.child("users").child(cuser.uid).addValueEventListener(myIdlistener)
