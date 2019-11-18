@@ -13,6 +13,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.WindowManager.LayoutParams
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -30,12 +31,70 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
+import noman.googleplaces.Place
+import noman.googleplaces.PlaceType
+import noman.googleplaces.PlacesException
+import noman.googleplaces.PlacesListener
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
+import kotlin.collections.MutableList
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.yesButton
 
 class MapsActivity : AppCompatActivity(),
     OnMapReadyCallback,
-    OnRequestPermissionsResultCallback {
+    OnRequestPermissionsResultCallback,
+    PlacesListener {
+    override fun onPlacesFailure(e: PlacesException) {}
+    override fun onPlacesStart() {}
+    override fun onPlacesSuccess(places: List<Place>) {
+        runOnUiThread {
+            for (place in places) {
+                val latLng =
+                    LatLng(
+                        place.latitude
+                        , place.longitude
+                    )
+                val markerSnippet = getCurrentAddress(latLng)
+                val markerOptions =
+                    MarkerOptions()
+                markerOptions.position(latLng)
+                markerOptions.title(place.name)
+                markerOptions.snippet(markerSnippet)
+                val item: Marker =
+                    mMap!!.addMarker(markerOptions)
+                previous_marker!!.add(item)
+            }
+
+            //중복 마커 제거
+
+
+            val hashSet =
+                HashSet<Marker?>()
+            hashSet.addAll(previous_marker!!)
+            previous_marker!!.clear()
+            previous_marker!!.addAll(hashSet)
+        }
+    }
+
+    fun showPlaceInformation(location: LatLng?) {
+        mMap!!.clear()//지도 클리어
+
+        if (previous_marker != null) previous_marker!!.clear()//지역정보 마커 클리어
+
+        Builder()
+            .listener(this@MapsActivity)
+            .key("AIzaSyBYDSuPmcdcMPd-Q0Bea3U6JMbGpPwO2Ag") //PLACE 키값
+            .latlng(location!!.latitude, location.longitude)//현재 위치
+            .radius(500) //500 미터 내에서 검색
+            .type(PlaceType.LIBRARY) //도서관으로 설정
+            .build()
+            .execute()
+    }
+
+    override fun onPlacesFinished() {}
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
     internal var needRequest = false
@@ -54,7 +113,8 @@ class MapsActivity : AppCompatActivity(),
     private var mLayout  // Snackbar 사용하기 위해서는 View가 필요합니다.
             : View? = null
     // (참고로 Toast에서는 Context가 필요했습니다.)
-
+    internal var previous_marker: MutableList<Marker>? =
+        null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +123,10 @@ class MapsActivity : AppCompatActivity(),
             LayoutParams.FLAG_KEEP_SCREEN_ON
         )
         setContentView(layout.activity_maps)
+        previous_marker = ArrayList<Marker?>()
+        val button: Button =
+            findViewById<View>(id.button) as Button
+        button.setOnClickListener(OnClickListener { showPlaceInformation(currentPosition) })
         mLayout = findViewById<View?>(id.layout_maps)
         locationRequest = LocationRequest()
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
