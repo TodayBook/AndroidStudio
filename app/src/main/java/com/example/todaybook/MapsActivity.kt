@@ -86,7 +86,7 @@ class MapsActivity : AppCompatActivity(),
 
         NRPlaces.Builder()
             .listener(this@MapsActivity)
-            .key("AIzaSyBYDSuPmcdcMPd-Q0Bea3U6JMbGpPwO2Ag") //PLACE 키값
+            .key("AIzaSyB1_5gyC0obWWZxOSsVOUsFgGAb6W00dGQ") //PLACE 키값
             .latlng(location!!.latitude, location.longitude)//현재 위치
             .radius(500) //500 미터 내에서 검색
             .type(PlaceType.LIBRARY) //도서관으로 설정
