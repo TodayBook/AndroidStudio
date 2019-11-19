@@ -41,12 +41,15 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 import kotlin.collections.MutableList
+import noman.googleplaces.NRPlaces
 
 
 class MapsActivity : AppCompatActivity(),
     OnMapReadyCallback,
     OnRequestPermissionsResultCallback,
-    PlacesListener {
+
+    PlacesListener { //얘는 플레이스리스너 인터페이스 구현위해 추가
+    //밑의 4개 메소드는 추가한 인터페이스에서 요구하는 메소드
     override fun onPlacesFailure(e: PlacesException) {}
     override fun onPlacesStart() {}
     override fun onPlacesSuccess(places: List<Place>) {
@@ -68,11 +71,8 @@ class MapsActivity : AppCompatActivity(),
                 previous_marker!!.add(item)
             }
 
-            //중복 마커 제거
-
-
-            val hashSet =
-                HashSet<Marker?>()
+            val hashSet = //중복마커제거
+                HashSet<Marker>()
             hashSet.addAll(previous_marker!!)
             previous_marker!!.clear()
             previous_marker!!.addAll(hashSet)
@@ -84,12 +84,13 @@ class MapsActivity : AppCompatActivity(),
 
         if (previous_marker != null) previous_marker!!.clear()//지역정보 마커 클리어
 
-        Builder()
+        NRPlaces.Builder()
             .listener(this@MapsActivity)
             .key("AIzaSyBYDSuPmcdcMPd-Q0Bea3U6JMbGpPwO2Ag") //PLACE 키값
             .latlng(location!!.latitude, location.longitude)//현재 위치
             .radius(500) //500 미터 내에서 검색
             .type(PlaceType.LIBRARY) //도서관으로 설정
+            .language("ko", "KR")
             .build()
             .execute()
     }
@@ -98,21 +99,21 @@ class MapsActivity : AppCompatActivity(),
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
     internal var needRequest = false
-    // 앱을 실행하기 위해 필요한 퍼미션을 정의합니다.
+    // 앱을 실행하기 위해 필요한 퍼미션을 정의
     internal var REQUIRED_PERMISSIONS = arrayOf(
         permission.ACCESS_FINE_LOCATION,
         permission.ACCESS_COARSE_LOCATION
     )  // 외부 저장소
 
-    internal var mCurrentLocatiion: Location? = null
+    internal  var mCurrentLocatiion: Location? = null //null 일 수있음 //접근제한자 internal 사용 (같은 모듈 안에서 사용)
     internal var currentPosition: LatLng? = null
     private var mFusedLocationClient: FusedLocationProviderClient? =
         null
     private var locationRequest: LocationRequest? = null
     private var location: Location? = null
-    private var mLayout  // Snackbar 사용하기 위해서는 View가 필요합니다.
+    private var mLayout  // Snackbar 사용하기 위해서는 View가 필요
             : View? = null
-    // (참고로 Toast에서는 Context가 필요했습니다.)
+
     internal var previous_marker: MutableList<Marker>? =
         null
 
@@ -123,7 +124,8 @@ class MapsActivity : AppCompatActivity(),
             LayoutParams.FLAG_KEEP_SCREEN_ON
         )
         setContentView(layout.activity_maps)
-        previous_marker = ArrayList<Marker>()
+
+        previous_marker = ArrayList<Marker>() //어레이 리스트 초기화 버튼 클릭시  showPlaceInformation() 메소드를 호출
         val button: Button =
             findViewById<View>(id.button) as Button
         button.setOnClickListener(OnClickListener { showPlaceInformation(currentPosition) })
@@ -139,23 +141,20 @@ class MapsActivity : AppCompatActivity(),
             LocationServices.getFusedLocationProviderClient(this)
         val mapFragment =
             supportFragmentManager
-                .findFragmentById(id.map) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)
+                .findFragmentById(id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
+    override fun onMapReady(googleMap: GoogleMap) { //googleMap객체 생성
         Log.d(MapsActivity.TAG, "onMapReady :")
         mMap = googleMap
-//런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전에
-        //지도의 초기위치를 서울로 이동
+//지도의 초기위치를 서울로 이동 (런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전 )
         setDefaultLocation()
 
 
-        //런타임 퍼미션 처리
-        // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
 
-
-        val hasFineLocationPermission =
+//여기서부터는 런타임 퍼미션 처리
+        val hasFineLocationPermission = //위치퍼미션을 갖고있는지 체크하는 코드
             ContextCompat.checkSelfPermission(
                 this,
                 permission.ACCESS_FINE_LOCATION
@@ -166,48 +165,37 @@ class MapsActivity : AppCompatActivity(),
                 permission.ACCESS_COARSE_LOCATION
             )
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED
+            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED // 만약 퍼미션 갖고있다면
         ) {
+            startLocationUpdates() //위치업데이트 시작함
+        } else { //아니라면 요청 필요
 
-            // 2. 이미 퍼미션을 가지고 있다면
-            // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
 
 
-            startLocationUpdates() // 3. 위치 업데이트 시작
-        } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
-
-            // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
+            if (ActivityCompat.shouldShowRequestPermissionRationale( //만약 퍼미션 거부한적있다면
                     this,
                     REQUIRED_PERMISSIONS[0]
                 )
-            ) {
-
-                // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
-
+            ) { // 요청 진행하기 전 이유 설명 (퍼미션이 필요한)
                 Snackbar.make(
                     mLayout!!, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
                     Snackbar.LENGTH_INDEFINITE
                 ).setAction("확인") {
-                    // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
 
-                    ActivityCompat.requestPermissions(
+
+                    ActivityCompat.requestPermissions( //사용자에게 퍼미션 요청함, 결과는 onRequestPermissionResult에서 수신됨
                         this@MapsActivity,
                         REQUIRED_PERMISSIONS,
                         MapsActivity.PERMISSIONS_REQUEST_CODE
                     )
                 }.show()
-            } else {
-                // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
-                // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-
+            } else { //퍼미션 요청 거부한 적 없다면 퍼미션 요청 바로 실행
                 ActivityCompat.requestPermissions(
                     this, REQUIRED_PERMISSIONS, MapsActivity.PERMISSIONS_REQUEST_CODE
                 )
             }
         }
-        mMap!!.uiSettings.isMyLocationButtonEnabled = true
+        mMap!!.uiSettings.isMyLocationButtonEnabled = true //!!. 널이 아니라고 선언
         mMap!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
         mMap!!.setOnMapClickListener { Log.d(MapsActivity.TAG, "onMapClick :") }
     }
@@ -230,10 +218,7 @@ class MapsActivity : AppCompatActivity(),
                     Log.d(MapsActivity.TAG, "onLocationResult : $markerSnippet")
 
 
-                    //현재 위치에 마커 생성하고 이동
-
-
-                    setCurrentLocation(location, markerTitle, markerSnippet)
+                    setCurrentLocation(location, markerTitle, markerSnippet) //현재 위치에 마커 생성하고 이동
                     mCurrentLocatiion = location
                 }
             }
@@ -299,7 +284,7 @@ class MapsActivity : AppCompatActivity(),
 
     fun getCurrentAddress(latlng: LatLng): String {
 
-        //지오코더... GPS를 주소로 변환
+        //지오코더 GPS를 주소로 변환
 
         val geocoder =
             Geocoder(this, Locale.getDefault())
@@ -311,7 +296,7 @@ class MapsActivity : AppCompatActivity(),
                 1
             )
         } catch (ioException: IOException) {
-            //네트워크 문제
+            //네트워크 문제 발생시
 
             Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG)
                 .show()
@@ -368,7 +353,7 @@ class MapsActivity : AppCompatActivity(),
         val DEFAULT_LOCATION =
             LatLng(37.56, 126.97)
         val markerTitle = "위치정보 가져올 수 없음"
-        val markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요"
+        val markerSnippet = "위치 퍼미션과 GPS 활성 여부 확인하세요"
         if (currentMarker != null) currentMarker!!.remove()
         val markerOptions =
             MarkerOptions()
@@ -407,7 +392,7 @@ class MapsActivity : AppCompatActivity(),
     }
 
     /*
-     * ActivityCompat.requestPermissions를 사용한 퍼미션 요청의 결과를 리턴받는 메소드입니다.
+     * ActivityCompat.requestPermissions를 사용한 퍼미션 요청의 결과를 리턴
      */
     override fun onRequestPermissionsResult(
         permsRequestCode: Int,
@@ -422,7 +407,7 @@ class MapsActivity : AppCompatActivity(),
             var check_result = true
 
 
-            // 모든 퍼미션을 허용했는지 체크합니다.
+            // 모든 퍼미션을 허용했는지 체크
 
 
             for (result in grandResults) {
@@ -433,11 +418,11 @@ class MapsActivity : AppCompatActivity(),
             }
             if (check_result) {
 
-                // 퍼미션을 허용했다면 위치 업데이트를 시작합니다.
+                // 퍼미션을 허용했다면 위치 업데이트를 시작
 
                 startLocationUpdates()
             } else {
-                // 거부한 퍼미션이 있다면 앱을 사용할 수 없는 이유를 설명해주고 앱을 종료합니다.2 가지 경우가 있습니다.
+                // 거부한 퍼미션이 있다면 종료
 
 
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
@@ -451,7 +436,7 @@ class MapsActivity : AppCompatActivity(),
                 ) {
 
 
-                    // 사용자가 거부만 선택한 경우에는 앱을 다시 실행하여 허용을 선택하면 앱을 사용할 수 있습니다.
+                    // 사용자가 거부만 선택한 경우에는 앱을 다시 실행하여 허용을 선택하면 앱 다시사용
 
                     Snackbar.make(
                         mLayout!!, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요. ",
@@ -460,7 +445,7 @@ class MapsActivity : AppCompatActivity(),
                 } else {
 
 
-                    // "다시 묻지 않음"을 사용자가 체크하고 거부를 선택한 경우에는 설정(앱 정보)에서 퍼미션을 허용해야 앱을 사용할 수 있습니다.
+                    // "다시 묻지 않음"을 유저가 체크하고 거부를 선택한 경우에는 설정에서 퍼미션을 허용해야 앱 사용가능
 
                     Snackbar.make(
                         mLayout!!, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ",
@@ -515,7 +500,7 @@ class MapsActivity : AppCompatActivity(),
 
         private const val FASTEST_UPDATE_INTERVAL_MS = 500 // 0.5초
 
-        // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용됩니다.
+        // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용
         private const val PERMISSIONS_REQUEST_CODE = 100
     }
 }
