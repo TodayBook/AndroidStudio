@@ -28,7 +28,10 @@ data class book (
     var publisher: String,
 
     @SerializedName("thumbnail")
-    var thumbnail: String
+    var thumbnail: String,
+
+    @SerializedName("contents")
+    var contents: String
 
 )
 
