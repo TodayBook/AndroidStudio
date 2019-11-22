@@ -8,6 +8,58 @@
         android:orientation="vertical">
 
     <TextView
+            android:id="@+id/detailtitle"
+            android:layout_width="185dp"
+            android:layout_height="174dp"
+            android:layout_marginTop="48dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.64"
+            app:layout_constraintStart_toEndOf="@+id/thumbnail"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Title" />
+
+    <TextView
+            android:id="@+id/detailauthor"
+            android:layout_width="161dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="236dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.319"
+            app:layout_constraintStart_toEndOf="@+id/thumbnail"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="author" />
+
+    <TextView
+            android:id="@+id/detailpublisher"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/thumbnail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/detailauthor"
+            app:layout_constraintTop_toBottomOf="@+id/detailauthor"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="pub" />
+
+    <TextView
+            android:id="@+id/detailcontents"
+            android:layout_width="428dp"
+            android:layout_height="194dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/dialogTitle"
+            app:layout_constraintTop_toBottomOf="@+id/detailpublisher"
+            app:layout_constraintVertical_bias="0.152"
+            tools:text="content" />
+
+    <TextView
             android:id="@+id/dialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,9 +69,22 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/bt_didbook"
+            app:layout_constraintHorizontal_bias="0.435"
             app:layout_constraintStart_toStartOf="@+id/bt_willbook"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.128" />
+            app:layout_constraintVertical_bias="0.857" />
+
+    <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="203dp"
+            android:layout_height="345dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.018"
+            app:srcCompat="@mipmap/ic_launcher_round" />
 
     <Button
             android:id="@+id/bt_didbook"
@@ -28,10 +93,10 @@
             android:text="읽은책"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.432"
+            app:layout_constraintHorizontal_bias="0.658"
             app:layout_constraintStart_toEndOf="@+id/bt_willbook"
             app:layout_constraintTop_toBottomOf="@+id/dialogTitle"
-            app:layout_constraintVertical_bias="0.189" />
+            app:layout_constraintVertical_bias="0.899" />
 
     <Button
             android:id="@+id/bt_willbook"
@@ -40,10 +105,13 @@
             android:text="읽을책"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.241"
+            app:layout_constraintHorizontal_bias="0.141"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dialogTitle"
-            app:layout_constraintVertical_bias="0.189" />
+            app:layout_constraintVertical_bias="0.895" />
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
