@@ -54,7 +54,7 @@ class friendList : AppCompatActivity() {
         if (requestCode == 1 && resultCode == RESULT_OK) {
         }
         else{
-            Toast.makeText(baseContext, "실패", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, "실패", Toast.LENGTH_SHORT).show()
         }
     }
 }
