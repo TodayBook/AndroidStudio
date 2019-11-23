@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -44,12 +43,12 @@ class FriendlibActivity : AppCompatActivity() {
         willreadList.clear()
 
         val rbAdapter = ViewAdapter(this, readList) { imageDataModel ->
-            val detailIntent = Intent(this, lib_detail::class.java)
+            val detailIntent = Intent(this, didbooklib_detail::class.java)
             detailIntent.putExtra("Info",BookInfo(imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
             startActivityForResult(detailIntent, 1)
         }
         val wbAdapter = ViewAdapter(this, willreadList) { imageDataModel ->
-            val detailIntent = Intent(this, lib_detail::class.java)
+            val detailIntent = Intent(this, didbooklib_detail::class.java)
             detailIntent.putExtra("Info",BookInfo(imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
             startActivityForResult(detailIntent, 1)
         }

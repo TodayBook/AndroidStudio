@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_mylib.*
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
@@ -52,7 +51,7 @@ class MylibActivity : AppCompatActivity() {
         willreadList.clear()
 
         val rbAdapter = ViewAdapter(this, readList) { imageDataModel ->
-            val detailIntent = Intent(this, lib_detail::class.java)
+            val detailIntent = Intent(this, didbooklib_detail::class.java)
             detailIntent.putExtra(
                 "Info",
                 BookInfo(
@@ -65,7 +64,7 @@ class MylibActivity : AppCompatActivity() {
             startActivityForResult(detailIntent, 1)
         }
         val wbAdapter = ViewAdapter(this, willreadList) { imageDataModel ->
-            val detailIntent = Intent(this, lib_detail::class.java)
+            val detailIntent = Intent(this, willbooklib_detail::class.java)
             detailIntent.putExtra(
                 "Info",
                 BookInfo(

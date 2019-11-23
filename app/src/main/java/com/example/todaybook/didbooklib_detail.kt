@@ -14,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_lib_detail.*
 
-class lib_detail : AppCompatActivity() {
+class didbooklib_detail : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser

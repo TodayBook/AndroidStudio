@@ -59,31 +59,6 @@
             app:layout_constraintStart_toEndOf="@+id/coverimage" />
 
     <Button
-            android:id="@+id/bt_complete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="248dp"
-            android:text="완료"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-            android:id="@+id/comments"
-            android:layout_width="346dp"
-            android:layout_height="143dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="후기"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coverimage"
-            app:layout_constraintVertical_bias="0.149" />
-
-    <Button
             android:id="@+id/bt_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
