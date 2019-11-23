@@ -16,7 +16,7 @@ class FriendlibActivity : AppCompatActivity() {
     var database = FirebaseDatabase.getInstance().reference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_friendlib)
+        setContentView(R.layout.activity_mylib)
         val FriendUid by lazy { intent.extras!!["FriendUid"] }
 
         val namelistener = object : ValueEventListener {
@@ -33,8 +33,6 @@ class FriendlibActivity : AppCompatActivity() {
             }
         }
         database.child("users").child(FriendUid.toString()).addValueEventListener(namelistener)
-
-        nametext.text="님의 도서관"
 
         var readList = ArrayList<ImageDataModel>()
         readList.clear()

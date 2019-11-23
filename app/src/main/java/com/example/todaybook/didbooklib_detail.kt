@@ -12,7 +12,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_lib_detail.*
+import kotlinx.android.synthetic.main.lib_detail.*
 
 class didbooklib_detail : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -20,7 +20,7 @@ class didbooklib_detail : AppCompatActivity() {
     val cuser = FirebaseAuth.getInstance().currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lib_detail)
+        setContentView(R.layout.lib_detail)
         val bookinfo by lazy{intent.extras!!["Info"] as BookInfo}
         titleView.text = bookinfo.title
         authorView.text = bookinfo.author

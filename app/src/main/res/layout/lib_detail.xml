@@ -2,13 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent"><![CDATA[
-    android:id="@+id/linearLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    ]]>
+        android:layout_height="match_parent">
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -59,46 +57,32 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-            android:id="@+id/detailcontents"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:text="TextView"
-            android:textSize="18sp" />
+    <EditText
+            android:id="@+id/comments"
+            android:layout_width="346dp"
+            android:layout_height="143dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="후기" />
 
-    <LinearLayout
+    <Button
+            android:id="@+id/bt_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal">
+            android:layout_marginBottom="248dp"
+            android:text="완료" />
 
-        <Button
-                android:id="@+id/bt_didbook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="35dp"
-                android:layout_weight="1"
-                android:text="읽은 책"
-                android:textSize="14sp" />
-
-        <Button
-                android:id="@+id/bt_willbook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="35dp"
-                android:layout_marginRight="40dp"
-                android:layout_weight="1"
-                android:text="읽을 책"
-                android:textSize="14sp" />
-    </LinearLayout>
+    <Button
+            android:id="@+id/bt_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:text="삭제하기"
+            android:textAlignment="center" />
 
 </LinearLayout>

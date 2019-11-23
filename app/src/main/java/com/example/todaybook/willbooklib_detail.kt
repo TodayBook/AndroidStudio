@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import android.widget.ListView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -28,12 +28,40 @@ class willbooklib_detail : AppCompatActivity() {
         pubView.text = bookinfo.pub
         Glide.with(coverimage).load(bookinfo.imageurl).into(coverimage)
 
-
         bt_delete.setOnClickListener {
             database.child("users").child(cuser!!.uid).child("willBook").child(bookinfo.title).removeValue()
             val intent = Intent()
             setResult(Activity.RESULT_OK, intent)
             finish()
+        }
+        var friendsId = ArrayList<String>()
+        friendsId.clear()
+        var friendsUid = ArrayList<String>()
+        friendsUid.clear()
+        var position:Int?=null
+        val list : ListView = findViewById(R.id.didbookpeople)
+        val adapter = friendlistAdapter(this,friendsId)
+        list.adapter = adapter
+        val bookreadelistener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    var key : String = snapshot.key.toString()
+                    var value = snapshot.value.toString()
+                    friendsUid.add(key)
+                    friendsId.add(value)
+                }
+                adapter.notifyDataSetChanged()
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.child("Books").child(bookinfo.title).addValueEventListener(bookreadelistener)
+
+        list.setOnItemClickListener{parant,itemView,position,id->
+            val detailIntent = Intent(this, FriendlibActivity::class.java)
+            detailIntent.putExtra("FriendUid",friendsUid[position])
+            startActivityForResult(detailIntent,1)
         }
     }
 }
