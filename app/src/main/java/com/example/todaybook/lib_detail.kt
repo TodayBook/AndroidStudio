@@ -30,8 +30,8 @@ class lib_detail : AppCompatActivity() {
                 for (snapshot in dataSnapshot.children) {
                     var key : String = snapshot.key.toString()
                     var value = snapshot.value.toString()
-                    comments.setText(value)
                     if(key=="comments"){
+                        comments.setText(value)
                         break
                     }
                 }
