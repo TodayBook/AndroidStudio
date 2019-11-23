@@ -21,7 +21,9 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".willbooklib_detail"></activity>
+        <activity android:name=".friendwillbook_detail"></activity>
+        <activity android:name=".frienddidbook_detail" />
+        <activity android:name=".willbooklib_detail" />
         <activity android:name=".BookRanking" />
         <activity android:name=".FriendlibActivity" />
         <activity android:name=".FriendFind" />

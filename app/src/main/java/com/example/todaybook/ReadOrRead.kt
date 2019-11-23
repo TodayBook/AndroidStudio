@@ -40,6 +40,7 @@ class ReadOrRead : AppCompatActivity() {
         bt_didbook.setOnClickListener {
             database.child("users").child(cuser!!.uid).child("didBook").child(EncodeString(bookinfo.title)).setValue(bookDB(bookinfo.imageurl, bookinfo.author, bookinfo.pub))
             Toast.makeText(baseContext, "Success!!", Toast.LENGTH_SHORT).show()
+            println("Insert Books")
             var br=bookreaders()
             br.didbookread(EncodeString(bookinfo.title))
         }

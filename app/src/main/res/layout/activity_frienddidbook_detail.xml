@@ -3,10 +3,10 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent">
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -57,32 +57,13 @@
         </LinearLayout>
     </LinearLayout>
 
-    <EditText
+    <TextView
             android:id="@+id/comments"
-            android:layout_width="346dp"
-            android:layout_height="143dp"
-            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
-            android:ems="10"
-            android:inputType="textPersonName"
+            android:layout_marginRight="20dp"
             android:text="후기" />
-
-    <Button
-            android:id="@+id/bt_complete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="248dp"
-            android:text="완료" />
-
-    <Button
-            android:id="@+id/bt_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"
-            android:text="삭제하기"
-            android:textAlignment="center" />
 
 </LinearLayout>

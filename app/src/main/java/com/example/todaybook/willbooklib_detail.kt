@@ -38,7 +38,6 @@ class willbooklib_detail : AppCompatActivity() {
         friendsId.clear()
         var friendsUid = ArrayList<String>()
         friendsUid.clear()
-        var position:Int?=null
         val list : ListView = findViewById(R.id.didbookpeople)
         val adapter = friendlistAdapter(this,friendsId)
         list.adapter = adapter

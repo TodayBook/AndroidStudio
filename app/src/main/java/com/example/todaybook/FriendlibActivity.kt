@@ -41,12 +41,12 @@ class FriendlibActivity : AppCompatActivity() {
         willreadList.clear()
 
         val rbAdapter = ViewAdapter(this, readList) { imageDataModel ->
-            val detailIntent = Intent(this, didbooklib_detail::class.java)
-            detailIntent.putExtra("Info",BookInfo(imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
+            val detailIntent = Intent(this, frienddidbook_detail::class.java)
+            detailIntent.putExtra("Info",FriendBookInfo(FriendUid.toString(),imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
             startActivityForResult(detailIntent, 1)
         }
         val wbAdapter = ViewAdapter(this, willreadList) { imageDataModel ->
-            val detailIntent = Intent(this, didbooklib_detail::class.java)
+            val detailIntent = Intent(this, friendwillbook_detail::class.java)
             detailIntent.putExtra("Info",BookInfo(imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
             startActivityForResult(detailIntent, 1)
         }

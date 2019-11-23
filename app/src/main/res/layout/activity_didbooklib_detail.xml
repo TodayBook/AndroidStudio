@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:outlineProvider="bounds">
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,35 +57,32 @@
         </LinearLayout>
     </LinearLayout>
 
+    <EditText
+            android:id="@+id/comments"
+            android:layout_width="346dp"
+            android:layout_height="143dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="후기" />
+
+    <Button
+            android:id="@+id/bt_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="완료" />
+
     <Button
             android:id="@+id/bt_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginBottom="16dp"
             android:text="삭제하기"
             android:textAlignment="center" />
-
-    <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:fillViewport="true"
-            android:outlineProvider="bounds">
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            <ListView
-                    android:id="@+id/didbookpeople"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

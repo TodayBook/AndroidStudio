@@ -144,6 +144,7 @@ class MylibActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
+            database.child("Books").child(data!!.getStringExtra("result")).child(cuser!!.uid).removeValue()
             reload()
         }
     }
