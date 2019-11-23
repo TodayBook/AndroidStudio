@@ -1,5 +1,7 @@
 package com.example.todaybook
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -45,6 +47,12 @@ class lib_detail : AppCompatActivity() {
         bt_complete.setOnClickListener{
             database.child("users").child(cuser?.uid!!).child("didBook").child(bookinfo.title).child("comments").setValue(comments.text.toString())
             Toast.makeText(baseContext, "Success!!", Toast.LENGTH_SHORT).show()
+        }
+        bt_delete.setOnClickListener {
+            database.child("users").child(cuser!!.uid).child("didBook").child(bookinfo.title).removeValue()
+            val intent = Intent()
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
     }
 }
