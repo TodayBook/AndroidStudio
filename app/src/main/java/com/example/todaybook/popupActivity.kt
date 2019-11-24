@@ -23,15 +23,16 @@ class popupActivity : AppCompatActivity(){
             /*val dialogText = dialogView.findViewById<EditText>(R.id.dialogEt)*/
 
             builder.setView(dialogView)
-                .setPositiveButton("나의도서관으로 이동") { dialogInterface, i ->
+                .setPositiveButton("머물기") { dialogInterface, i ->
+                    /* 취소일 때 아무 액션이 없으므로 빈칸 */
+                }
+                .setNegativeButton("나의도서관으로 이동") { dialogInterface, i ->
                     val detailIntent = Intent(this, MylibActivity::class.java)
                     startActivityForResult(detailIntent, 1)
                     /* 확인일 때 main의 View의 값에 dialog View에 있는 값을 적용 */
 
                 }
-                .setNegativeButton("취소") { dialogInterface, i ->
-                    /* 취소일 때 아무 액션이 없으므로 빈칸 */
-                }
+
                 .show()
         }
     }
