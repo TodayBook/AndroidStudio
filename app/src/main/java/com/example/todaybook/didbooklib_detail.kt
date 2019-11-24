@@ -1,5 +1,7 @@
 package com.example.todaybook
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,15 +12,19 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_lib_detail.*
+import kotlinx.android.synthetic.main.activity_didbooklib_detail.*
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
-class lib_detail : AppCompatActivity() {
-    private lateinit var auth: FirebaseAuth
+
+
+class didbooklib_detail : AppCompatActivity() {
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lib_detail)
+        setContentView(R.layout.activity_didbooklib_detail)
         val bookinfo by lazy{intent.extras!!["Info"] as BookInfo}
         titleView.text = bookinfo.title
         authorView.text = bookinfo.author
@@ -30,8 +36,8 @@ class lib_detail : AppCompatActivity() {
                 for (snapshot in dataSnapshot.children) {
                     var key : String = snapshot.key.toString()
                     var value = snapshot.value.toString()
-                    comments.setText(value)
                     if(key=="comments"){
+                        comments.setText(value)
                         break
                     }
                 }
@@ -44,7 +50,15 @@ class lib_detail : AppCompatActivity() {
 
         bt_complete.setOnClickListener{
             database.child("users").child(cuser?.uid!!).child("didBook").child(bookinfo.title).child("comments").setValue(comments.text.toString())
-            Toast.makeText(baseContext, "Success!!", Toast.LENGTH_SHORT).show()
+        }
+        bt_delete.setOnClickListener {
+            database.child("users").child(cuser!!.uid).child("didBook").child(bookinfo.title).removeValue()
+            database.child("Books").child(bookinfo.title).child(cuser!!.uid).removeValue()
+            println("delete"+bookinfo.title)
+            val intent = Intent()
+            intent.putExtra("result", bookinfo.title)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
     }
 }

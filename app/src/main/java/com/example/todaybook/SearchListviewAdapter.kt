@@ -46,7 +46,7 @@ class SearchListviewAdapter (val context: Context, val bookList: List<book>) : B
         bookauthor.text = (book.authors).toString()
         button.setOnClickListener{
                  val intent = Intent(context, ReadOrRead::class.java)
-                 intent.putExtra("Info",BookInfo(book.thumbnail,book.title,(book.authors).toString(),book.publisher))
+                 intent.putExtra("Info",BookInfo2(book.thumbnail,book.title,(book.authors).toString(),book.publisher,book.contents))
                  context.startActivity(intent)
         }
 

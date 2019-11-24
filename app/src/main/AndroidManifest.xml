@@ -21,7 +21,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-
+        <activity android:name=".popupActivity"></activity>
         <activity android:name=".FriendlibActivity" />
         <activity android:name=".FriendFind" />
         <activity android:name=".ReadOrRead" />
@@ -56,14 +56,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@drawable/ic_push"/>
+                android:resource="@drawable/ic_push" />
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_color"
-                android:resource="@color/colorAccent"/>
-
-
+                android:resource="@color/colorAccent" />
     </application>
 
 </manifest>
