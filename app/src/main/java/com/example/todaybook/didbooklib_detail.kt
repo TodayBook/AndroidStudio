@@ -61,4 +61,10 @@ class didbooklib_detail : AppCompatActivity() {
             finish()
         }
     }
+    override fun onBackPressed() {
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+        super.onBackPressed()
+    }
 }

@@ -64,6 +64,13 @@
             android:text="삭제하기"
             android:textAlignment="center" />
 
+    <Button
+            android:id="@+id/bt_movedidbook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="읽은 책으로 이동" />
+
     <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -10,14 +10,15 @@ class MapsActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_maps2)
-        var title = ""
-        var address = ""
+        var title:String?=null
+        var address:String?=null
         val extras: Bundle? = getIntent().getExtras()
         if (extras == null) {
             title = "error"
         } else {
-            val title = extras.getString("title")
-            val address = extras.getString("address")
+            title = extras.getString("title")
+            println(title)
+            address = extras.getString("address")
         }
         val textView =
             findViewById(id.textView_newActivity_contentString) as TextView
