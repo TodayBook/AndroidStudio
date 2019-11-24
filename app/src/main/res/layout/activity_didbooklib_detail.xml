@@ -67,6 +67,32 @@
             android:inputType="textPersonName"
             android:text="후기" />
 
+
+
+
+    <TextView
+            android:id="@+id/dialogTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="별점"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    <RatingBar
+            android:id="@+id/dialogRb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:numStars="5" />
+
     <Button
             android:id="@+id/bt_complete"
             android:layout_width="wrap_content"
@@ -74,6 +100,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:text="완료" />
+
+
 
     <Button
             android:id="@+id/bt_delete"
@@ -84,5 +112,9 @@
             android:layout_marginBottom="16dp"
             android:text="삭제하기"
             android:textAlignment="center" />
+
+
+
+
 
 </LinearLayout>
