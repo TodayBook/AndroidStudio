@@ -56,6 +56,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MapsActivity2">
+
+        </activity>
 
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
@@ -63,6 +66,7 @@
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/colorAccent" />
+
     </application>
 
 </manifest>
