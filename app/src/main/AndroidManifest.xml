@@ -23,9 +23,9 @@
             android:usesCleartextTraffic="true">
         <activity android:name=".popupActivity"></activity>
         <activity android:name=".FriendlibActivity" />
-        <activity android:name=".FriendFind" />
         <activity android:name=".ReadOrRead" />
-        <activity android:name=".lib_detail" />
+        <activity android:name=".didbooklib_detail" />
+        <activity android:name=".willbooklib_detail" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
