@@ -31,6 +31,14 @@ class willbooklib_detail : AppCompatActivity() {
         bt_delete.setOnClickListener {
             database.child("users").child(cuser!!.uid).child("willBook").child(bookinfo.title).removeValue()
             val intent = Intent()
+            intent.putExtra("result", bookinfo.title)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
+        bt_movedidbook.setOnClickListener {
+            database.child("users").child(cuser!!.uid).child("willBook").child(bookinfo.title).removeValue()
+            database.child("users").child(cuser!!.uid).child("didBook").child(bookinfo.title).setValue(bookinfo)
+            val intent = Intent()
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -63,4 +71,5 @@ class willbooklib_detail : AppCompatActivity() {
             startActivityForResult(detailIntent,1)
         }
     }
+
 }
