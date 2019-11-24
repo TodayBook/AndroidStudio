@@ -83,6 +83,18 @@ class MapsActivity : AppCompatActivity(),
     fun showPlaceInformation(location: LatLng?) {
         mMap!!.clear()//지도 클리어
 
+        mMap!!.setOnInfoWindowClickListener { marker ->
+            var intent = Intent(
+                baseContext,MapsActivity2::class.java
+            )
+            var title: String? = marker.title
+            var address: String? = marker.snippet
+            intent.putExtra("title", title)
+            intent.putExtra("address", address)
+            startActivity(intent)
+        }
+
+
         if (previous_marker != null) previous_marker!!.clear()//지역정보 마커 클리어
 
         NRPlaces.Builder()
@@ -115,8 +127,7 @@ class MapsActivity : AppCompatActivity(),
     private var mLayout  // Snackbar 사용하기 위해서는 View가 필요
             : View? = null
 
-    internal var previous_marker: MutableList<Marker>? =
-        null
+    internal var previous_marker: MutableList<Marker>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
