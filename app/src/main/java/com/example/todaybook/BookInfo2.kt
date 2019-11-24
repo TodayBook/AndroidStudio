@@ -10,8 +10,7 @@ class BookInfo2(var imageurl: String, var title: String, var author: String, var
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(imageurl)

@@ -1,11 +1,14 @@
 package com.example.todaybook
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.viewpager.widget.ViewPager
 import com.example.todaybook.R.id.pager
 import com.google.firebase.auth.FirebaseAuth
@@ -28,9 +31,24 @@ class friendList : AppCompatActivity() {
         tab.setupWithViewPager(pager)
 
         bt_friendfind.setOnClickListener {
-            val friendfindIntent = Intent(this, FriendFind::class.java)
-            startActivityForResult(friendfindIntent, 1)
+            val builder = AlertDialog.Builder(this)
+            val dialogView = layoutInflater.inflate(R.layout.friendfindpop, null)
+            val dialogText = dialogView.findViewById<EditText>(R.id.friendId)
+
+            builder.setView(dialogView)
+                .setPositiveButton("확인") { dialogInterface, i ->
+                    var friendId=dialogText.text.toString()
+                    println(friendId)
+                    val ffl=friendfindlistener()
+                    ffl.friendfind(friendId)
+                }
+                .setNegativeButton("취소") { dialogInterface, i ->
+                    /* 취소일 때 아무 액션이 없으므로 빈칸 */
+                }
+                .show()
         }
+            //val friendfindIntent = Intent(this, FriendFind::class.java)
+            //startActivityForResult(friendfindIntent, 1)
         val namelistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
@@ -54,7 +72,7 @@ class friendList : AppCompatActivity() {
         if (requestCode == 1 && resultCode == RESULT_OK) {
         }
         else{
-            Toast.makeText(baseContext, "실패", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, "실패", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -25,10 +25,10 @@ class ReadOrRead : AppCompatActivity() {
         setContentView(R.layout.activity_read_or_read)
         val bookinfo by lazy { intent.extras!!["Info"] as BookInfo2 }
 
-        val bookimage = findViewById<ImageView>(R.id.thumbnail)
-        val booktitle = findViewById<TextView>(R.id.detailtitle)
-        val bookauthor =findViewById<TextView>(R.id.detailauthor)
-        val bookpublisher =findViewById<TextView>(R.id.detailpublisher)
+        val bookimage = findViewById<ImageView>(R.id.coverimage)
+        val booktitle = findViewById<TextView>(R.id.titleView)
+        val bookauthor =findViewById<TextView>(R.id.authorView)
+        val bookpublisher =findViewById<TextView>(R.id.pubView)
         val bookcontents =findViewById<TextView>(R.id.detailcontents)
 
         Glide.with(this).load(bookinfo.imageurl).into(bookimage)

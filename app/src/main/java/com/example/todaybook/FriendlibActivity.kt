@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -17,7 +16,7 @@ class FriendlibActivity : AppCompatActivity() {
     var database = FirebaseDatabase.getInstance().reference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_friendlib)
+        setContentView(R.layout.activity_mylib)
         val FriendUid by lazy { intent.extras!!["FriendUid"] }
 
         val namelistener = object : ValueEventListener {
@@ -35,8 +34,6 @@ class FriendlibActivity : AppCompatActivity() {
         }
         database.child("users").child(FriendUid.toString()).addValueEventListener(namelistener)
 
-        nametext.text="님의 도서관"
-
         var readList = ArrayList<ImageDataModel>()
         readList.clear()
 
@@ -44,12 +41,12 @@ class FriendlibActivity : AppCompatActivity() {
         willreadList.clear()
 
         val rbAdapter = ViewAdapter(this, readList) { imageDataModel ->
-            val detailIntent = Intent(this, lib_detail::class.java)
-            detailIntent.putExtra("Info",BookInfo(imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
+            val detailIntent = Intent(this, frienddidbook_detail::class.java)
+            detailIntent.putExtra("Info",FriendBookInfo(FriendUid.toString(),imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
             startActivityForResult(detailIntent, 1)
         }
         val wbAdapter = ViewAdapter(this, willreadList) { imageDataModel ->
-            val detailIntent = Intent(this, lib_detail::class.java)
+            val detailIntent = Intent(this, friendwillbook_detail::class.java)
             detailIntent.putExtra("Info",BookInfo(imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
             startActivityForResult(detailIntent, 1)
         }
