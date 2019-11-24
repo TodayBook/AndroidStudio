@@ -51,6 +51,7 @@ class MapsActivity : AppCompatActivity(),
     PlacesListener { //얘는 플레이스리스너 인터페이스 구현위해 추가
     //밑의 4개 메소드는 추가한 인터페이스에서 요구하는 메소드
     override fun onPlacesFailure(e: PlacesException) {}
+
     override fun onPlacesStart() {}
     override fun onPlacesSuccess(places: List<Place>) {
         runOnUiThread {
@@ -88,8 +89,8 @@ class MapsActivity : AppCompatActivity(),
             .listener(this@MapsActivity)
             .key("@string/google_maps_key") //PLACE 키값
             .latlng(location!!.latitude, location.longitude)//현재 위치
-            .radius(500) //500 미터 내에서 검색
-            .type(PlaceType.LIBRARY) //도서관으로 설정
+            .radius(1000) //500 미터 내에서 검색
+            .type(PlaceType.CAFE) //도서관으로 설정
             .language("ko", "KR")
             .build()
             .execute()
@@ -105,7 +106,7 @@ class MapsActivity : AppCompatActivity(),
         permission.ACCESS_COARSE_LOCATION
     )  // 외부 저장소
 
-    internal  var mCurrentLocatiion: Location? = null //null 일 수있음 //접근제한자 internal 사용 (같은 모듈 안에서 사용)
+    internal var mCurrentLocatiion: Location? = null //null 일 수있음 //접근제한자 internal 사용 (같은 모듈 안에서 사용)
     internal var currentPosition: LatLng? = null
     private var mFusedLocationClient: FusedLocationProviderClient? =
         null
@@ -150,7 +151,7 @@ class MapsActivity : AppCompatActivity(),
         mMap = googleMap
 //지도의 초기위치를 서울로 이동 (런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전 )
         setDefaultLocation()
-
+        mMap!!.setOnInfoWindowClickListener { Log.d(MapsActivity.TAG, "onMapClick :") }
 
 
 //여기서부터는 런타임 퍼미션 처리
@@ -169,7 +170,6 @@ class MapsActivity : AppCompatActivity(),
         ) {
             startLocationUpdates() //위치업데이트 시작함
         } else { //아니라면 요청 필요
-
 
 
             if (ActivityCompat.shouldShowRequestPermissionRationale( //만약 퍼미션 거부한적있다면
@@ -504,3 +504,5 @@ class MapsActivity : AppCompatActivity(),
         private const val PERMISSIONS_REQUEST_CODE = 100
     }
 }
+
+//  mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
