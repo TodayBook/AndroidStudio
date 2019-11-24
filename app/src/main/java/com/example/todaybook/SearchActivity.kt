@@ -49,8 +49,8 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         var intent = getIntent()
         var title = intent.getExtras()?.getString("BookTitle")
-
         AsyncTaskBook().execute(title)
+
 
         /*val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.search_listview_item, mainListView, true)*/
