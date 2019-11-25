@@ -25,7 +25,7 @@
                 app:srcCompat="@mipmap/ic_launcher_round" />
 
         <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
@@ -53,6 +53,15 @@
                     android:layout_marginTop="10dp"
                     android:text="publisher"
                     android:textSize="14sp" />
+
+            <Button
+                    android:id="@+id/bt_delete"
+                    android:layout_width="63dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginTop="10dp"
+                    android:foreground="@android:drawable/ic_menu_delete"
+                    android:textAlignment="center" />
 
         </LinearLayout>
     </LinearLayout>
@@ -100,21 +109,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:text="완료" />
-
-
-
-    <Button
-            android:id="@+id/bt_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="130dp"
-            android:layout_marginBottom="16dp"
-            android:text="삭제하기"
-            android:textAlignment="center" />
-
-
-
 
 
 </LinearLayout>

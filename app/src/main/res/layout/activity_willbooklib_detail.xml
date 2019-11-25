@@ -22,7 +22,7 @@
                 app:srcCompat="@mipmap/ic_launcher_round" />
 
         <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
@@ -51,18 +51,17 @@
                     android:text="publisher"
                     android:textSize="14sp" />
 
+            <Button
+                    android:id="@+id/bt_delete"
+                    android:layout_width="63dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|end"
+                    android:layout_marginTop="10dp"
+                    android:foreground="@android:drawable/ic_menu_delete"
+                    android:textAlignment="center" />
+
         </LinearLayout>
     </LinearLayout>
-
-    <Button
-            android:id="@+id/bt_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="삭제하기"
-            android:textAlignment="center" />
 
     <Button
             android:id="@+id/bt_movedidbook"
@@ -70,6 +69,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="읽은 책으로 이동" />
+
+    <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:text="이 책을 읽은 사람들"
+            android:textSize="18sp" />
 
     <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
