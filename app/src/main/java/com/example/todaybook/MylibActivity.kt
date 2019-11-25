@@ -27,6 +27,12 @@ class MylibActivity : AppCompatActivity() {
         reload()
     }
     fun reload() {
+        println("reload")
+        var readList = ArrayList<ImageDataModel>()
+        readList.clear()
+        val willreadList = ArrayList<ImageDataModel>()
+        willreadList.clear()
+
         val namelistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
@@ -44,11 +50,6 @@ class MylibActivity : AppCompatActivity() {
         database.child("users").child(cuser!!.uid).addValueEventListener(namelistener)
 
         nametext.text = "님의 도서관"
-        var readList = ArrayList<ImageDataModel>()
-        readList.clear()
-
-        val willreadList = ArrayList<ImageDataModel>()
-        willreadList.clear()
 
         val rbAdapter = ViewAdapter(this, readList) { imageDataModel ->
             val detailIntent = Intent(this, didbooklib_detail::class.java)
@@ -144,9 +145,16 @@ class MylibActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            database.child("Books").child(data!!.getStringExtra("result")).child(cuser!!.uid).removeValue()
+            if(data!!.getStringExtra("result")!=null){
+                database.child("Books").child(data!!.getStringExtra("result")).child(cuser!!.uid).removeValue()
+            }
             reload()
         }
+    }
+    override fun onBackPressed() {
+        val resultIntent = Intent(this,MainActivity::class.java)
+        setResult(1,resultIntent)
+        super.onBackPressed()
     }
 }
 

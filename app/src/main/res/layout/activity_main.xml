@@ -20,13 +20,17 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintEnd_toStartOf="@+id/bt_Search" android:layout_marginEnd="13dp"  android:layout_marginRight="13dp"
             app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toLeftOf="@id/bt_Search"/>
+
     <Button
-            android:text="Login"
+            android:id="@+id/bt_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/bt_login" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp" android:layout_marginTop="16dp"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Login"
+            android:textColor="#553B12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     <TextView
             android:text="오늘 몇권"
             android:layout_width="wrap_content"
@@ -36,20 +40,27 @@
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@+id/edit_title"
             android:textSize="24sp" android:textColor="#553B12" app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
+
     <Button
-            android:text="map"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/bt_map"
-            app:layout_constraintBaseline_toBaselineOf="@+id/bt_mylib" android:layout_marginEnd="17dp"
-            android:layout_marginRight="17dp" app:layout_constraintEnd_toEndOf="parent"/>
-    <Button
-            android:text="MyLib"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/bt_mylib" android:layout_marginLeft="10dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="10dp"
-            app:layout_constraintStart_toEndOf="@+id/bt_friendlib" android:layout_marginBottom="17dp"/>
+            android:layout_marginEnd="17dp"
+            android:text="map"
+            android:textColor="#553B12"
+            app:layout_constraintBaseline_toBaselineOf="@+id/bt_mylib"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+            android:id="@+id/bt_mylib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="17dp"
+            android:text="MyLib"
+            android:textColor="#553B12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bt_friendlib" />
 
     <Button
             android:id="@+id/bt_friendlib"
@@ -58,19 +69,26 @@
             android:layout_marginStart="108dp"
             android:layout_marginEnd="110dp"
             android:text="Friends"
+            android:textColor="#553B12"
             app:layout_constraintBaseline_toBaselineOf="@+id/bt_mylib"
             app:layout_constraintEnd_toStartOf="@+id/bt_map"
             app:layout_constraintStart_toStartOf="parent" />
+
     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="39dp"
             android:id="@+id/bt_Search"
-            app:layout_constraintBaseline_toBaselineOf="@+id/edit_title"
-            app:layout_constraintLeft_toRightOf="@id/edit_title"
+            android:layout_width="47dp"
+            android:layout_height="42dp"
+            android:width="3dp"
+            android:background="#553B12"
+            android:foreground="@android:drawable/ic_menu_search"
             android:textColor="#FDFCFA"
+            android:textSize="8sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_title"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:background="#553B12" android:width="3dp" android:text="검색" android:textSize="24sp"/>
+            app:layout_constraintLeft_toRightOf="@id/edit_title"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.495" />
 
     <Button
             android:id="@+id/bt_ranking"
@@ -79,6 +97,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:text="ranking"
+            android:textColor="#553B12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

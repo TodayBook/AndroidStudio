@@ -59,9 +59,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun registerPushToken() {
-        //v17.0.0 이전까지는
-        ////var pushToken = FirebaseInstanceId.getInstance().token
-        //v17.0.1 이후부터는 onTokenRefresh()-depriciated
         var pushToken: String? = null
         var uid = FirebaseAuth.getInstance().currentUser!!.uid
         var map = mutableMapOf<String, Any>()
