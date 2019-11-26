@@ -55,8 +55,6 @@ class didbooklib_detail : AppCompatActivity() {
         var star:Float?=null
 
         dialogRatingBar.setOnRatingBarChangeListener(OnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            Toast.makeText(applicationContext, java.lang.Float.toString(rating), Toast.LENGTH_LONG)
-                .show()
             star=rating
         })
 

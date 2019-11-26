@@ -8,6 +8,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_email_password.*
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 
 
 class EmailPasswordActivity : AppCompatActivity() {
@@ -33,12 +35,22 @@ class EmailPasswordActivity : AppCompatActivity() {
                     Userid_text.text.clear()
                     val loginIntent = Intent(this,login::class.java)
                     startActivityForResult(loginIntent,1)
-
+                    registerPushToken()
                 } else {
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
                 }
             }
 
 
+    }
+    private fun registerPushToken() {
+        var pushToken: String? = null
+        var uid = FirebaseAuth.getInstance().currentUser!!.uid
+        var map = mutableMapOf<String, Any>()
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
+            pushToken = instanceIdResult.token
+            map["pushtoken"] = pushToken!!
+            FirebaseFirestore.getInstance().collection("pushtokens").document(uid!!).set(map)
+        }
     }
 }
