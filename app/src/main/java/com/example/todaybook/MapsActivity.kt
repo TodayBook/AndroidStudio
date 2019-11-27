@@ -162,8 +162,26 @@ class MapsActivity : AppCompatActivity(),
         mMap = googleMap
 //지도의 초기위치를 서울로 이동 (런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전 )
         setDefaultLocation()
-        mMap!!.setOnInfoWindowClickListener { Log.d(MapsActivity.TAG, "onMapClick :") }
+        mMap!!.setOnInfoWindowClickListener {
+                marker ->
+            HashMap<String, String>()
+            // 에러나서 일단 주석처리함 hashMap = HashMap <String, String>()
+            var intent = Intent(this,MapsActivity2::class.java
+            )
 
+            var title: String? = marker.title
+            var address: String? = marker.snippet
+            // ***에러*** var map : String?= hashMap.put("key", "value");
+
+
+
+            intent.putExtra("title", title)
+            intent.putExtra("address", address)
+          //***에러***  intent.putExtra("map",hashMap)
+
+
+            startActivity(intent)
+        }
 
 //여기서부터는 런타임 퍼미션 처리
         val hasFineLocationPermission = //위치퍼미션을 갖고있는지 체크하는 코드
