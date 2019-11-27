@@ -55,17 +55,6 @@ class MainActivity : AppCompatActivity() {
             val detailIntent = Intent(this, login::class.java)
             startActivityForResult(detailIntent, 1)
         }
-        registerPushToken()
     }
 
-    private fun registerPushToken() {
-        var pushToken: String? = null
-        var uid = FirebaseAuth.getInstance().currentUser!!.uid
-        var map = mutableMapOf<String, Any>()
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
-            pushToken = instanceIdResult.token
-            map["pushtoken"] = pushToken!!
-            FirebaseFirestore.getInstance().collection("pushtokens").document(uid!!).set(map)
-        }
-    }
 }

@@ -49,12 +49,12 @@ class didbooklib_detail : AppCompatActivity() {
                 Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
             }
         }
+        database.child("users").child(cuser!!.uid).child("didBook").child(bookinfo.title).addValueEventListener(commentslistener)
+
         val dialogRatingBar = findViewById<RatingBar>(R.id.dialogRb)
-        var star:Float=0.0f
+        var star:Float?=null
 
         dialogRatingBar.setOnRatingBarChangeListener(OnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            Toast.makeText(applicationContext, java.lang.Float.toString(rating), Toast.LENGTH_LONG)
-                .show()
             star=rating
         })
 
@@ -62,10 +62,10 @@ class didbooklib_detail : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     var key : String = snapshot.key.toString()
-                    var value = snapshot.value
-                    value=star
+                    var value = snapshot.value.toString()
                     if(key=="rating"){
-                        dialogRb.setRating(value)
+                        val star:Float=value.toFloat()
+                        dialogRb.setRating(star)
                         break
                     }
                 }
@@ -74,13 +74,11 @@ class didbooklib_detail : AppCompatActivity() {
                 Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
             }
         }
-
-        database.child("users").child(cuser!!.uid).child("didBook").child(bookinfo.title).addValueEventListener(commentslistener)
         database.child("users").child(cuser!!.uid).child("didBook").child(bookinfo.title).addValueEventListener(ratinglistener)
 
         bt_complete.setOnClickListener{
             database.child("users").child(cuser?.uid!!).child("didBook").child(bookinfo.title).child("comments").setValue(comments.text.toString())
-            database.child("users").child(cuser?.uid!!).child("didBook").child(bookinfo.title).child("rating").setValue(dialogRb.getRating())
+            database.child("users").child(cuser?.uid!!).child("didBook").child(bookinfo.title).child("rating").setValue(dialogRb.rating)
         }
         bt_delete.setOnClickListener {
             database.child("users").child(cuser!!.uid).child("didBook").child(bookinfo.title).removeValue()
