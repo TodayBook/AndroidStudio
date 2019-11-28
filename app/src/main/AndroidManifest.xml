@@ -28,7 +28,11 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+
         <activity android:name=".CameraActivity"></activity>
+
+        <activity android:name=".login"></activity>
+
         <activity android:name=".ranking" />
         <activity android:name=".popupActivity" />
         <activity android:name=".FriendlibActivity" />
@@ -52,7 +56,6 @@
         <activity
                 android:name=".MapsActivity"
                 android:label="@string/title_activity_maps" />
-        <activity android:name=".login" />
         <activity android:name=".EmailPasswordActivity" />
         <activity
                 android:name=".MylibActivity"

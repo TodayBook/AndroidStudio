@@ -55,7 +55,6 @@ class FriendlibActivity : AppCompatActivity() {
 
         recyclerView_readbook.adapter = rbAdapter
         recyclerView_willbook.adapter = wbAdapter
-        if (FriendUid.toString() != null) {
 
             val readbooklistener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -87,9 +86,5 @@ class FriendlibActivity : AppCompatActivity() {
             }
             database.child("users").child(FriendUid.toString()).child("willBook").addValueEventListener(willbooklistener)
         }
-        else {
-            val loginIntent = Intent(this,login::class.java)
-            startActivityForResult(loginIntent,1)
-        }
+
     }
-}
