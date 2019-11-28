@@ -23,6 +23,11 @@ import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.activity_didbooklib_detail.*
 import kotlinx.android.synthetic.main.activity_mylib.*
 import kotlinx.android.synthetic.main.lib_book.*
+import kotlinx.android.synthetic.main.tester.*
+import android.os.Build
+import androidx.annotation.NonNull
+import androidx.fragment.app.FragmentActivity
+
 
 /*private fun permissionCheck(){
     var camaeraPermission:Int= ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -54,7 +59,8 @@ private fun setupCamera(){
     camera_frameLayout.addView(cameraPreview)
 }*/
 
-/*class CameraActivity : AppCompatActivity() {
+class CameraActivity : AppCompatActivity() {
+    val TAG = "MyMessage"
     private lateinit var auth: FirebaseAuth
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser
@@ -63,11 +69,33 @@ private fun setupCamera(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera)
-        bt_camera.setOnClickListener{turnOnCamera()}
-        reload()
+        setContentView(R.layout.tester)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            {
+                Log.d(TAG, "권한 설정 완료")
+            }
+            else
+            {
+                Log.d(TAG, "권한 설정 요청")
+                ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
+        }
+
+        fun onRequestPermissionsResult(requestCode:Int, @NonNull permissions:Array<String>, @NonNull grantResults:IntArray) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            Log.d(TAG, "onRequestPermissionsResult")
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+            {
+                Log.d(TAG, "Permission: " + permissions[0] + "was " + grantResults[0])
+            }
+        }
+        turnOnCamera()
+        /*reload()*/
     }
-    fun reload() {
+    /*fun reload() {
         println("reload")
         var photoList = ArrayList<CameraDataModel>()
         photoList.clear()
@@ -88,7 +116,7 @@ private fun setupCamera(){
         database.child("users").child(cuser!!.uid).addValueEventListener(namelistener)*/////////이름입력
 
 
-       val photoAdapter = ViewAdapter(this, photoList) { CameraDataModel ->
+       val photoAdapter = CameraAdapter(this, photoList) { CameraDataModel ->
             /*val detailIntent = Intent(this, didbooklib_detail::class.java)
             detailIntent.putExtra(
                 "Info",
@@ -103,38 +131,36 @@ private fun setupCamera(){
         }
 
 
-        recyclerView_readbook.layoutManager =
+        recyclerView_photo.layoutManager =
             LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        recyclerView_readbook.adapter = photoAdapter
+        recyclerView_photo.adapter = photoAdapter
 
 
         var UserId: String
         if (cuser != null) {
             UserId = cuser.uid
 
-            val readbooklistener = object : ValueEventListener {
+            val photolistener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
                         var key: String = snapshot.key.toString()
                         var value = snapshot.getValue(CameraDB::class.java)
-                        readList.add(
-                            ImageDataModel(
-                                value!!.imageurl,
-                                key,
-                                value.author,
-                                value.publisher
+                        photoList.add(
+                            CameraDataModel(
+                                value!!.imageurl
                             )
                         )
                     }
-                    rbAdapter.notifyDataSetChanged()
+                    photoAdapter.notifyDataSetChanged()
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
                 }
             }
-            database.child("users").child(UserId).child("didBook")
-                .addValueEventListener(readbooklistener)
+            val bookinfo by lazy { intent.extras!!["Info"] as BookInfo2 }
+            database.child("users").child(UserId).child("didBook").child(bookinfo.title)
+                .addValueEventListener(photolistener)
 
 
         }
@@ -142,26 +168,19 @@ private fun setupCamera(){
             //val loginIntent = Intent(this, login::class.java)
             //startActivityForResult(loginIntent, 1)
         }
-    }
-
-
-
-
-
-
+    }*/
 
     private fun turnOnCamera(){
         var intent= Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent,Camera)
+        startActivityForResult(intent,0)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            /*imageview.setImageURL(data.getData())*/
+            imageVieww.setImageURI(data!!.getData())
 
         }
     }
 
-
-}*/
+}

@@ -91,6 +91,11 @@ class didbooklib_detail : AppCompatActivity() {
             finish()
             Toast.makeText(baseContext, "삭제되었습니다!!", Toast.LENGTH_SHORT).show()
         }
+        bt_movecamera.setOnClickListener{
+            val detailIntent = Intent(this, CameraActivity::class.java)
+            detailIntent.putExtra("result", bookinfo.title)
+            startActivityForResult(detailIntent, 1)
+        }
     }
     override fun onBackPressed() {
         val intent = Intent()

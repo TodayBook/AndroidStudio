@@ -23,9 +23,9 @@ class MapsActivity2 : AppCompatActivity() {
              intent.getSerializableExtra("map")
             //*** Log.v("HashMapTest", hashMap.get("key"))
         }
-        val textView =
+        /*val textView =
             findViewById(id.textView_newActivity_contentString) as TextView
         val str = title + '\n'.toString() + address + '\n'
-        textView.text = str
+        textView.text = str*/
     }
 }

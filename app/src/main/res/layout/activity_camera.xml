@@ -11,22 +11,45 @@
             android:text="사진추가하기"
             android:textSize="24sp" />
 
+    <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp">
+
+        <Button
+                android:id="@+id/bt_camera"
+                android:layout_width="52dp"
+                android:layout_height="61dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:foreground="@android:drawable/ic_menu_camera" />
+    </LinearLayout>
 
 
-    <Button
-            android:id="@+id/bt_camera"
-            android:layout_width="52dp"
-            android:layout_height="61dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:foreground="@android:drawable/ic_menu_camera" />
 
+    <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+        <Button
+                android:id="@+id/bt_gallery"
+                android:layout_width="52dp"
+                android:layout_height="61dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginTop="10dp"
+                android:foreground="@android:drawable/ic_menu_gallery"
+                android:textAlignment="center" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_willbook"
+            android:id="@+id/recyclerView_photo"
             android:layout_width="match_parent"
             android:layout_height="651dp"
             android:orientation="vertical"
             android:padding="10dp"></androidx.recyclerview.widget.RecyclerView>
+
 
 </LinearLayout>
