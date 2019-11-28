@@ -1,14 +1,12 @@
 package com.example.todaybook
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.db.NULL
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,6 +53,10 @@ class MainActivity : AppCompatActivity() {
             val detailIntent = Intent(this, login::class.java)
             startActivityForResult(detailIntent, 1)
         }
+    }
+    override fun onBackPressed() {
+        finish()
+        super.onBackPressed()
     }
 
 }

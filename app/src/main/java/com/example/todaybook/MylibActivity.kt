@@ -138,8 +138,8 @@ class MylibActivity : AppCompatActivity() {
             database.child("users").child(UserId).child("willBook")
                 .addValueEventListener(willbooklistener)
         } else {
-            val loginIntent = Intent(this, login::class.java)
-            startActivityForResult(loginIntent, 1)
+            //val loginIntent = Intent(this, login::class.java)
+            //startActivityForResult(loginIntent, 1)
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
