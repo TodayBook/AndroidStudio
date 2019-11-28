@@ -1,52 +1,329 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="219dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+            <TextView
+                    android:id="@+id/libName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="#000"
+                    android:textSize="30sp"
+                    tools:text="asd" />
+        </LinearLayout>
 
         <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
             <TextView
-                    android:id="@+id/titleView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="이름 :"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-
-            <TextView
-                    android:id="@+id/addressView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:text="주소 :"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="#000"
+                    android:textSize="20sp" />
 
+            <TextView
+                    android:id="@+id/address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    tools:text="asd" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="휴일 :"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/holiday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    tools:text="asd" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="평일 운영 종료시간"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+
+            <TextView
+                    android:id="@+id/weekdayOpenTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    tools:text="asd" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="평일 운영 시작시간"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+
+            <TextView
+                    android:id="@+id/weekdayCloseTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    tools:text="asd" />
 
         </LinearLayout>
 
-        <TextView
-                android:id="@+id/textView_newActivity_contentString"
-                android:layout_width="250dp"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:text="TextView"
-                android:textSize="15sp" />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="토요일 운영 시작시간"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+
+            <TextView
+                    android:id="@+id/satOpenTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    tools:text="asd" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="토요일 운영 종료시간"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+
+            <TextView
+                    android:id="@+id/satCloseTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    tools:text="asd" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="공휴일 운영 시작시간"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+
+            <TextView
+                    android:id="@+id/holidayOpenTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    tools:text="asd" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="공휴일 운영 종료시간"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+
+            <TextView
+                    android:id="@+id/holidayCloseTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    tools:text="asd" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="자료 수(도서):"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/bookCo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    tools:text="20권" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="자료 수(비도서) :"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/noneBookCo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    tools:text="20권" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="대출가능권수 :"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/lonCo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    tools:text="20권" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="운영기관 명 :"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/operInstitution"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    tools:text="asd" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전화번호 :"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/phoneNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:inputType="phone"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    tools:text="asd" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="홈페이지 :"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/homepage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:inputType="textUri"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    tools:text="asd" />
+        </LinearLayout>
+
+
+        <fragment
+                android:id="@+id/maps"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_height="250dp"/>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>
