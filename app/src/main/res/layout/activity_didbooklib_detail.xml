@@ -102,6 +102,7 @@
             android:layout_marginRight="16dp"
             android:numStars="5" />
 
+
     <Button
             android:id="@+id/bt_complete"
             android:layout_width="wrap_content"
@@ -109,14 +110,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:text="완료" />
-
-    <Button
-            android:id="@+id/bt_camera"
-            android:layout_width="52dp"
-            android:layout_height="61dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:foreground="@android:drawable/ic_menu_camera" />
 
 
 </LinearLayout>
