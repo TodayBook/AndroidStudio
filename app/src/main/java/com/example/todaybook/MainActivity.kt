@@ -53,6 +53,10 @@ class MainActivity : AppCompatActivity() {
             val detailIntent = Intent(this, login::class.java)
             startActivityForResult(detailIntent, 1)
         }
+        bt_profile.setOnClickListener {
+            val detailIntent = Intent(this, profile::class.java)
+            startActivityForResult(detailIntent, 1)
+        }
     }
     override fun onBackPressed() {
         finish()
