@@ -1,9 +1,11 @@
 package com.example.todaybook
 
 import android.Manifest
+import android.Manifest.permission.CAMERA
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -95,7 +97,7 @@ class CameraActivity : AppCompatActivity() {
         turnOnCamera()
         /*reload()*/
     }
-    /*fun reload() {
+    fun reload() {
         println("reload")
         var photoList = ArrayList<CameraDataModel>()
         photoList.clear()
@@ -168,19 +170,21 @@ class CameraActivity : AppCompatActivity() {
             //val loginIntent = Intent(this, login::class.java)
             //startActivityForResult(loginIntent, 1)
         }
-    }*/
+    }
 
     private fun turnOnCamera(){
         var intent= Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent,0)
+        startActivityForResult(intent,Camera)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            imageVieww.setImageURI(data!!.getData())
+        if (resultCode == RESULT_OK) {
+            imageVieww.setImageURI(data?.getData())
 
         }
     }
 
 }
+
+
