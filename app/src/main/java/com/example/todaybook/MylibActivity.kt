@@ -20,7 +20,7 @@ class MylibActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser
-    var Myid: String?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mylib)
@@ -39,9 +39,7 @@ class MylibActivity : AppCompatActivity() {
                     var key: String = snapshot.key.toString()
                     var value = snapshot.value.toString()
                     nametext.text = value + "님의 도서관"
-                    if (key == "UserId")
-                        Myid=value
-                        break
+                    if (key == "UserId") break
                 }
             }
 
@@ -144,7 +142,6 @@ class MylibActivity : AppCompatActivity() {
             //startActivityForResult(loginIntent, 1)
         }
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {

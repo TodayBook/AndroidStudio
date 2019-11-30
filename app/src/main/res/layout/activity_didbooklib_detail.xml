@@ -55,21 +55,13 @@
                     android:textSize="14sp" />
 
             <Button
-                    android:id="@+id/bt_movecamera"
-                    android:layout_width="52dp"
-                    android:layout_height="61dp"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginTop="10dp"
-                    android:foreground="@android:drawable/ic_menu_camera" />
-
-            <Button
                     android:id="@+id/bt_delete"
-                    android:layout_width="52dp"
-                    android:layout_height="61dp"
+                    android:layout_width="63dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:layout_marginTop="10dp"
-                    android:foreground="@android:drawable/ic_menu_delete" />
-
+                    android:foreground="@android:drawable/ic_menu_delete"
+                    android:textAlignment="center" />
 
         </LinearLayout>
     </LinearLayout>
@@ -109,7 +101,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:numStars="5" />
-
 
     <Button
             android:id="@+id/bt_complete"
