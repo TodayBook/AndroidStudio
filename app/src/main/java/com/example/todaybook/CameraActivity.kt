@@ -31,36 +31,6 @@ import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
 
 
-/*private fun permissionCheck(){
-    var camaeraPermission:Int= ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-    var writeExternalStoragePermission:Int=ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-    if(camaeraPermission== PackageManager.PERMISSION_GRANTED&&writeExternalStoragePermission==PackageManager.PERMISSION_GRANTED){
-        setupCamera()
-    }
-    else{
-        ActivityCompat.requestPermissions(this,arrayPermission,requestPermission)
-    }
-}
-@override fun onRequestPermissionResult(requestCode:Int,permissions:Array<out String>,grantsResults:IntArray){
-    super.onRequestPermissionResult(requestCode,permissions,grantResults)
-
-    if(requestCode==requestPermission && grantResults[0]==PackageManager.PERMISSION_GRANTED&&grantsResults[1]==PackageManager.PERMISSION_GRANTED){
-        setupCamera()
-    }
-    else{
-        Toast.makeText(this,"permissions are not granted", Toast.LENGTH_LONG).show()
-    }
-}
-
-private fun setupCamera(){
-    if(mCamera==null){
-        mcamera.Camera.open()
-    }
-    cameraPreview=CameraPreview(this,mcamera!!)
-    camera_frameLayout.addView(cameraPreview)
-}*/
-
 class CameraActivity : AppCompatActivity() {
     val TAG = "MyMessage"
     private lateinit var auth: FirebaseAuth
@@ -69,9 +39,10 @@ class CameraActivity : AppCompatActivity() {
     var Camera=0
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.tester)
+        setContentView(R.layout.activity_camera)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
@@ -94,7 +65,10 @@ class CameraActivity : AppCompatActivity() {
                 Log.d(TAG, "Permission: " + permissions[0] + "was " + grantResults[0])
             }
         }
-        turnOnCamera()
+        bt_camera.setOnClickListener{
+            turnOnCamera()
+        }
+        /*turnOnCamera()*/
         /*reload()*/
     }
     fun reload() {
@@ -167,8 +141,7 @@ class CameraActivity : AppCompatActivity() {
 
         }
         else {
-            //val loginIntent = Intent(this, login::class.java)
-            //startActivityForResult(loginIntent, 1)
+
         }
     }
 
@@ -180,7 +153,9 @@ class CameraActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
-            imageVieww.setImageURI(data?.getData())
+            val extras = data?.getExtras()
+            val imageBitmap = extras?.get("data") as Bitmap
+            (findViewById(R.id.imageVieww) as ImageView).setImageBitmap(imageBitmap)
 
         }
     }
