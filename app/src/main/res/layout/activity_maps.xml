@@ -29,7 +29,7 @@
                 android:text="내 주변 도서관 정보" />
 
         <fragment
-                android:id="@+id/map"
+                android:id="@+id/maps"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="385dp"
