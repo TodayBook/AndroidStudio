@@ -46,6 +46,8 @@
         <activity android:name=".willbooklib_detail" />
         <activity android:name=".frienddidbook_detail" />
         <activity android:name=".friendwillbook_detail" />
+        <activity android:name=".profile" />
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
