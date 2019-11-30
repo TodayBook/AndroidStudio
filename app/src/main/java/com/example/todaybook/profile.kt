@@ -20,24 +20,19 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.bumptech.glide.Glide
 
 
-
-
-
-
-
 class profile : AppCompatActivity() {
     val database = FirebaseDatabase.getInstance().reference
     private lateinit var auth: FirebaseAuth
     private val GET_GALLERY_IMAGE = 200
     val storage = FirebaseStorage.getInstance()
-
+    var private:Boolean=false
     override fun onCreate(savedInstanceState: Bundle?) {
         auth = FirebaseAuth.getInstance()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
         setmyid()
-
+        setmyprivate()
         downloadInMemory()
 
         bt_profileimg_change.setOnClickListener {
@@ -54,6 +49,15 @@ class profile : AppCompatActivity() {
                 val intent = Intent()
                 setResult(Activity.RESULT_OK, intent)
                 finish()
+            }
+            database.child("users").child(auth.uid!!).child("private").setValue(private)
+        }
+
+        switch_private.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                private=true
+            } else {
+                private=true
             }
         }
 
@@ -77,7 +81,6 @@ class profile : AppCompatActivity() {
                     println(key)
                     var value = snapshot.value.toString()
                     if (key == "UserId") {
-                        println(value)
                         change_id.setText(value)
                         break
                     }
@@ -88,6 +91,29 @@ class profile : AppCompatActivity() {
         }
         database.child("users").child(auth.uid!!).addValueEventListener(myIdlistener)
     }
+
+    private fun setmyprivate(){
+        val myprivatelistener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    var key: String = snapshot.key.toString()
+                    println(key)
+                    var value = snapshot.value.toString()
+                    if (key == "private") {
+                        if(value=="true"){
+                            println("checked")
+                            switch_private.isChecked=true
+                        }
+                        break
+                    }
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        database.child("users").child(auth.uid!!).addValueEventListener(myprivatelistener)
+    }
+
     private fun changeId(){
         val myIdchangelistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

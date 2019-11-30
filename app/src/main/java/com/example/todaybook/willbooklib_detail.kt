@@ -47,7 +47,7 @@ class willbooklib_detail : AppCompatActivity() {
         var friendsUid = ArrayList<String>()
         friendsUid.clear()
         val list : ListView = findViewById(R.id.didbookpeople)
-        val adapter = friendlistAdapter(this,friendsId)
+        val adapter = friendlistAdapter(this,friendsId,friendsUid)
         list.adapter = adapter
         val bookreadelistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

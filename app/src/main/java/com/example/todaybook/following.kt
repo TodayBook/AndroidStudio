@@ -27,7 +27,7 @@ class following : BaseFragment() {
         friendsUid.clear()
 
         var ct = container!!.getContext();
-        val adapter = friendlistAdapter(ct,friendsId)
+        val adapter = friendlistAdapter(ct,friendsId,friendsUid)
         list.adapter = adapter
 
         val friendlistener = object : ValueEventListener {
