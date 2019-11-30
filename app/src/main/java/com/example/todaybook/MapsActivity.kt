@@ -85,7 +85,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
         "QgXDwOsi6tiCBiPIVhuyQCouyE%2BDemjMgKb3rf8BVXuVbJur6V%2BH%2BvuvKc7QCJqGE72AmxY5K2LbWrvXANV3hw%3D%3D"
 
     fun showPlaceInformation(location: LatLng?) {
-        mMap!!.clear()
+        mMap?.clear()
 
         val str = URLDecoder.decode(serviceKey, "UTF-8");
 
@@ -186,7 +186,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
         val mapFragment =
             supportFragmentManager
                 .findFragmentById(id.maps) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)
+        mapFragment?.getMapAsync(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -264,10 +264,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
                         "위도:" + location!!.latitude.toString() + " 경도:" + location!!.longitude.toString()
                     Log.d(MapsActivity.TAG, "onLocationResult : $markerSnippet")
 
-
-//                    setCurrentLocation(location, markerTitle, markerSnippet)
-
-                    mCurrentLocatiion = location
+                   setCurrentLocation(location, markerTitle, markerSnippet)
                 }
             }
         }
@@ -392,10 +389,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
             snippet(markerSnippet)
             draggable(true)
         }
-        currentMarker = mMap!!.addMarker(markerOptions)
+        currentMarker = mMap?.addMarker(markerOptions)
         val cameraUpdate: CameraUpdate? =
             CameraUpdateFactory.newLatLng(currentLatLng)
-        mMap!!.moveCamera(cameraUpdate)
+        mMap?.moveCamera(cameraUpdate)
     }
 
     fun setDefaultLocation() {
