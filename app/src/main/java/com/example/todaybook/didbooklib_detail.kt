@@ -79,6 +79,7 @@ class didbooklib_detail : AppCompatActivity() {
         bt_complete.setOnClickListener{
             database.child("users").child(cuser?.uid!!).child("didBook").child(bookinfo.title).child("comments").setValue(comments.text.toString())
             database.child("users").child(cuser?.uid!!).child("didBook").child(bookinfo.title).child("rating").setValue(dialogRb.rating)
+            Toast.makeText(baseContext, "저장되었습니다!", Toast.LENGTH_SHORT).show()
         }
         bt_delete.setOnClickListener {
             database.child("users").child(cuser!!.uid).child("didBook").child(bookinfo.title).removeValue()
@@ -88,6 +89,12 @@ class didbooklib_detail : AppCompatActivity() {
             intent.putExtra("result", bookinfo.title)
             setResult(Activity.RESULT_OK, intent)
             finish()
+            Toast.makeText(baseContext, "삭제되었습니다!!", Toast.LENGTH_SHORT).show()
+        }
+        bt_movecamera.setOnClickListener{
+            val detailIntent = Intent(this, CameraActivity::class.java)
+            detailIntent.putExtra("result", bookinfo.title)
+            startActivityForResult(detailIntent, 1)
         }
     }
     override fun onBackPressed() {
