@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import android.app.NotificationManager
 import android.app.NotificationChannel
-
-
+import android.app.PendingIntent.getActivity
+import java.text.SimpleDateFormat
 
 
 class MainActivity : AppCompatActivity() {
@@ -151,8 +151,19 @@ class MainActivity : AppCompatActivity() {
         })
 
         usageStats.forEach { it ->
-            Log.d(TAG, "packageName: ${it.packageName}, lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
-                    "totalTimeInForeground: ${it.totalTimeInForeground}")
+            /*Log.d(TAG, "packageName: ${it.packageName}, lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
+                    "totalTimeInForeground: ${it.totalTimeInForeground}")*/
+            if(it.packageName==getApplicationContext().getPackageName()){
+                var dateInMillis = System.currentTimeMillis()
+                var dataFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.KOREA)
+                dataFormat.setTimeZone(TimeZone.getTimeZone("UTC"))
+                /*var dateString = dataFormat.format(Date(dateInMillis))
+
+                var startDate = dataFormat.parse("${it.packageName}")
+                var endDate = dataFormat.parse(dateString)
+                var duration = endDate.getTime() - startDate.getTime()
+                Log.d(TAG,"duration")*/
+            }
         }
     }
 
