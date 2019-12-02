@@ -24,8 +24,9 @@ class FriendlibActivity : AppCompatActivity() {
                 for (snapshot in dataSnapshot.children) {
                     var key : String = snapshot.key.toString()
                     var value = snapshot.value.toString()
-                    nametext.text=value+"님의 도서관"
-                    if(key=="UserId")break
+                    if(key=="UserId")
+                        nametext.text=value+"님의 도서관"
+                        break
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {

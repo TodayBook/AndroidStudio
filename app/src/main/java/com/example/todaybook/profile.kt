@@ -101,7 +101,6 @@ class profile : AppCompatActivity() {
                     var value = snapshot.value.toString()
                     if (key == "private") {
                         if(value=="true"){
-                            println("checked")
                             switch_private.isChecked=true
                         }
                         break

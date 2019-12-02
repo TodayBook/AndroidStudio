@@ -32,7 +32,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".notification"></activity>
+        <activity android:name=".Guestlib"></activity>
+        <activity android:name=".notification" />
         <activity android:name=".mapsmodel.notification" />
         <activity
                 android:name=".CameraActivity"
@@ -47,7 +48,6 @@
         <activity android:name=".frienddidbook_detail" />
         <activity android:name=".friendwillbook_detail" />
         <activity android:name=".profile" />
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -85,6 +85,14 @@
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/colorAccent" />
+
+        <activity android:name=".friendnoti">
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

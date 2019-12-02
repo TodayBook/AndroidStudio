@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -42,20 +43,20 @@ class willbooklib_detail : AppCompatActivity() {
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
-        var friendsId = ArrayList<String>()
-        friendsId.clear()
-        var friendsUid = ArrayList<String>()
-        friendsUid.clear()
+        var guestId = ArrayList<String>()
+        guestId.clear()
+        var guestUid = ArrayList<String>()
+        guestUid.clear()
         val list : ListView = findViewById(R.id.didbookpeople)
-        val adapter = friendlistAdapter(this,friendsId,friendsUid)
+        val adapter = friendlistAdapter(this,guestId,guestUid)
         list.adapter = adapter
         val bookreadelistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     var key : String = snapshot.key.toString()
                     var value = snapshot.value.toString()
-                    friendsUid.add(key)
-                    friendsId.add(value)
+                    guestUid.add(key)
+                    guestId.add(value)
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -66,9 +67,29 @@ class willbooklib_detail : AppCompatActivity() {
         database.child("Books").child(bookinfo.title).addValueEventListener(bookreadelistener)
 
         list.setOnItemClickListener{parant,itemView,position,id->
-            val detailIntent = Intent(this, FriendlibActivity::class.java)
-            detailIntent.putExtra("FriendUid",friendsUid[position])
-            startActivityForResult(detailIntent,1)
+            val myprivatelistener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        var key: String = snapshot.key.toString()
+                        println(key)
+                        var value = snapshot.value.toString()
+                        if (key == "private") {
+                            if(value=="false"){
+                                val detailIntent = Intent(baseContext, Guestlib::class.java)
+                                detailIntent.putExtra("GuestUid",guestUid[position])
+                                startActivityForResult(detailIntent,1)
+                            }
+                            else{
+                                Toast.makeText(baseContext, "비공개입니다", Toast.LENGTH_SHORT).show()
+                            }
+                            break
+                        }
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            database.child("users").child(guestUid[position]).addValueEventListener(myprivatelistener)
         }
     }
 

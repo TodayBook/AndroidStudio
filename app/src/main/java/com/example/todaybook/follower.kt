@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.todaybook.BaseFragment
 
@@ -31,7 +32,7 @@ class follower : BaseFragment() {
         friendsId.clear()
         var friendsUid = ArrayList<String>()
         friendsUid.clear()
-        var ct = container!!.getContext();
+        var ct = container!!.getContext()
         val adapter = friendlistAdapter(ct,friendsId,friendsUid)
         list.adapter = adapter
 
@@ -52,9 +53,29 @@ class follower : BaseFragment() {
         database.child("users").child(cuser!!.uid).child("follower").addValueEventListener(friendlistener)
 
         list.setOnItemClickListener{parant,itemView,position,id->
-            val detailIntent = Intent(ct, FriendlibActivity::class.java)
-            detailIntent.putExtra("FriendUid",friendsUid[position])
-            startActivityForResult(detailIntent,1)
+            val myprivatelistener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        var key: String = snapshot.key.toString()
+                        println(key)
+                        var value = snapshot.value.toString()
+                        if (key == "private") {
+                            if(value=="false"){
+                                val detailIntent = Intent(ct, FriendlibActivity::class.java)
+                                detailIntent.putExtra("FriendUid",friendsUid[position])
+                                startActivityForResult(detailIntent,1)
+                            }
+                            else{
+                                Toast.makeText(view.context, "비공개입니다", Toast.LENGTH_SHORT).show()
+                            }
+                            break
+                        }
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            database.child("users").child(friendsUid[position]).addValueEventListener(myprivatelistener)
         }
         return view
     }
