@@ -19,6 +19,7 @@ import java.util.*
 import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.app.PendingIntent.getActivity
+import java.text.ParseException
 import java.text.SimpleDateFormat
 
 
@@ -36,8 +37,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        if (!checkForPermission())
-        {
+        if (!checkForPermission()) {
             Log.i(TAG, "The user may not allow the access to apps usage. ")
             Toast.makeText(
                 this,
@@ -48,78 +48,79 @@ class MainActivity : AppCompatActivity() {
             ).show()
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         }
-        else
-        {
+        else {
             val usageStats = getAppUsageStats()
             showAppUsageStats(usageStats)
+            if (showAppUsageStats(usageStats) != 0.0) {
+                if(showAppUsageStats(usageStats)>100){
+                    createNotificationChannel(this, NotificationManagerCompat.IMPORTANCE_DEFAULT,
+                        false, getString(R.string.app_name), "App notification channel")
 
-        }
+                    val channelId = "$packageName-${getString(R.string.app_name)}"
+                    val title = "Today Book"
+                    val content = "도서관을 방문한지 너무 오래됐어요!"
 
+                    val intent = Intent(baseContext, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    val pendingIntent = PendingIntent.getActivity(baseContext, 0,
+                        intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        createNotificationChannel(this, NotificationManagerCompat.IMPORTANCE_DEFAULT,
-            false, getString(R.string.app_name), "App notification channel")
+                    val builder = NotificationCompat.Builder(this, channelId)
+                    builder.setSmallIcon(R.drawable.icon)
+                    builder.setContentTitle(title)
+                    builder.setContentText(content)
+                    builder.priority = NotificationCompat.PRIORITY_DEFAULT
+                    builder.setAutoCancel(true)
+                    builder.setContentIntent(pendingIntent)
 
-        val channelId = "$packageName-${getString(R.string.app_name)}"
-        val title = "Android Developer"
-        val content = "Notifications in Android P"
-
-        val intent = Intent(baseContext, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        val pendingIntent = PendingIntent.getActivity(baseContext, 0,
-            intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val builder = NotificationCompat.Builder(this, channelId)
-        builder.setSmallIcon(R.drawable.icon)
-        builder.setContentTitle(title)
-        builder.setContentText(content)
-        builder.priority = NotificationCompat.PRIORITY_DEFAULT
-        builder.setAutoCancel(true)
-        builder.setContentIntent(pendingIntent)
-
-        val notificationManager = NotificationManagerCompat.from(this)
-        notificationManager.notify(NOTIFICATION_ID, builder.build())
-
-
-
-        bt_Search.setOnClickListener {
-            var bookTitle = edit_title.text.toString()
-            if(bookTitle.length <= 0){
-                Toast.makeText(baseContext, "제목을 입력하세요", Toast.LENGTH_SHORT).show()
-                val detailIntent = Intent(this, MainActivity::class.java)
-                startActivityForResult(detailIntent, 1)
-            }
-            else{
-                val detailIntent = Intent(this, SearchActivity::class.java)
-                detailIntent.putExtra("BookTitle", bookTitle)
-                startActivityForResult(detailIntent, 1)
-
-                edit_title.text.clear()
-
+                    val notificationManager = NotificationManagerCompat.from(this)
+                    notificationManager.notify(NOTIFICATION_ID, builder.build())
+                }
             }
 
 
-        }
 
 
-        bt_map.setOnClickListener {
-            val detailIntent = Intent(this, MapsActivity::class.java)
-            startActivityForResult(detailIntent, 1)
-        }
-        bt_mylib.setOnClickListener {
-            val detailIntent = Intent(this, MylibActivity::class.java)
-            startActivityForResult(detailIntent, 1)
-        }
-        bt_friendlib.setOnClickListener {
-            val detailIntent = Intent(this, friendList::class.java)
-            startActivityForResult(detailIntent, 1)
-        }
-        bt_login.setOnClickListener {
-            val detailIntent = Intent(this, login::class.java)
-            startActivityForResult(detailIntent, 1)
-        }
-        bt_profile.setOnClickListener {
-            val detailIntent = Intent(this, profile::class.java)
-            startActivityForResult(detailIntent, 1)
+
+            bt_Search.setOnClickListener {
+                var bookTitle = edit_title.text.toString()
+                if (bookTitle.length <= 0) {
+                    Toast.makeText(baseContext, "제목을 입력하세요", Toast.LENGTH_SHORT).show()
+                    val detailIntent = Intent(this, MainActivity::class.java)
+                    startActivityForResult(detailIntent, 1)
+                } else {
+                    val detailIntent = Intent(this, SearchActivity::class.java)
+                    detailIntent.putExtra("BookTitle", bookTitle)
+                    startActivityForResult(detailIntent, 1)
+
+                    edit_title.text.clear()
+
+                }
+
+
+            }
+
+
+            bt_map.setOnClickListener {
+                val detailIntent = Intent(this, MapsActivity::class.java)
+                startActivityForResult(detailIntent, 1)
+            }
+            bt_mylib.setOnClickListener {
+                val detailIntent = Intent(this, MylibActivity::class.java)
+                startActivityForResult(detailIntent, 1)
+            }
+            bt_friendlib.setOnClickListener {
+                val detailIntent = Intent(this, friendList::class.java)
+                startActivityForResult(detailIntent, 1)
+            }
+            bt_login.setOnClickListener {
+                val detailIntent = Intent(this, login::class.java)
+                startActivityForResult(detailIntent, 1)
+            }
+            bt_profile.setOnClickListener {
+                val detailIntent = Intent(this, profile::class.java)
+                startActivityForResult(detailIntent, 1)
+            }
         }
     }
     override fun onBackPressed() {
@@ -145,26 +146,41 @@ class MainActivity : AppCompatActivity() {
         return queryUsageStats
     }
 
-    private fun showAppUsageStats(usageStats: MutableList<UsageStats>) {
+    private fun showAppUsageStats(usageStats: MutableList<UsageStats>):Double {
         usageStats.sortWith(Comparator { right, left ->
             compareValues(left.lastTimeUsed, right.lastTimeUsed)
         })
-
+        var duration=0.0
         usageStats.forEach { it ->
-            /*Log.d(TAG, "packageName: ${it.packageName}, lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
-                    "totalTimeInForeground: ${it.totalTimeInForeground}")*/
+            /*var dataFormat = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA)
+            dataFormat.setTimeZone(TimeZone.getTimeZone("UTC"))
+            var minus:Double=dataFormat.format(Date(System.currentTimeMillis())).toDouble()-dataFormat.format(Date(it.lastTimeUsed)).toDouble()
+            Log.d(TAG, "packageName: ${it.packageName}, lastTimeUsed: ${Date(it.lastTimeUsed)}, " +
+                    "totalTimeInForeground: ${it.totalTimeInForeground},${dataFormat.format(Date(System.currentTimeMillis()))},${dataFormat.format(Date(it.lastTimeUsed))},${minus}")*/
             if(it.packageName==getApplicationContext().getPackageName()){
                 var dateInMillis = System.currentTimeMillis()
-                var dataFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.KOREA)
+                var dataFormat = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA)
                 dataFormat.setTimeZone(TimeZone.getTimeZone("UTC"))
-                /*var dateString = dataFormat.format(Date(dateInMillis))
-
-                var startDate = dataFormat.parse("${it.packageName}")
-                var endDate = dataFormat.parse(dateString)
-                var duration = endDate.getTime() - startDate.getTime()
-                Log.d(TAG,"duration")*/
+                var lasttime=dataFormat.format(Date(it.lastTimeUsed))
+                var currenttime=dataFormat.format(Date(System.currentTimeMillis()))
+                duration=currenttime.toDouble()-lasttime.toDouble()
             }
         }
+        return duration
+    }
+
+    fun TimeZone() {
+    }
+    @Throws(ParseException::class)
+    fun convertTimeZone(time:String):String {
+        val form = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        val inputFormat = SimpleDateFormat(form, Locale.KOREA)
+        inputFormat.setTimeZone(TimeZone.getTimeZone("Etc/UTC"))
+        val outputFormat = SimpleDateFormat(form)
+        // Adjust locale and zone appropriately
+        val date = inputFormat.parse(time)
+        val outputText = outputFormat.format(date)
+        return outputText
     }
 
     private fun createNotificationChannel(context: Context, importance: Int, showBadge: Boolean,

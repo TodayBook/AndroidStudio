@@ -66,6 +66,10 @@ dependencies {
     implementation 'me.relex:circleindicator:1.2.2'
     implementation 'com.google.firebase:firebase-firestore:21.3.0'
 
+    implementation 'com.google.firebase:firebase-messaging:11.6.2'
+
+
+
 
     implementation 'noman.placesapi:placesAPI:1.1.3'
 
