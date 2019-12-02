@@ -32,7 +32,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".Guestlib"></activity>
+        <activity android:name=".friendfindLib"></activity>
+        <activity android:name=".Guestlib" />
         <activity android:name=".notification" />
         <activity android:name=".mapsmodel.notification" />
         <activity

@@ -1,5 +1,6 @@
 package com.example.todaybook
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,34 +14,80 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_guestlib.*
+import kotlinx.android.synthetic.main.friendfindpop.*
 
-class Guestlib : AppCompatActivity() {
+class friendfindLib : AppCompatActivity() {
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser
+    var friendUid:String?=null
+    var friendId:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_guestlib)
-        val GuestUid = intent.extras!!["GuestUid"]
-        var GuestId = intent.extras!!["GuestId"]
-        println(GuestUid)
-        println(GuestId)
-        val namelistener = object : ValueEventListener {
+        friendId= intent.extras!!["FriendId"].toString()
+        println(friendId)
+        guest_name.text=friendId.toString()+"님의 도서관"
+        findfrienduid()
+        bt_follow.setOnClickListener {
+            database.child("users").child(cuser!!.uid).child("following").child(friendUid!!).setValue(friendId)
+            val mil=MyIdfindlistener()
+            mil.MyIdfind(friendUid!!)
+            Toast.makeText(baseContext, "팔로우 완료!", Toast.LENGTH_SHORT).show()
+            val intent = Intent()
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
+    }
+    fun findfrienduid(){
+        println("findfrienduid")
+        val friendfindlistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
-                    var key : String = snapshot.key.toString()
+                    var key: String = snapshot.key.toString()
                     var value = snapshot.value.toString()
-                    if(key=="UserId")
-                        guest_name.text=value+"님의 도서관"
-                        GuestId=value
-                        break
+                    if (key == "uid") {
+                        println(key)
+                        friendUid=value
+                        friendlib()
+                    }
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
+                Toast.makeText(baseContext, "존재하지 않는 사용자입니다", Toast.LENGTH_SHORT).show()
+                val intent = Intent()
+                setResult(Activity.RESULT_OK, intent)
+                finish()
             }
         }
-        database.child("users").child(GuestUid.toString()).addValueEventListener(namelistener)
-
+        database.child("UserId").child(friendId.toString()).addValueEventListener(friendfindlistener)
+    }
+    fun friendlib(){
+        println("friendlib")
+        val myprivatelistener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    var key: String = snapshot.key.toString()
+                    println(key)
+                    var value = snapshot.value.toString()
+                    if (key == "private") {
+                        if(value!="true"){
+                            createlib()
+                        }
+                        else{
+                            Toast.makeText(baseContext, "비공개입니다", Toast.LENGTH_SHORT).show()
+                        }
+                        break
+                    }
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        database.child("users").child(friendUid!!).addValueEventListener(myprivatelistener)
+    }
+    fun createlib(){
+        println("createlib")
+        guest_name.text=friendId+"님의 도서관"
         var readList = ArrayList<ImageDataModel>()
         readList.clear()
 
@@ -49,7 +96,7 @@ class Guestlib : AppCompatActivity() {
 
         val rbAdapter = ViewAdapter(this, readList) { imageDataModel ->
             val detailIntent = Intent(this, frienddidbook_detail::class.java)
-            detailIntent.putExtra("Info",FriendBookInfo(GuestUid.toString(),imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
+            detailIntent.putExtra("Info",FriendBookInfo(friendUid!!,imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
             startActivityForResult(detailIntent, 1)
         }
         val wbAdapter = ViewAdapter(this, willreadList) { imageDataModel ->
@@ -76,7 +123,7 @@ class Guestlib : AppCompatActivity() {
                 Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
             }
         }
-        database.child("users").child(GuestUid.toString()).child("didBook").addValueEventListener(readbooklistener)
+        database.child("users").child(friendUid!!).child("didBook").addValueEventListener(readbooklistener)
 
         val willbooklistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -91,14 +138,7 @@ class Guestlib : AppCompatActivity() {
                 Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
             }
         }
-        database.child("users").child(GuestUid.toString()).child("willBook").addValueEventListener(willbooklistener)
+        database.child("users").child(friendUid!!).child("willBook").addValueEventListener(willbooklistener)
 
-        bt_follow.setOnClickListener {
-            database.child("users").child(cuser!!.uid).child("following").child(GuestUid.toString()).setValue(GuestId)
-            val mil=MyIdfindlistener()
-            mil.MyIdfind(GuestUid.toString())
-            Toast.makeText(baseContext, "팔로우 완료!", Toast.LENGTH_SHORT).show()
-        }
     }
-    }
-
+}

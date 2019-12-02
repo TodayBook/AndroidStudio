@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.viewpager.widget.ViewPager
 import com.example.todaybook.R.id.pager
 import com.google.firebase.auth.FirebaseAuth
@@ -34,21 +35,19 @@ class friendList : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.friendfindpop, null)
             val dialogText = dialogView.findViewById<EditText>(R.id.friendId)
-
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
                     var friendId=dialogText.text.toString()
-                    println(friendId)
-                    val ffl=friendfindlistener()
-                    ffl.friendfind(friendId)
+                    val detailIntent = Intent(baseContext, friendfindLib::class.java)
+                    detailIntent.putExtra("FriendId",friendId)
+                    startActivityForResult(detailIntent,1)
                 }
                 .setNegativeButton("취소") { dialogInterface, i ->
                     /* 취소일 때 아무 액션이 없으므로 빈칸 */
                 }
                 .show()
         }
-            //val friendfindIntent = Intent(this, FriendFind::class.java)
-            //startActivityForResult(friendfindIntent, 1)
+
         val namelistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
@@ -58,7 +57,6 @@ class friendList : AppCompatActivity() {
                     if (key == "UserId") break
                 }
             }
-
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
             }
@@ -75,4 +73,5 @@ class friendList : AppCompatActivity() {
             //Toast.makeText(baseContext, "실패", Toast.LENGTH_SHORT).show()
         }
     }
+
 }

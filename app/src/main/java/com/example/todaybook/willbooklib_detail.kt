@@ -74,9 +74,10 @@ class willbooklib_detail : AppCompatActivity() {
                         println(key)
                         var value = snapshot.value.toString()
                         if (key == "private") {
-                            if(value=="false"){
+                            if(value!="true"){
                                 val detailIntent = Intent(baseContext, Guestlib::class.java)
-                                detailIntent.putExtra("GuestUid",guestUid[position])
+                                detailIntent.putExtra("GuestId",guestUid[position])
+                                detailIntent.putExtra("GuestUid",guestId[position])
                                 startActivityForResult(detailIntent,1)
                             }
                             else{
