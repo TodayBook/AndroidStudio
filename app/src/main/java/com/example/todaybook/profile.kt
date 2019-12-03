@@ -44,7 +44,7 @@ class profile : AppCompatActivity() {
             val changedid=change_id.text.toString()
             if(changedid!=null) {
                 database.child("users").child(auth.uid!!).child("UserId").setValue(changedid)
-                changeId()
+                //changeId()
                 database.child("UserId").child(changedid).child("uid").setValue(auth.uid!!)
                 val intent = Intent()
                 setResult(Activity.RESULT_OK, intent)

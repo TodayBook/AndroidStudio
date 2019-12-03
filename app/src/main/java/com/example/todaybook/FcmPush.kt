@@ -31,6 +31,7 @@ class FcmPush {
                     pushDTO.to = token                   //푸시토큰 세팅
                     pushDTO.notification?.title = title  //푸시 타이틀 세팅
                     pushDTO.notification?.body = message //푸시 메시지 세팅
+                    pushDTO.notification?.click_action = "OPEN_ACTIVITY"
 
                     var body = RequestBody.create(JSON, gson?.toJson(pushDTO)!!)
                     var request = Request
