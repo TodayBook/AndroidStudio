@@ -84,6 +84,7 @@ class didbooklib_detail : AppCompatActivity() {
         bt_delete.setOnClickListener {
             database.child("users").child(cuser!!.uid).child("didBook").child(bookinfo.title).removeValue()
             database.child("Books").child(bookinfo.title).child(cuser!!.uid).removeValue()
+            database.child("Books").child(bookinfo.title).child(cuser.uid).removeValue()
             println("delete"+bookinfo.title)
             val intent = Intent()
             intent.putExtra("result", bookinfo.title)

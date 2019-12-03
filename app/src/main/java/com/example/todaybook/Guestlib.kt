@@ -24,13 +24,13 @@ class Guestlib : AppCompatActivity() {
         var GuestId = intent.extras!!["GuestId"]
         println(GuestUid)
         println(GuestId)
+        guest_name.text=GuestId.toString()+"님의 도서관"
         val namelistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     var key : String = snapshot.key.toString()
                     var value = snapshot.value.toString()
                     if(key=="UserId")
-                        guest_name.text=value+"님의 도서관"
                         GuestId=value
                         break
                 }

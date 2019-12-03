@@ -76,8 +76,8 @@ class willbooklib_detail : AppCompatActivity() {
                         if (key == "private") {
                             if(value!="true"){
                                 val detailIntent = Intent(baseContext, Guestlib::class.java)
-                                detailIntent.putExtra("GuestId",guestUid[position])
-                                detailIntent.putExtra("GuestUid",guestId[position])
+                                detailIntent.putExtra("GuestUid",guestUid[position])
+                                detailIntent.putExtra("GuestId",guestId[position])
                                 startActivityForResult(detailIntent,1)
                             }
                             else{

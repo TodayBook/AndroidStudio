@@ -10,7 +10,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_read_or_read.*
 
 class ReadOrRead : AppCompatActivity() {
@@ -41,9 +44,22 @@ class ReadOrRead : AppCompatActivity() {
         println(bookinfo.title)
         bt_didbook.setOnClickListener {
             database.child("users").child(cuser?.uid!!).child("didBook").child(EncodeString(bookinfo.title)).setValue(bookDB(bookinfo.imageurl, bookinfo.author, bookinfo.pub))
+            val myIdlistener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        var key: String = snapshot.key.toString()
+                        var value = snapshot.value.toString()
+                        if (key == "UserId") {
+                            database.child("Books").child(bookinfo.title).child(cuser.uid).setValue(value)
+                        }
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            database.child("users").child(cuser.uid).addValueEventListener(myIdlistener)
+
             Toast.makeText(baseContext, "Success!!", Toast.LENGTH_SHORT).show()
-
-
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.activity_popup, null)
             /*val dialogText = dialogView.findViewById<EditText>(R.id.dialogEt)*/
