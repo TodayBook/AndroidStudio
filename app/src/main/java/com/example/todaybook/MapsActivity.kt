@@ -90,16 +90,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
         val str = URLDecoder.decode(serviceKey, "UTF-8");
 
         if (previous_marker != null) previous_marker!!.clear()//지역정보 마커 클리어
-//
-//        NRPlaces.Builder()
-//            .listener(this@MapsActivity)
-//            .key("AIzaSyBYDSuPmcdcMPd-Q0Bea3U6JMbGpPwO2Ag")
-//            .latlng(location!!.latitude, location.longitude)//현재 위치
-//            .radius(1000)
-//            .type(PlaceType.LIBRARY)
-//            .build()
-//            .execute()
-
 
 
         val address: String = "" + getCurrentAddress(currentPosition)
@@ -108,41 +98,46 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
             val cityName = addresses[1]
             val sigungu = addresses[2]
 
-            NetworkHelper.networkInstance?.getItems(str, cityName, sigungu)
-                ?.enqueue(object : Callback<ResponseBodyBox> {
-                    override fun onFailure(call: Call<ResponseBodyBox>, t: Throwable) {
-                        t.printStackTrace()
-                        Log.e("Network error", "" + t.message)
+            fun searchLib(str: String, cityName: String, sigungu: String) {
+                NetworkHelper.networkInstance?.getItems(str, cityName, sigungu)
+                    ?.enqueue(object : Callback<ResponseBodyBox> {
+                        override fun onFailure(call: Call<ResponseBodyBox>, t: Throwable) {
+                            t.printStackTrace()
+                            Log.e("Network error", "" + t.message)
 
-                    }
+                        }
 
-                    override fun onResponse(
-                        call: Call<ResponseBodyBox>,
-                        response: Response<ResponseBodyBox>
-                    ) {
+                        override fun onResponse(
+                            call: Call<ResponseBodyBox>,
+                            response: Response<ResponseBodyBox>
+                        ) {
 
-                        if (response.isSuccessful) {
-                            response.body()?.response?.body?.items?.forEach {
-                                val position =
-                                    LatLng(it.latitude.toDouble(), it.hardness.toDouble())
-                                val libName = it.lbrryNm
-                                val libAddress = it.rdnmadr
-                                Log.e("asd", libName)
-                                val markerOptions = MarkerOptions()
-                                markerOptions.run {
-                                    position(position)
-                                    title(libName)
-                                    snippet(libAddress)
+                            if (response.isSuccessful) {
+                                response.body()?.response?.body?.items?.forEach {
+                                    val position =
+                                        LatLng(it.latitude.toDouble(), it.hardness.toDouble())
+                                    val libName = it.lbrryNm
+                                    val libAddress = it.rdnmadr
+                                    Log.e("asd", libName)
+                                    val markerOptions = MarkerOptions()
+                                    markerOptions.run {
+                                        position(position)
+                                        title(libName)
+                                        snippet(libAddress)
+                                    }
+                                    mMap!!.addMarker(markerOptions)
                                 }
-                                mMap!!.addMarker(markerOptions)
                             }
                         }
-                    }
 
-                })
+                    })
+            }
+            searchLib(str, cityName, sigungu)
+            searchLib(str, cityName, sigungu + " " + addresses[3])
+            searchLib(str, cityName, cityName + " " + sigungu)
         }
-
     }
+
 
     override fun onPlacesFinished() {}
     private var mMap: GoogleMap? = null
