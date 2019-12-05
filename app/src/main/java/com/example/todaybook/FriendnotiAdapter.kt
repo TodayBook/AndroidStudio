@@ -60,9 +60,14 @@ class FriendnotiAdapter(val context : Context, val friendId:ArrayList<String>, v
                         if (key == "UserId") {
                             database.child("users").child(cuser!!.uid).child("follower").child(friendUid[idx]).setValue(friendId)
                             database.child("users").child(friendUid[idx]).child("following").child(cuser.uid).setValue(value)
+                            database.child("users").child(friendUid[idx]).child("follow_request").child(cuser!!.uid).removeValue()
                             var fcmPush=FcmPush()
                             var message = value+"님이 팔로우를 수락했습니다."
                             fcmPush.sendMessage(friendUid[idx], "", message)
+                            view.findViewById<TextView>(R.id.friendnoti_text).text = "요청이 삭제되었습니다."
+                            bt_friendnoti_ok.isVisible=false
+                            bt_friendnoti_deny.isVisible=false
+                            break
                         }
                     }
                 }
