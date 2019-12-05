@@ -66,6 +66,7 @@ class login : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     database.child("users").child(auth.uid!!).child("UserId").setValue(UserId)
+                    database.child("users").child(auth.uid!!).child("private").setValue("false")
                     database.child("UserId").child(UserId).child("uid").setValue(auth.uid!!)
                     Toast.makeText(baseContext, "Success!!", Toast.LENGTH_SHORT).show()
                     registerPushToken()

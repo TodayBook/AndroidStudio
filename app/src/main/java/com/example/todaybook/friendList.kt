@@ -47,7 +47,10 @@ class friendList : AppCompatActivity() {
                 }
                 .show()
         }
-
+        bt_followrequest.setOnClickListener {
+            val detailIntent = Intent(baseContext, friendnoti::class.java)
+            startActivityForResult(detailIntent,1)
+        }
         val namelistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
