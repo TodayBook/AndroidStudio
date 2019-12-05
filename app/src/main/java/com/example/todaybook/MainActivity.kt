@@ -49,12 +49,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         }
         else {
-            val usageStats = getAppUsageStats()
-            showAppUsageStats(usageStats)
-            if (showAppUsageStats(usageStats) != 0.0) {
-                if(showAppUsageStats(usageStats)>100){
-                    createNotificationChannel(this, NotificationManagerCompat.IMPORTANCE_DEFAULT,
-                        false, getString(R.string.app_name), "App notification channel")
+            /*val usageStats = getAppUsageStats()
+            showAppUsageStats(usageStats)*/
+
+
+            /*if (showAppUsageStats(usageStats) != 0.0) {
+                if (showAppUsageStats(usageStats) > 100) {
+                    createNotificationChannel(
+                        this, NotificationManagerCompat.IMPORTANCE_DEFAULT,
+                        false, getString(R.string.app_name), "App notification channel"
+                    )
 
                     val channelId = "$packageName-${getString(R.string.app_name)}"
                     val title = "Today Book"
@@ -62,8 +66,10 @@ class MainActivity : AppCompatActivity() {
 
                     val intent = Intent(baseContext, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    val pendingIntent = PendingIntent.getActivity(baseContext, 0,
-                        intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                    val pendingIntent = PendingIntent.getActivity(
+                        baseContext, 0,
+                        intent, PendingIntent.FLAG_UPDATE_CURRENT
+                    )
 
                     val builder = NotificationCompat.Builder(this, channelId)
                     builder.setSmallIcon(R.drawable.icon)
@@ -76,7 +82,8 @@ class MainActivity : AppCompatActivity() {
                     val notificationManager = NotificationManagerCompat.from(this)
                     notificationManager.notify(NOTIFICATION_ID, builder.build())
                 }
-            }
+            }*/
+        }
 
 
 
@@ -121,8 +128,9 @@ class MainActivity : AppCompatActivity() {
                 val detailIntent = Intent(this, profile::class.java)
                 startActivityForResult(detailIntent, 1)
             }
-        }
+
     }
+
     override fun onBackPressed() {
         finish()
         super.onBackPressed()

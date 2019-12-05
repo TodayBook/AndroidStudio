@@ -153,9 +153,9 @@ class CameraActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
-            val extras = data?.getExtras()
+            /*val extras = data?.getExtras()
             val imageBitmap = extras?.get("data") as Bitmap
-            (findViewById(R.id.imageVieww) as ImageView).setImageBitmap(imageBitmap)
+            (findViewById(R.id.imageVieww) as ImageView).setImageBitmap(imageBitmap)*/
 
         }
     }
