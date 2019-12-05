@@ -26,6 +26,7 @@ class profile : AppCompatActivity() {
     private val GET_GALLERY_IMAGE = 200
     val storage = FirebaseStorage.getInstance()
     var private:Boolean=false
+    var changedid:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         auth = FirebaseAuth.getInstance()
         super.onCreate(savedInstanceState)
@@ -41,11 +42,9 @@ class profile : AppCompatActivity() {
             startActivityForResult(intent, GET_GALLERY_IMAGE)
         }
         bt_change.setOnClickListener {
-            val changedid=change_id.text.toString()
+            changedid=change_id.text.toString()
             if(changedid!=null) {
-                database.child("users").child(auth.uid!!).child("UserId").setValue(changedid)
                 changeId()
-                database.child("UserId").child(changedid).child("uid").setValue(auth.uid!!)
                 val intent = Intent()
                 setResult(Activity.RESULT_OK, intent)
                 finish()
@@ -57,7 +56,7 @@ class profile : AppCompatActivity() {
             if (isChecked) {
                 private=true
             } else {
-                private=true
+                private=false
             }
         }
 
@@ -120,7 +119,10 @@ class profile : AppCompatActivity() {
                     var key: String = snapshot.key.toString()
                     var value = snapshot.value.toString()
                     if (key == "UserId") {
-                        database.child("UserId").child(value).child("uid").removeValue()
+                        database.child("users").child(auth.uid!!).child("UserId").setValue(changedid)
+                        database.child("UserId").child(value).removeValue()
+                        println(value)
+                        database.child("UserId").child(changedid!!).child("uid").setValue(auth.uid!!)
                     }
                 }
             }

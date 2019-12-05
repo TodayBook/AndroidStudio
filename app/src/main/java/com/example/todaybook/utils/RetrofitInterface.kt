@@ -16,7 +16,9 @@ interface RetrofitInterface {
         @Query("serviceKey") serviceKey: String,
         @Query("ctprvnNm") cityName: String,
         @Query("signguNm") sigungu: String,
-        @Query("type") type: String = "json"
+        @Query("type") type: String = "json",
+        @Query("pageNo") page: Int = 1,
+        @Query("numOfRows") numOfRows: Int = 100
     ): Call<ResponseBodyBox>
 
     @GET("lbrry-std")

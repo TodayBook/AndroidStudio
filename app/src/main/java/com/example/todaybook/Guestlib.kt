@@ -24,13 +24,13 @@ class Guestlib : AppCompatActivity() {
         var GuestId = intent.extras!!["GuestId"]
         println(GuestUid)
         println(GuestId)
+        guest_name.text=GuestId.toString()+"님의 도서관"
         val namelistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     var key : String = snapshot.key.toString()
                     var value = snapshot.value.toString()
                     if(key=="UserId")
-                        guest_name.text=value+"님의 도서관"
                         GuestId=value
                         break
                 }
@@ -94,10 +94,10 @@ class Guestlib : AppCompatActivity() {
         database.child("users").child(GuestUid.toString()).child("willBook").addValueEventListener(willbooklistener)
 
         bt_follow.setOnClickListener {
-            database.child("users").child(cuser!!.uid).child("following").child(GuestUid.toString()).setValue(GuestId)
+            //database.child("users").child(cuser!!.uid).child("following").child(GuestUid.toString()).setValue(GuestId)
             val mil=MyIdfindlistener()
             mil.MyIdfind(GuestUid.toString())
-            Toast.makeText(baseContext, "팔로우 완료!", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, "팔로우 완료!", Toast.LENGTH_SHORT).show()
         }
     }
     }

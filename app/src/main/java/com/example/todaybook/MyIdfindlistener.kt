@@ -19,9 +19,9 @@ class MyIdfindlistener {
                         var value = snapshot.value.toString()
                         if (key == "UserId") {
                             var Myid = value
-                            database.child("users").child(friendUid).child("follower").child(cuser.uid).setValue(Myid)
+                            database.child("users").child(friendUid).child("follow_request").child(cuser.uid).setValue(Myid)
                             var fcmPush=FcmPush()
-                            var message = Myid+"님이 회원님을 팔로우 했습니다."
+                            var message = Myid+"님이 팔로우를 요청했습니다."
                             fcmPush.sendMessage(friendUid, "", message)
                             print("sending")
                         }
