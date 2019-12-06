@@ -29,10 +29,10 @@ class friendfindLib : AppCompatActivity() {
         guest_name.text=friendId.toString()+"님의 도서관"
         findfrienduid()
         bt_follow.setOnClickListener {
-            database.child("users").child(cuser!!.uid).child("following").child(friendUid!!).setValue(friendId)
+            //database.child("users").child(cuser!!.uid).child("following").child(friendUid!!).setValue(friendId)
             val mil=MyIdfindlistener()
             mil.MyIdfind(friendUid!!)
-            Toast.makeText(baseContext, "팔로우 완료!", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, "팔로우 완료!", Toast.LENGTH_SHORT).show()
             val intent = Intent()
             setResult(Activity.RESULT_OK, intent)
             finish()

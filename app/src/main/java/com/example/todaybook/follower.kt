@@ -60,15 +60,14 @@ class follower : BaseFragment() {
                         println(key)
                         var value = snapshot.value.toString()
                         if (key == "private") {
-                            if(value=="false"){
-                                val detailIntent = Intent(ct, FriendlibActivity::class.java)
-                                detailIntent.putExtra("FriendUid",friendsUid[position])
-                                startActivityForResult(detailIntent,1)
-                            }
-                            else{
+                            if(value=="true"){
                                 Toast.makeText(view.context, "비공개입니다", Toast.LENGTH_SHORT).show()
                             }
-                            break
+                            else {
+                                val detailIntent = Intent(ct, FriendlibActivity::class.java)
+                                detailIntent.putExtra("FriendUid", friendsUid[position])
+                                startActivityForResult(detailIntent, 1)
+                            }
                         }
                     }
                 }

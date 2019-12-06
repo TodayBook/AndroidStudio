@@ -56,7 +56,7 @@ class profile : AppCompatActivity() {
             if (isChecked) {
                 private=true
             } else {
-                private=true
+                private=false
             }
         }
 
