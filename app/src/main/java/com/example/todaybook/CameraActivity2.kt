@@ -1,19 +1,17 @@
 package com.example.todaybook
 
 import android.Manifest
-import android.Manifest.permission.CAMERA
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -22,27 +20,21 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_camera.*
-import kotlinx.android.synthetic.main.activity_didbooklib_detail.*
-import kotlinx.android.synthetic.main.activity_mylib.*
-import kotlinx.android.synthetic.main.lib_book.*
-import kotlinx.android.synthetic.main.tester.*
-import android.os.Build
-import androidx.annotation.NonNull
-import androidx.fragment.app.FragmentActivity
+import kotlinx.android.synthetic.main.activity_camera2.*
+import kotlinx.android.synthetic.main.activity_camera2.bt_camera
+import kotlinx.android.synthetic.main.activity_camera2.bt_gallery
 
-
-class CameraActivity : AppCompatActivity() {
+class CameraActivity2 : AppCompatActivity() {
     val TAG = "MyMessage"
     private lateinit var auth: FirebaseAuth
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser
     var Camera=0
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera)
+        setContentView(R.layout.activity_camera2)
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
@@ -68,30 +60,21 @@ class CameraActivity : AppCompatActivity() {
         bt_camera.setOnClickListener{
             turnOnCamera()
         }
-        /*reload()*/
+
+        bt_gallery.setOnClickListener{
+
+        }
+        reload()
+
     }
+
     fun reload() {
         println("reload")
-        var photoList = ArrayList<CameraDataModel>()
+        var photoList = ArrayList<Camera>()
         photoList.clear()
 
-        /*val namelistener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    var key: String = snapshot.key.toString()
-                    var value = snapshot.value.toString()
-                    if (key == "UserId") break
-                }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        database.child("users").child(cuser!!.uid).addValueEventListener(namelistener)*/////////이름입력
-
-
-       val photoAdapter = CameraAdapter(this, photoList) { CameraDataModel ->
+       /* val photoAdapter = CameraAdapter(this, photoList) { CameraDataModel ->
             /*val detailIntent = Intent(this, didbooklib_detail::class.java)
             detailIntent.putExtra(
                 "Info",
@@ -103,12 +86,10 @@ class CameraActivity : AppCompatActivity() {
                 )
             )
             startActivityForResult(detailIntent, 1)*//////사진 누르면 이동하는 코드
-        }
+        }*/
 
-
-        recyclerView_photo.layoutManager =
-            LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        recyclerView_photo.adapter = photoAdapter
+        val cameraAdapter = CameraAdapter2(this, photoList)
+        BookListView.adapter = cameraAdapter
 
 
         var UserId: String
@@ -121,12 +102,12 @@ class CameraActivity : AppCompatActivity() {
                         var key: String = snapshot.key.toString()
                         var value = snapshot.getValue(CameraDB::class.java)
                         photoList.add(
-                            CameraDataModel(
+                            Camera(
                                 value!!.imageurl
                             )
                         )
                     }
-                    photoAdapter.notifyDataSetChanged()
+                    cameraAdapter.notifyDataSetChanged()
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -152,21 +133,18 @@ class CameraActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
-           /* val extras = data?.getExtras()
-            val imageBitmap = extras?.get("data") as Bitmap
-            val detailIntent = Intent(this, CameraActivity::class.java)
-            detailIntent.putExtra(
-                "Info",imageBitmap
-            )
-            startActivityForResult(detailIntent, 1)*/
-
             val extras = data?.getExtras()
             val imageBitmap = extras?.get("data") as Bitmap
-            (findViewById(R.id.cameraimg) as ImageView).setImageBitmap(imageBitmap)
+            var UserId: String
+            val bookinfo by lazy { intent.extras!!["Info"] as BookInfo2 }
+            if (cuser != null) {
+                UserId = cuser.uid
+                database.child("users").child(UserId).child("didBook").child(bookinfo.title)
+                    .push().setValue(imageBitmap)
+            }
+
+            /*(findViewById(R.id.cameraimg) as ImageView).setImageBitmap(imageBitmap)*/
 
         }
     }
-
 }
-
-

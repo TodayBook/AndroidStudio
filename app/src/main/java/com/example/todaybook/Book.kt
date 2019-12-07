@@ -34,6 +34,10 @@ data class book (
     var contents: String
 
 )
+class Camera(
+    var picurl: String
+
+)
 
 
 

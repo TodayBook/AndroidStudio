@@ -32,7 +32,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".friendfindLib"></activity>
+        <activity android:name=".CameraActivity2"></activity>
+        <activity android:name=".friendfindLib" />
         <activity android:name=".Guestlib" />
         <activity android:name=".notification" />
         <activity android:name=".mapsmodel.notification" />
@@ -93,9 +94,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
     </application>
-
-
 
 </manifest>
