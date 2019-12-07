@@ -94,10 +94,8 @@ class Guestlib : AppCompatActivity() {
         database.child("users").child(GuestUid.toString()).child("willBook").addValueEventListener(willbooklistener)
 
         bt_follow.setOnClickListener {
-            //database.child("users").child(cuser!!.uid).child("following").child(GuestUid.toString()).setValue(GuestId)
             val mil=MyIdfindlistener()
             mil.MyIdfind(GuestUid.toString())
-            //Toast.makeText(baseContext, "팔로우 완료!", Toast.LENGTH_SHORT).show()
         }
     }
     }
