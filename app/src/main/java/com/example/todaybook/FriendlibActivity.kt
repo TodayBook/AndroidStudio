@@ -48,7 +48,7 @@ class FriendlibActivity : AppCompatActivity() {
         }
         val wbAdapter = ViewAdapter(this, willreadList) { imageDataModel ->
             val detailIntent = Intent(this, friendwillbook_detail::class.java)
-            detailIntent.putExtra("Info",BookInfo(imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
+            detailIntent.putExtra("Info",FriendBookInfo(FriendUid.toString(),imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
             startActivityForResult(detailIntent, 1)
         }
         recyclerView_readbook.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)

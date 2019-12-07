@@ -1,5 +1,6 @@
 package com.example.todaybook
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,21 +26,6 @@ class Guestlib : AppCompatActivity() {
         println(GuestUid)
         println(GuestId)
         guest_name.text=GuestId.toString()+"님의 도서관"
-        val namelistener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    var key : String = snapshot.key.toString()
-                    var value = snapshot.value.toString()
-                    if(key=="UserId")
-                        GuestId=value
-                        break
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        database.child("users").child(GuestUid.toString()).addValueEventListener(namelistener)
 
         var readList = ArrayList<ImageDataModel>()
         readList.clear()
@@ -54,7 +40,7 @@ class Guestlib : AppCompatActivity() {
         }
         val wbAdapter = ViewAdapter(this, willreadList) { imageDataModel ->
             val detailIntent = Intent(this, friendwillbook_detail::class.java)
-            detailIntent.putExtra("Info",BookInfo(imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
+            detailIntent.putExtra("Info",FriendBookInfo(GuestUid.toString(),imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
             startActivityForResult(detailIntent, 1)
         }
         guest_didbook.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
@@ -94,8 +80,28 @@ class Guestlib : AppCompatActivity() {
         database.child("users").child(GuestUid.toString()).child("willBook").addValueEventListener(willbooklistener)
 
         bt_follow.setOnClickListener {
-            val mil=MyIdfindlistener()
-            mil.MyIdfind(GuestUid.toString())
+            val myIdlistener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        var key: String = snapshot.key.toString()
+                        var value = snapshot.value.toString()
+                        if (key == "UserId") {
+                            var Myid = value
+                            database.child("users").child(GuestUid.toString()).child("follow_request").child(cuser!!.uid).setValue(Myid)
+                            var fcmPush=FcmPush()
+                            var message = Myid+"님이 팔로우를 요청했습니다."
+                            fcmPush.sendMessage(GuestUid.toString(), "", message)
+                            Toast.makeText(baseContext, "팔로우 요청 완료", Toast.LENGTH_SHORT).show()
+                            val intent = Intent()
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
+                        }
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            database.child("users").child(cuser!!.uid).addValueEventListener(myIdlistener)
         }
     }
     }
