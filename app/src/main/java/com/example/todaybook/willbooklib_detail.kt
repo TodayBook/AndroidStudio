@@ -5,9 +5,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -23,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_willbooklib_detail.comments_input
 import kotlinx.android.synthetic.main.activity_willbooklib_detail.coverimage
 import kotlinx.android.synthetic.main.activity_willbooklib_detail.pubView
 import kotlinx.android.synthetic.main.activity_willbooklib_detail.titleView
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -116,8 +120,15 @@ class willbooklib_detail : AppCompatActivity() {
             val comment_writer = cuser!!.uid
             val comment_time = Calendar.getInstance().getTime()
             database.child("users").child(cuser?.uid!!).child("willBook").child(bookinfo.title).child("comment").child(comment_time.toString()).setValue(comment_item(comment, comment_writer))
+            comments_input.text.clear()
             commentsload()
         }
+    }
+    override fun onBackPressed() {
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+        super.onBackPressed()
     }
     fun commentsload(){
         var comment_time_array = ArrayList<String>()
@@ -146,5 +157,35 @@ class willbooklib_detail : AppCompatActivity() {
             }
         }
         database.child("users").child(cuser!!.uid).child("willBook").child(title!!).child("comment").addValueEventListener(commentsreadlistener)
+
+
+        comments_list.setOnItemClickListener { parant, itemView, position, id ->
+            if(comment_writer_array[position]==cuser.uid) {
+                val dialogView = layoutInflater.inflate(R.layout.comment_popup, null)
+                val editcomment = dialogView.findViewById<EditText>(R.id.edit_comment)
+                editcomment.setText(comment_array[position])
+                val builder = AlertDialog.Builder(this)
+                builder.setView(dialogView)
+                    .setPositiveButton("수정") { dialogInterface, i ->
+                        database.child("users").child(cuser!!.uid).child("willBook").child(title!!)
+                            .child("comment").child(comment_time_array[position]).removeValue()
+                        database.child("users").child(cuser!!.uid).child("willBook").child(title!!)
+                            .child("comment").child(Calendar.getInstance().getTime().toString())
+                            .setValue(
+                                comment_item(
+                                    editcomment.text.toString(),
+                                    comment_writer_array[position]
+                                )
+                            )
+                        commentsload()
+                    }
+                    .setNegativeButton("삭제") { dialogInterface, i ->
+                        database.child("users").child(cuser!!.uid).child("willBook").child(title!!)
+                            .child("comment").child(comment_time_array[position]).removeValue()
+                        commentsload()
+                    }
+                    .show()
+            }
+        }
     }
 }

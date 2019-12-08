@@ -1,5 +1,6 @@
 package com.example.todaybook
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,12 +12,33 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_mylib.*
+import android.widget.Toast
+import android.R.attr.data
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 class FriendlibActivity : AppCompatActivity() {
     var database = FirebaseDatabase.getInstance().reference
+    var resultcode=200
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mylib)
+        reload()
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+                reload()
+    }
+    fun reload(){
+        println("reload")
+        var readList = ArrayList<ImageDataModel>()
+        readList.clear()
+        val willreadList = ArrayList<ImageDataModel>()
+        willreadList.clear()
+
         val FriendUid by lazy { intent.extras!!["FriendUid"] }
 
         val namelistener = object : ValueEventListener {
@@ -26,7 +48,7 @@ class FriendlibActivity : AppCompatActivity() {
                     var value = snapshot.value.toString()
                     if(key=="UserId")
                         nametext.text=value+"님의 도서관"
-                        break
+                    break
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
@@ -35,11 +57,6 @@ class FriendlibActivity : AppCompatActivity() {
         }
         database.child("users").child(FriendUid.toString()).addValueEventListener(namelistener)
 
-        var readList = ArrayList<ImageDataModel>()
-        readList.clear()
-
-        val willreadList = ArrayList<ImageDataModel>()
-        willreadList.clear()
 
         val rbAdapter = ViewAdapter(this, readList) { imageDataModel ->
             val detailIntent = Intent(this, frienddidbook_detail::class.java)
@@ -57,35 +74,40 @@ class FriendlibActivity : AppCompatActivity() {
         recyclerView_readbook.adapter = rbAdapter
         recyclerView_willbook.adapter = wbAdapter
 
-            val readbooklistener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (snapshot in dataSnapshot.children) {
-                        var key : String = snapshot.key.toString()
-                        var value = snapshot.getValue(bookDB::class.java)
-                        readList.add(ImageDataModel(value!!.imageurl,key,value.author,value.publisher))
-                    }
-                    rbAdapter.notifyDataSetChanged()
+        val readbooklistener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    var key : String = snapshot.key.toString()
+                    var value = snapshot.getValue(bookDB::class.java)
+                    readList.add(ImageDataModel(value!!.imageurl,key,value.author,value.publisher))
                 }
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
-                }
+                rbAdapter.notifyDataSetChanged()
             }
-            database.child("users").child(FriendUid.toString()).child("didBook").addValueEventListener(readbooklistener)
-
-            val willbooklistener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (snapshot in dataSnapshot.children) {
-                        var key : String = snapshot.key.toString()
-                        var value = snapshot.getValue(bookDB::class.java)
-                        willreadList.add(ImageDataModel(value!!.imageurl,key,value.author,value.publisher))
-                    }
-                    wbAdapter.notifyDataSetChanged()
-                }
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
-                }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
             }
-            database.child("users").child(FriendUid.toString()).child("willBook").addValueEventListener(willbooklistener)
         }
+        database.child("users").child(FriendUid.toString()).child("didBook").addValueEventListener(readbooklistener)
+
+        val willbooklistener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    var key : String = snapshot.key.toString()
+                    var value = snapshot.getValue(bookDB::class.java)
+                    willreadList.add(ImageDataModel(value!!.imageurl,key,value.author,value.publisher))
+                }
+                wbAdapter.notifyDataSetChanged()
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.child("users").child(FriendUid.toString()).child("willBook").addValueEventListener(willbooklistener)
+    }
+    override fun onBackPressed() {
+        val resultIntent = Intent(this,MainActivity::class.java)
+        setResult(1,resultIntent)
+        super.onBackPressed()
+    }
 
     }
