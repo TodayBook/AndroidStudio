@@ -19,12 +19,20 @@ import java.util.*
 import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.app.PendingIntent.getActivity
+import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
 
 class MainActivity : AppCompatActivity() {
-
+    val database = FirebaseDatabase.getInstance().reference
+    val cuser = FirebaseAuth.getInstance().currentUser
+    val storage = FirebaseStorage.getInstance()
     companion object {
         const val TAG = "MainActivity"
         const val NOTIFICATION_ID = 1001
@@ -35,8 +43,39 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val storageRef = storage.reference
+        if(cuser!=null) {
+            var ref = storageRef.child("profileimg/" + cuser.uid)
+            ref.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Any> { uri ->
+                val imageURL = uri.toString()
+                Glide.with(this).load(imageURL).into(bt_profile)
+            }).addOnFailureListener(OnFailureListener {
+                print("download failed")
+            })
+        }
+            bt_mylib.setOnClickListener {
+                if(cuser!=null) {
+                    val detailIntent = Intent(this, MylibActivity::class.java)
+                    startActivityForResult(detailIntent, 1)
+                }
+            }
+            bt_friendlib.setOnClickListener {
+                if(cuser!=null) {
+                    val detailIntent = Intent(this, friendList::class.java)
+                    startActivityForResult(detailIntent, 1)
+                }
+            }
+            bt_profile.setOnClickListener {
+                if(cuser!=null) {
+                    val detailIntent = Intent(this, profile::class.java)
+                    startActivityForResult(detailIntent, 1)
+                }
+            }
 
-
+        if(cuser==null){
+            val detailIntent = Intent(this, login::class.java)
+            startActivityForResult(detailIntent, 1)
+        }
         if (!checkForPermission()) {
             Log.i(TAG, "The user may not allow the access to apps usage. ")
             Toast.makeText(
@@ -84,12 +123,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }*/
         }
-
-
-
-
-
-            bt_Search.setOnClickListener {
+                 bt_Search.setOnClickListener {
                 var bookTitle = edit_title.text.toString()
                 if (bookTitle.length <= 0) {
                     Toast.makeText(baseContext, "제목을 입력하세요", Toast.LENGTH_SHORT).show()
@@ -112,20 +146,9 @@ class MainActivity : AppCompatActivity() {
                 val detailIntent = Intent(this, MapsActivity::class.java)
                 startActivityForResult(detailIntent, 1)
             }
-            bt_mylib.setOnClickListener {
-                val detailIntent = Intent(this, MylibActivity::class.java)
-                startActivityForResult(detailIntent, 1)
-            }
-            bt_friendlib.setOnClickListener {
-                val detailIntent = Intent(this, friendList::class.java)
-                startActivityForResult(detailIntent, 1)
-            }
+
             bt_login.setOnClickListener {
                 val detailIntent = Intent(this, login::class.java)
-                startActivityForResult(detailIntent, 1)
-            }
-            bt_profile.setOnClickListener {
-                val detailIntent = Intent(this, profile::class.java)
                 startActivityForResult(detailIntent, 1)
             }
 

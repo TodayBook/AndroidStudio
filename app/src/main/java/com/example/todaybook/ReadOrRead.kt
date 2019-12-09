@@ -30,30 +30,35 @@ class ReadOrRead : AppCompatActivity() {
 
         val bookimage = findViewById<ImageView>(R.id.coverimage)
         val booktitle = findViewById<TextView>(R.id.titleView)
-        val bookauthor =findViewById<TextView>(R.id.authorView)
-        val bookpublisher =findViewById<TextView>(R.id.pubView)
-        val bookcontents =findViewById<TextView>(R.id.detailcontents)
+        val bookauthor = findViewById<TextView>(R.id.authorView)
+        val bookpublisher = findViewById<TextView>(R.id.pubView)
+        val bookcontents = findViewById<TextView>(R.id.detailcontents)
 
         Glide.with(this).load(bookinfo.imageurl).into(bookimage)
 
         booktitle.text = bookinfo.title
-        bookpublisher.text =  bookinfo.pub
-        bookauthor.text = ( bookinfo.author).toString()
-        bookcontents.text =  bookinfo.contents
+        bookpublisher.text = bookinfo.pub
+        bookauthor.text = (bookinfo.author).toString()
+        bookcontents.text = bookinfo.contents
 
         println(bookinfo.title)
+        if(cuser!=null){
         bt_didbook.setOnClickListener {
-            database.child("users").child(cuser?.uid!!).child("didBook").child(EncodeString(bookinfo.title)).setValue(bookDB(bookinfo.imageurl, bookinfo.author, bookinfo.pub))
+            database.child("users").child(cuser?.uid!!).child("didBook")
+                .child(EncodeString(bookinfo.title))
+                .setValue(bookDB(bookinfo.imageurl, bookinfo.author, bookinfo.pub))
             val myIdlistener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
                         var key: String = snapshot.key.toString()
                         var value = snapshot.value.toString()
                         if (key == "UserId") {
-                            database.child("Books").child(bookinfo.title).child(cuser.uid).setValue(value)
+                            database.child("Books").child(bookinfo.title).child(cuser.uid)
+                                .setValue(value)
                         }
                     }
                 }
+
                 override fun onCancelled(databaseError: DatabaseError) {
                 }
             }
@@ -76,7 +81,9 @@ class ReadOrRead : AppCompatActivity() {
                 .show()
         }
         bt_willbook.setOnClickListener {
-            database.child("users").child(cuser?.uid!!).child("willBook").child(EncodeString(bookinfo.title)).setValue(bookDB(bookinfo.imageurl, bookinfo.author, bookinfo.pub))
+            database.child("users").child(cuser?.uid!!).child("willBook")
+                .child(EncodeString(bookinfo.title))
+                .setValue(bookDB(bookinfo.imageurl, bookinfo.author, bookinfo.pub))
             Toast.makeText(baseContext, "Success!!", Toast.LENGTH_SHORT).show()
 
 
@@ -92,8 +99,9 @@ class ReadOrRead : AppCompatActivity() {
                     startActivityForResult(detailIntent, 1)
 
                 }
-                
+
                 .show()
         }
+    }
     }
 }

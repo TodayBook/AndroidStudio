@@ -21,25 +21,14 @@ class friendfindLib : AppCompatActivity() {
     val cuser = FirebaseAuth.getInstance().currentUser
     var friendUid:String?=null
     var friendId:String?=null
+    var myId:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_guestlib)
         friendId= intent.extras!!["FriendId"].toString()
+        myId= intent.extras!!["Myid"].toString()
         println(friendId)
         guest_name.text=friendId.toString()+"님의 도서관"
-        findfrienduid()
-        bt_follow.setOnClickListener {
-            //database.child("users").child(cuser!!.uid).child("following").child(friendUid!!).setValue(friendId)
-            val mil=MyIdfindlistener()
-            mil.MyIdfind(friendUid!!)
-            //Toast.makeText(baseContext, "팔로우 완료!", Toast.LENGTH_SHORT).show()
-            val intent = Intent()
-            setResult(Activity.RESULT_OK, intent)
-            finish()
-        }
-    }
-    fun findfrienduid(){
-        println("findfrienduid")
         val friendfindlistener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
@@ -60,6 +49,17 @@ class friendfindLib : AppCompatActivity() {
             }
         }
         database.child("UserId").child(friendId.toString()).addValueEventListener(friendfindlistener)
+
+        bt_follow.setOnClickListener {
+            database.child("users").child(friendUid!!).child("follow_request").child(cuser!!.uid).setValue(myId)
+            var fcmPush=FcmPush()
+            var message = myId+"님이 팔로우를 요청했습니다."
+            fcmPush.sendMessage(friendUid!!, "", message,"OPEN_ACTIVITY")
+            print("sending")
+            val intent = Intent()
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
     }
     fun friendlib(){
         println("friendlib")
@@ -67,7 +67,6 @@ class friendfindLib : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     var key: String = snapshot.key.toString()
-                    println(key)
                     var value = snapshot.value.toString()
                     if (key == "private") {
                         if(value!="true"){

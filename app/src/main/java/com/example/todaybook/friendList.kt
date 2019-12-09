@@ -23,6 +23,7 @@ import org.jetbrains.anko.toast
 class friendList : AppCompatActivity() {
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser
+    var myId:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_freindlist)
@@ -40,6 +41,7 @@ class friendList : AppCompatActivity() {
                     var friendId=dialogText.text.toString()
                     val detailIntent = Intent(baseContext, friendfindLib::class.java)
                     detailIntent.putExtra("FriendId",friendId)
+                    detailIntent.putExtra("Myid",myId)
                     startActivityForResult(detailIntent,1)
                 }
                 .setNegativeButton("취소") { dialogInterface, i ->
@@ -57,6 +59,7 @@ class friendList : AppCompatActivity() {
                     var key: String = snapshot.key.toString()
                     var value = snapshot.value.toString()
                     nametext.text = value + "님의 친구"
+                    myId=value
                     if (key == "UserId") break
                 }
             }

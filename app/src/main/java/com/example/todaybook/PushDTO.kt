@@ -7,6 +7,6 @@ data class PushDTO(
     data class Notification(
         var body: String? = null,                       //백그라운드 푸시 메시지 내용
         var title: String? = null, //백그라운드 푸시 타이틀
-        var click_action:String="OPEN_ACTIVITY"
+        var click_action:String=""
     )
 }

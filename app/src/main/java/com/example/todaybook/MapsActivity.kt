@@ -135,6 +135,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
             searchLib(str, cityName, sigungu)
             searchLib(str, cityName, sigungu + " " + addresses[3])
             searchLib(str, cityName, cityName + " " + sigungu)
+            Log.i("Address", addresses.toString())
+            Log.i("cityName", cityName)
+            Log.i("sigungu", sigungu)
         }
     }
 
@@ -260,7 +263,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
                     Log.d(MapsActivity.TAG, "onLocationResult : $markerSnippet")
 
 
-//                    setCurrentLocation(location, markerTitle, markerSnippet)
+                    setCurrentLocation(location, markerTitle, markerSnippet)
 
                     mCurrentLocatiion = location
                 }

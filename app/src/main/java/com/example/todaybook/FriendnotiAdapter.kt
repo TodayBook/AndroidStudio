@@ -1,6 +1,8 @@
 package com.example.todaybook
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,21 +54,21 @@ class FriendnotiAdapter(val context : Context, val friendId:ArrayList<String>, v
         var bt_friendnoti_ok: Button = view.findViewById(R.id.bt_friendnoti_ok)
         var bt_friendnoti_deny: Button = view.findViewById(R.id.bt_friendnoti_deny)
         bt_friendnoti_ok.setOnClickListener{
+            database.child("users").child(cuser!!.uid).child("follower").child(friendUid[idx]).setValue(friendId[idx])
+            database.child("users").child(cuser!!.uid).child("follow_request").child(friendUid[idx]).removeValue()
+            view.findViewById<TextView>(R.id.friendnoti_text).text = "요청을 수락하였습니다."
+            bt_friendnoti_ok.isVisible=false
+            bt_friendnoti_deny.isVisible=false
             val myIdlistener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
                         var key: String = snapshot.key.toString()
                         var value = snapshot.value.toString()
                         if (key == "UserId") {
-                            database.child("users").child(cuser!!.uid).child("follower").child(friendUid[idx]).setValue(friendId)
                             database.child("users").child(friendUid[idx]).child("following").child(cuser.uid).setValue(value)
-                            database.child("users").child(friendUid[idx]).child("follow_request").child(cuser!!.uid).removeValue()
                             var fcmPush=FcmPush()
                             var message = value+"님이 팔로우를 수락했습니다."
-                            fcmPush.sendMessage(friendUid[idx], "", message)
-                            view.findViewById<TextView>(R.id.friendnoti_text).text = "요청이 삭제되었습니다."
-                            bt_friendnoti_ok.isVisible=false
-                            bt_friendnoti_deny.isVisible=false
+                            fcmPush.sendMessage(friendUid[idx], "", message,"")
                             break
                         }
                     }
@@ -77,7 +79,8 @@ class FriendnotiAdapter(val context : Context, val friendId:ArrayList<String>, v
             database.child("users").child(cuser!!.uid).addValueEventListener(myIdlistener)
         }
         bt_friendnoti_deny.setOnClickListener {
-            database.child("users").child(friendUid[idx]).child("follow_request").child(cuser!!.uid).removeValue()
+            var frienduid=friendUid[idx]
+            database.child("users").child(cuser!!.uid).child("follow_request").child(frienduid).removeValue()
             view.findViewById<TextView>(R.id.friendnoti_text).text = "요청이 삭제되었습니다."
             bt_friendnoti_ok.isVisible=false
             bt_friendnoti_deny.isVisible=false
