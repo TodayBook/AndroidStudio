@@ -24,7 +24,7 @@ class NewActivity : AppCompatActivity() {
     lateinit var lib: Library
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps2)
+        setContentView(layout.activity_maps2)
 
         var libName: String = intent.getStringExtra("title")
         val str = URLDecoder.decode(serviceKey, "UTF-8")

@@ -263,7 +263,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
                     Log.d(MapsActivity.TAG, "onLocationResult : $markerSnippet")
 
 
-//                    setCurrentLocation(location, markerTitle, markerSnippet)
+                    setCurrentLocation(location, markerTitle, markerSnippet)
 
                     mCurrentLocatiion = location
                 }
