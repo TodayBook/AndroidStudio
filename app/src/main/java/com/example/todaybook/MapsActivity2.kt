@@ -17,7 +17,7 @@ import retrofit2.Response
 import java.net.URLDecoder
 
 
-class NewActivity : AppCompatActivity() {
+class MapsActivity2 : AppCompatActivity() {
     val serviceKey =
         "QgXDwOsi6tiCBiPIVhuyQCouyE%2BDemjMgKb3rf8BVXuVbJur6V%2BH%2BvuvKc7QCJqGE72AmxY5K2LbWrvXANV3hw%3D%3D"
 
