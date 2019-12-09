@@ -44,6 +44,7 @@ class login : AppCompatActivity() {
                     .show()
         }
         bt_login.setOnClickListener {
+            println(edit_email.text.toString())
             loginUser(edit_email.text.toString(),editText_password.text.toString())
         }
     }
@@ -56,7 +57,6 @@ class login : AppCompatActivity() {
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 } else {
-                    // If sign in fails, display a message to the user.
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
                 }
             }

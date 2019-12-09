@@ -5,6 +5,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:outlineProvider="bounds">
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,7 +81,8 @@
             android:text="이 책을 읽은 사람들"
             android:textSize="18sp" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
+            android:id="@+id/whoread"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -99,6 +101,63 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
+
+    <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="댓글"
+            android:textSize="24sp" />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+        <EditText
+                android:id="@+id/comments_input"
+                android:layout_width="326dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="댓글을 입력하세요"
+                android:inputType="textPersonName" />
+
+        <Button
+                android:id="@+id/bt_comments_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="등록" />
+
+    </LinearLayout>
+
+    <ScrollView
+            android:id="@+id/ScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:fillViewport="true">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <ListView
+                    android:id="@+id/comments_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+            </ListView>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

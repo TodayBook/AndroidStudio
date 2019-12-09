@@ -26,9 +26,10 @@ class friendlistAdapter(val context : Context, val friendlist:ArrayList<String>,
         return idx.toLong()
     }
 
+
     override fun getView(idx: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.friendlist, parent, false) as View
-        view.findViewById<TextView>(R.id.FriendId).text = friendlist[idx]
+        view.findViewById<TextView>(R.id.FriendId).text = friendlist[idx].toString()
         val friend_profileimg=view.findViewById<ImageView>(R.id.friend_profileimg)
         val storageRef = storage.reference
         var ref = storageRef.child("profileimg/"+friendprofilelist[idx])
