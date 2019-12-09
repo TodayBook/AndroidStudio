@@ -90,7 +90,7 @@ class Guestlib : AppCompatActivity() {
                             database.child("users").child(GuestUid.toString()).child("follow_request").child(cuser!!.uid).setValue(Myid)
                             var fcmPush=FcmPush()
                             var message = Myid+"님이 팔로우를 요청했습니다."
-                            fcmPush.sendMessage(GuestUid.toString(), "", message)
+                            fcmPush.sendMessage(GuestUid.toString(), "", message,"OPEN_ACTIVITY")
                             Toast.makeText(baseContext, "팔로우 요청 완료", Toast.LENGTH_SHORT).show()
                             val intent = Intent()
                             setResult(Activity.RESULT_OK, intent)

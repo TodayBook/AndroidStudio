@@ -54,7 +54,7 @@ class friendfindLib : AppCompatActivity() {
             database.child("users").child(friendUid!!).child("follow_request").child(cuser!!.uid).setValue(myId)
             var fcmPush=FcmPush()
             var message = myId+"님이 팔로우를 요청했습니다."
-            fcmPush.sendMessage(friendUid!!, "", message)
+            fcmPush.sendMessage(friendUid!!, "", message,"OPEN_ACTIVITY")
             print("sending")
             val intent = Intent()
             setResult(Activity.RESULT_OK, intent)

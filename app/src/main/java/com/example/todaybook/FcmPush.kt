@@ -21,7 +21,7 @@ class FcmPush {
         okHttpClient = OkHttpClient()
     }
 
-    fun sendMessage(destinationUid: String, title: String, message: String) {
+    fun sendMessage(destinationUid: String, title: String, message: String,clickaction:String) {
         FirebaseFirestore.getInstance().collection("pushtokens").document(destinationUid).get()//destinationUid의 값으로 푸시를 보낼 토큰값을 가져오는 코드
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -31,7 +31,7 @@ class FcmPush {
                     pushDTO.to = token                   //푸시토큰 세팅
                     pushDTO.notification?.title = title  //푸시 타이틀 세팅
                     pushDTO.notification?.body = message //푸시 메시지 세팅
-                    pushDTO.notification?.click_action = "OPEN_ACTIVITY"
+                    pushDTO.notification?.click_action = clickaction
 
                     var body = RequestBody.create(JSON, gson?.toJson(pushDTO)!!)
                     var request = Request
