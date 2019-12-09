@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.lib_book.*
 import kotlinx.android.synthetic.main.tester.*
 import android.os.Build
 import androidx.annotation.NonNull
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentActivity
 
 
@@ -65,44 +66,26 @@ class CameraActivity : AppCompatActivity() {
                 Log.d(TAG, "Permission: " + permissions[0] + "was " + grantResults[0])
             }
         }
-        bt_camera.setOnClickListener{
+        /*bt_camera.setOnClickListener{
             turnOnCamera()
-        }
+        }*/
         /*reload()*/
+
+
     }
     fun reload() {
         println("reload")
         var photoList = ArrayList<CameraDataModel>()
         photoList.clear()
 
-        /*val namelistener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    var key: String = snapshot.key.toString()
-                    var value = snapshot.value.toString()
-                    if (key == "UserId") break
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        database.child("users").child(cuser!!.uid).addValueEventListener(namelistener)*/////////이름입력
-
 
        val photoAdapter = CameraAdapter(this, photoList) { CameraDataModel ->
-            /*val detailIntent = Intent(this, didbooklib_detail::class.java)
+            val detailIntent = Intent(this, CameraDetailActivity::class.java)
             detailIntent.putExtra(
-                "Info",
-                BookInfo(
-                    imageDataModel.url,
-                    imageDataModel.title,
-                    imageDataModel.author,
-                    imageDataModel.pub
-                )
+                "picture",
+                    CameraDataModel.url
             )
-            startActivityForResult(detailIntent, 1)*//////사진 누르면 이동하는 코드
+            startActivityForResult(detailIntent, 1)/////사진 누르면 이동하는 코드
         }
 
 
@@ -137,7 +120,6 @@ class CameraActivity : AppCompatActivity() {
             database.child("users").child(UserId).child("didBook").child(bookinfo.title)
                 .addValueEventListener(photolistener)
 
-
         }
         else {
 
@@ -160,6 +142,16 @@ class CameraActivity : AppCompatActivity() {
             )
             startActivityForResult(detailIntent, 1)*/
 
+            /*val extras = data?.getExtras()
+            val imageBitmap = extras?.get("data") as Bitmap
+            var UserId: String
+            val bookinfo by lazy { intent.extras!!["Info"] as BookInfo2 }
+            if (cuser != null) {
+                UserId = cuser.uid
+                database.child("users").child(UserId).child("didBook").child(bookinfo.title)
+                    .push().setValue(imageBitmap)
+
+            }*/
             val extras = data?.getExtras()
             val imageBitmap = extras?.get("data") as Bitmap
             (findViewById(R.id.cameraimg) as ImageView).setImageBitmap(imageBitmap)

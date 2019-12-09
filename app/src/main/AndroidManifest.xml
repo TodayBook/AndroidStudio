@@ -32,7 +32,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".CameraActivity2"></activity>
+        <activity android:name=".CameraDetailActivity"></activity>
+        <activity android:name=".CameraActivity2" />
         <activity android:name=".friendfindLib" />
         <activity android:name=".Guestlib" />
         <activity android:name=".notification" />
