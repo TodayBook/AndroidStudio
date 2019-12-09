@@ -53,6 +53,29 @@ class MainActivity : AppCompatActivity() {
                 print("download failed")
             })
         }
+            bt_mylib.setOnClickListener {
+                if(cuser!=null) {
+                    val detailIntent = Intent(this, MylibActivity::class.java)
+                    startActivityForResult(detailIntent, 1)
+                }
+            }
+            bt_friendlib.setOnClickListener {
+                if(cuser!=null) {
+                    val detailIntent = Intent(this, friendList::class.java)
+                    startActivityForResult(detailIntent, 1)
+                }
+            }
+            bt_profile.setOnClickListener {
+                if(cuser!=null) {
+                    val detailIntent = Intent(this, profile::class.java)
+                    startActivityForResult(detailIntent, 1)
+                }
+            }
+
+        if(cuser==null){
+            val detailIntent = Intent(this, login::class.java)
+            startActivityForResult(detailIntent, 1)
+        }
         if (!checkForPermission()) {
             Log.i(TAG, "The user may not allow the access to apps usage. ")
             Toast.makeText(
@@ -100,12 +123,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }*/
         }
-
-
-
-
-
-            bt_Search.setOnClickListener {
+                 bt_Search.setOnClickListener {
                 var bookTitle = edit_title.text.toString()
                 if (bookTitle.length <= 0) {
                     Toast.makeText(baseContext, "제목을 입력하세요", Toast.LENGTH_SHORT).show()
@@ -128,20 +146,9 @@ class MainActivity : AppCompatActivity() {
                 val detailIntent = Intent(this, MapsActivity::class.java)
                 startActivityForResult(detailIntent, 1)
             }
-            bt_mylib.setOnClickListener {
-                val detailIntent = Intent(this, MylibActivity::class.java)
-                startActivityForResult(detailIntent, 1)
-            }
-            bt_friendlib.setOnClickListener {
-                val detailIntent = Intent(this, friendList::class.java)
-                startActivityForResult(detailIntent, 1)
-            }
+
             bt_login.setOnClickListener {
                 val detailIntent = Intent(this, login::class.java)
-                startActivityForResult(detailIntent, 1)
-            }
-            bt_profile.setOnClickListener {
-                val detailIntent = Intent(this, profile::class.java)
                 startActivityForResult(detailIntent, 1)
             }
 

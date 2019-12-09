@@ -68,7 +68,7 @@ class FriendnotiAdapter(val context : Context, val friendId:ArrayList<String>, v
                             database.child("users").child(friendUid[idx]).child("following").child(cuser.uid).setValue(value)
                             var fcmPush=FcmPush()
                             var message = value+"님이 팔로우를 수락했습니다."
-                            fcmPush.sendMessage(friendUid[idx], "", message)
+                            fcmPush.sendMessage(friendUid[idx], "", message,"")
                             break
                         }
                     }

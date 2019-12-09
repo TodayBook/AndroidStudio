@@ -1,5 +1,6 @@
 package com.example.todaybook
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -41,5 +42,9 @@ class friendnoti : AppCompatActivity() {
         database.child("users").child(cuser!!.uid).child("follow_request").addValueEventListener(friendnotilistener)
 
     }
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val detailIntent = Intent(this, MainActivity::class.java)
+        startActivityForResult(detailIntent, 1)
+    }
 }
