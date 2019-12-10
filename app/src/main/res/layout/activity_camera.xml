@@ -22,6 +22,7 @@
                 android:layout_height="61dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/button2"
                 android:foreground="@android:drawable/ic_menu_camera" />
     </LinearLayout>
 
@@ -39,6 +40,7 @@
                 android:layout_height="61dp"
                 android:layout_gravity="bottom|end"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/button2"
                 android:foreground="@android:drawable/ic_menu_gallery"
                 android:textAlignment="center" />
 

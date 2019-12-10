@@ -318,12 +318,5 @@
                     tools:text="asd" />
         </LinearLayout>
 
-
-        <fragment
-                android:id="@+id/maps"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_marginBottom="20dp"
-                android:layout_height="250dp"/>
     </LinearLayout>
 </ScrollView>
