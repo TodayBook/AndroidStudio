@@ -8,8 +8,10 @@
             <item android:bottom="3dp">
                 <shape>
                     <corners android:radius="3dp" />
-                    <solid android:color="#25E2DDCB" />
+                    <solid android:color="##25E2DDCB" />
+
                     <stroke android:width="1dp" android:color="#25E2DDCB" />
+                    //테두리 색
                 </shape>
             </item>
         </layer-list>
