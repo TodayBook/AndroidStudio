@@ -17,36 +17,40 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.135" />
+            app:layout_constraintVertical_bias="0.135" /><![CDATA[
+            android:textSize="24sp" />
 
+
+
+    ]]>
 
     <Button
             android:id="@+id/bt_camera"
             android:layout_width="52dp"
             android:layout_height="61dp"
             android:layout_gravity="center"
+            android:layout_marginStart="236dp"
             android:foreground="@android:drawable/ic_menu_camera"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/bt_gallery"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.21" />
+
 
     <Button
             android:id="@+id/bt_gallery"
             android:layout_width="52dp"
             android:layout_height="61dp"
             android:layout_gravity="bottom|end"
-            android:layout_marginEnd="24dp"
+            android:background="@drawable/button2"
             android:foreground="@android:drawable/ic_menu_gallery"
             android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="@+id/recyclerView_photo"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.952"
+            app:layout_constraintHorizontal_bias="0.874"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.216" />
+            app:layout_constraintTop_toTopOf="@+id/nametext"
+            app:layout_constraintVertical_bias="0.178" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_photo"

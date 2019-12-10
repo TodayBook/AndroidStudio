@@ -5,6 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+       
         tools:context=".MainActivity">
 
     <EditText
@@ -28,6 +29,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:text="Login"
+            android:background="@drawable/button1"
             android:textColor="#553B12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,6 +50,7 @@
             android:layout_marginEnd="17dp"
             android:text="map"
             android:textColor="#553B12"
+            android:background="@drawable/button1"
             app:layout_constraintBaseline_toBaselineOf="@+id/bt_mylib"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -58,6 +61,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginBottom="17dp"
             android:text="MyLib"
+            android:background="@drawable/button1"
             android:textColor="#553B12"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bt_friendlib" />
@@ -69,6 +73,7 @@
             android:layout_marginStart="108dp"
             android:layout_marginEnd="110dp"
             android:text="Friends"
+            android:background="@drawable/button1"
             android:textColor="#553B12"
             app:layout_constraintBaseline_toBaselineOf="@+id/bt_mylib"
             app:layout_constraintEnd_toStartOf="@+id/bt_map"

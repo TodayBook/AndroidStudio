@@ -27,6 +27,7 @@ android:layout_height="200dp">
             android:layout_marginLeft="348dp"
             android:layout_marginEnd="110dp"
             android:layout_marginRight="110dp"
+            android:background="@drawable/button1"
             android:text="+"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/bt_map"

@@ -66,10 +66,10 @@ class CameraActivity : AppCompatActivity() {
                 Log.d(TAG, "Permission: " + permissions[0] + "was " + grantResults[0])
             }
         }
-        /*bt_camera.setOnClickListener{
+        bt_camera.setOnClickListener{
             turnOnCamera()
-        }*/
-        /*reload()*/
+        }
+        reload()
 
 
     }
@@ -85,7 +85,7 @@ class CameraActivity : AppCompatActivity() {
                 "picture",
                     CameraDataModel.url
             )
-            startActivityForResult(detailIntent, 1)/////사진 누르면 이동하는 코드
+            startActivityForResult(detailIntent, 1)
         }
 
 
@@ -102,10 +102,15 @@ class CameraActivity : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
                         var key: String = snapshot.key.toString()
-                        var value = snapshot.getValue(CameraDB::class.java)
+                        var value = snapshot.getValue(newDB::class.java)
+                        /*var value = snapshot.getValue(CameraDB::class.java)*/
                         photoList.add(
                             CameraDataModel(
-                                value!!.imageurl
+                                value!!.imageurl,
+                                value.imageurl,
+                                key,
+                                value.author,
+                                value.publisher
                             )
                         )
                     }
@@ -116,9 +121,11 @@ class CameraActivity : AppCompatActivity() {
                     Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
                 }
             }
-            val bookinfo by lazy { intent.extras!!["Info"] as BookInfo2 }
-            database.child("users").child(UserId).child("didBook").child(bookinfo.title)
+            val bookinfo by lazy { intent.extras!!["result"] as BookInfo }
+            database.child("users").child(UserId).child("didBook")
                 .addValueEventListener(photolistener)
+            /*database.child("users").child(UserId).child("didBook").child(bookinfo.title)
+                .addValueEventListener(photolistener)*/
 
         }
         else {
@@ -131,7 +138,10 @@ class CameraActivity : AppCompatActivity() {
         startActivityForResult(intent,Camera)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {/////camera로 찍은 사진을 처리하는 함수
+    fun EncodeString(title:String):String {
+        return title.replace(".", " ")
+    }
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
            /* val extras = data?.getExtras()
@@ -152,11 +162,38 @@ class CameraActivity : AppCompatActivity() {
                     .push().setValue(imageBitmap)
 
             }*/
-            val extras = data?.getExtras()
+            /*val extras = data?.getExtras()
             val imageBitmap = extras?.get("data") as Bitmap
-            (findViewById(R.id.cameraimg) as ImageView).setImageBitmap(imageBitmap)
+            (findViewById(R.id.cameraimg) as ImageView).setImageBitmap(imageBitmap)*//////그냥 tester에 띄우던 코드
+            val bookinfo by lazy { intent.extras!!["result"] as BookInfo }
+            val extras = data?.getExtras()
+            val imageBitmap = extras?.get("data").toString()
+            database.child("users").child(cuser?.uid!!).child("didBook")
+                .child(EncodeString(bookinfo.title))
+                .push().setValue(newDB(imageBitmap))
+            val myIdlistener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        var key: String = snapshot.key.toString()
+                        var value = snapshot.value.toString()
+                        if (key == "UserId") {
+                            database.child("Books").child(bookinfo.title).child(cuser.uid)
+                                .setValue(value)
+                        }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            database.child("users").child(cuser.uid).addValueEventListener(myIdlistener)
 
         }
+    }
+    override fun onBackPressed() {
+        val resultIntent = Intent(this,MainActivity::class.java)
+        setResult(1,resultIntent)
+        super.onBackPressed()
     }
 
 }

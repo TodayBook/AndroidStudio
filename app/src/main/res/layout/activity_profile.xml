@@ -60,6 +60,7 @@
             android:layout_width="57dp"
             android:layout_height="46dp"
             android:layout_marginEnd="16dp"
+            android:background="@drawable/button1"
             android:text="변경"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -69,8 +70,9 @@
 
     <Button
             android:id="@+id/bt_profileimg_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="103dp"
+            android:layout_height="47dp"
+            android:background="@drawable/button1"
             android:text="프로필 사진 변경"
             app:layout_constraintBottom_toTopOf="@+id/textView6"
             app:layout_constraintEnd_toEndOf="parent"

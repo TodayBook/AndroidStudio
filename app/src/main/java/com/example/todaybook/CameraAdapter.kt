@@ -4,6 +4,8 @@ package com.example.todaybook
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import android.widget.ImageView
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import org.jetbrains.anko.db.NULL
 
 class CameraAdapter(val context: Context, private val CameraDataModelList: ArrayList<CameraDataModel>,val itemClick: (CameraDataModel) -> Unit) : RecyclerView.Adapter<CameraAdapter.ViewHolder>() {
 
@@ -31,8 +34,26 @@ class CameraAdapter(val context: Context, private val CameraDataModelList: Array
 
         fun bindItems(CameraDataModel: CameraDataModel) {
             val imageView = itemView.findViewById<ImageView>(R.id.cameraimg)
-            Glide.with(itemView.context).load(CameraDataModel.url).into(imageView)
+
+
+            val imageBitmap = StringToBitmap(CameraDataModel.photourl)
+            imageView.setImageBitmap(imageBitmap)
+
+            /*Glide.with(itemView.context).load(CameraDataModel.url).into(imageView)*/
+
             itemView.setOnClickListener { itemClick(CameraDataModel) }
+        }
+    }
+    fun StringToBitmap(encodedString:String):Bitmap? {
+        try
+        {
+            val encodeByte = Base64.decode(encodedString, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
+            return bitmap
+        }
+        catch (e:Exception) {
+            e.message
+            return null
         }
     }
 }

@@ -30,6 +30,7 @@
             app:layout_constraintHorizontal_bias="0.738"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/button2"
             app:layout_constraintVertical_bias="0.21" />
 
     <Button
@@ -44,6 +45,7 @@
             app:layout_constraintHorizontal_bias="0.955"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/button2"
             app:layout_constraintVertical_bias="0.21" />
 
     <ListView
