@@ -32,7 +32,7 @@
                 android:id="@+id/maps"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="488dp"
                 tools:context="com.example.abcd.googlemap.MapsActivity" />
 
         <Button

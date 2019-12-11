@@ -40,6 +40,7 @@
         <activity android:name=".CameraActivity2" />
 
 
+
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
 
@@ -74,16 +75,7 @@
 
         <activity
                 android:name=".MapsActivity"
-                android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".MapsActivity2">
-
-        </activity>
+                android:label="@string/title_activity_maps" />
         <activity
                 android:name=".MylibActivity"
                 android:label="@string/title_activity_mylib"
@@ -97,7 +89,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".MapsActivity2" />
+        <uses-library
+                android:name="org.apache.http.legacy"
+                android:required="false"/>
 
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
