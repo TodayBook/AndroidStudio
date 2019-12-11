@@ -82,7 +82,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
 
     //api 서비스 키 입니다.
     val serviceKey =
-        "QgXDwOsi6tiCBiPIVhuyQCouyE%2BDemjMgKb3rf8BVXuVbJur6V%2BH%2BvuvKc7QCJqGE72AmxY5K2LbWrvXANV3hw%3D%3D"
+        "tXbnAEdBkbg%2FJDMf%2FIutPVO5IuduRgVGHbjuvYQAkCuml38A7Ms9QCDEmA1b6q%2Fdx7CUIxV9DUenLnlVw5YJHw%3D%3D"
 
     fun showPlaceInformation(location: LatLng?) {
         mMap!!.clear()
@@ -191,7 +191,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
         Log.d(MapsActivity.TAG, "onMapReady :")
         mMap = googleMap
         mMap!!.setOnInfoWindowClickListener { marker ->
-            var intent = Intent(this@MapsActivity, MapsActivity::class.java)
+            var intent = Intent(this@MapsActivity, MapsActivity2::class.java)
             var title: String? = marker.title
             intent.putExtra("title", title)
             startActivity(intent)
@@ -241,7 +241,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
             }
         }
         mMap!!.uiSettings.isMyLocationButtonEnabled = true
-        mMap!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
+        mMap!!.animateCamera(CameraUpdateFactory.zoomTo(14.5f))
         mMap!!.setOnMapClickListener { Log.d(MapsActivity.TAG, "onMapClick :") }
     }
 

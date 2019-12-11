@@ -10,6 +10,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 class friendnoti : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -44,7 +49,7 @@ class friendnoti : AppCompatActivity() {
     }
     override fun onBackPressed() {
         super.onBackPressed()
-        val detailIntent = Intent(this, MainActivity::class.java)
-        startActivityForResult(detailIntent, 1)
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

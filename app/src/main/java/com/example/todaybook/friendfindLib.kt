@@ -100,7 +100,7 @@ class friendfindLib : AppCompatActivity() {
         }
         val wbAdapter = ViewAdapter(this, willreadList) { imageDataModel ->
             val detailIntent = Intent(this, friendwillbook_detail::class.java)
-            detailIntent.putExtra("Info",BookInfo(imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
+            detailIntent.putExtra("Info",FriendBookInfo(friendUid!!,imageDataModel.url,imageDataModel.title,imageDataModel.author,imageDataModel.pub))
             startActivityForResult(detailIntent, 1)
         }
         guest_didbook.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
