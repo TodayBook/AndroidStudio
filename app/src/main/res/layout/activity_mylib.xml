@@ -12,6 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="윤보경님의 도서관"
+            android:textColor="#553B12"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

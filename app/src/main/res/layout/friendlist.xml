@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
+            android:textColor="#553B12"
             android:text="TextView"
             android:textSize="18sp" />
 

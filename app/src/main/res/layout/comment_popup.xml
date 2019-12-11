@@ -10,6 +10,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:textColor="#553B12"
             android:text="수정/삭제" />
 
     <EditText

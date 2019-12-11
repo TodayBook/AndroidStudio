@@ -43,6 +43,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tittle"
+                            android:textColor="#553B12"
                             android:textSize="14sp" />
 
                     <TextView
@@ -51,6 +52,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="author"
+                            android:textColor="#553B12"
                             android:textSize="14sp" />
 
                     <TextView
@@ -59,6 +61,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="publisher"
+                            android:textColor="#553B12"
                             android:textSize="14sp" />
 
                 </LinearLayout>
@@ -76,6 +79,7 @@
                         android:layout_width="338dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
+                        android:textColor="#553B12"
                         android:hint="댓글을 입력하세요"
                         android:inputType="textPersonName" />
 
@@ -84,6 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/button1"
+                        android:textColor="#553B12"
                         android:text="등록" />
 
             </LinearLayout>
@@ -95,6 +100,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
+                    android:textColor="#553B12"
                     android:text="댓글"
                     android:textSize="24sp" />
 
