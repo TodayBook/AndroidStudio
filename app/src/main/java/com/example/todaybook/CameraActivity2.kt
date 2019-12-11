@@ -1,28 +1,39 @@
 package com.example.todaybook
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.activity_camera2.*
 import kotlinx.android.synthetic.main.activity_camera2.bt_camera
 import kotlinx.android.synthetic.main.activity_camera2.bt_gallery
+import kotlinx.android.synthetic.main.activity_profile.*
+import java.io.ByteArrayOutputStream
 
 class CameraActivity2 : AppCompatActivity() {
     val TAG = "MyMessage"
@@ -30,10 +41,13 @@ class CameraActivity2 : AppCompatActivity() {
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser
     var Camera=0
+    var PICK_IMAGE=3
+    val storage = FirebaseStorage.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera2)
+        auth = FirebaseAuth.getInstance()
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -62,66 +76,33 @@ class CameraActivity2 : AppCompatActivity() {
         }
 
         bt_gallery.setOnClickListener{
-
+            takePhotoFromGallery()
         }
-        /*reload()*/
+
+        bt_delete.setOnClickListener{
+            deletedata()
+        }
+        reload()
 
     }
 
     fun reload() {
-        println("reload")
-        var photoList = ArrayList<Camera>()
-        photoList.clear()
-
-
-       /* val photoAdapter = CameraAdapter(this, photoList) { CameraDataModel ->
-            /*val detailIntent = Intent(this, didbooklib_detail::class.java)
-            detailIntent.putExtra(
-                "Info",
-                BookInfo(
-                    imageDataModel.url,
-                    imageDataModel.title,
-                    imageDataModel.author,
-                    imageDataModel.pub
-                )
-            )
-            startActivityForResult(detailIntent, 1)*//////사진 누르면 이동하는 코드
-        }*/
-
-        val cameraAdapter = CameraAdapter2(this, photoList)
-        BookListView.adapter = cameraAdapter
-
-
-        var UserId: String
-        if (cuser != null) {
-            UserId = cuser.uid
-
-            val photolistener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (snapshot in dataSnapshot.children) {
-                        var key: String = snapshot.key.toString()
-                        var value = snapshot.getValue(CameraDB::class.java)
-                        photoList.add(
-                            Camera(
-                                value!!.imageurl
-                            )
-                        )
-                    }
-                    cameraAdapter.notifyDataSetChanged()
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
-                }
-            }
-            val bookinfo by lazy { intent.extras!!["Info"] as BookInfo2 }
-            database.child("users").child(UserId).child("didBook").child(bookinfo?.title)
-                .addValueEventListener(photolistener)
-
+        fun EncodeString(title:String):String {
+            return title.replace(".", " ")
         }
-        else {
+        val storageRef = storage.reference
+        val bookinfo by lazy { intent.extras!!["result"] as BookInfo }
+        var title=EncodeString(bookinfo.title)
+        /* var ref = storageRef.child("photo/" + "KakaoTalk_20181210_010920433.jpg")*/
+        /*var ref = storageRef.child("photo2/" + "${cuser!!.uid}" + "/" + "${title}" + "/" + "1")*/
+        var ref = storageRef.child("photo2/" + "${cuser!!.uid}" + "/" +"${title}" + "/" + "1")
+        ref.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Any> { uri ->
+            val imageURL = uri.toString()
+            Glide.with(this).load(imageURL).into(cameraimg)
+        }).addOnFailureListener(OnFailureListener {
+            print("download failed")
+        })
 
-        }
     }
 
     private fun turnOnCamera(){
@@ -130,20 +111,94 @@ class CameraActivity2 : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        fun EncodeString(title:String):String {
+            return title.replace(".", " ")
+        }
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            val extras = data?.getExtras()
-            val imageBitmap = extras?.get("data") as Bitmap
-            var UserId: String
-            val bookinfo by lazy { intent.extras!!["Info"] as BookInfo2 }
-            if (cuser != null) {
-                UserId = cuser.uid
-                database.child("users").child(UserId).child("didBook").child(bookinfo.title)
-                    .push().setValue(imageBitmap)
+        /*val extras = data?.getExtras()
+        var bitmap:Bitmap = extras?.get("data") as Bitmap*/
+        val bookinfo by lazy { intent.extras!!["result"] as BookInfo }
+        var title=EncodeString(bookinfo.title)
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data!!.getData())
+                (findViewById(R.id.cameraimg) as ImageView).setImageBitmap(bitmap)
+            }
+            catch (e:Exception) {
+                e.printStackTrace()
             }
 
-            /*(findViewById(R.id.cameraimg) as ImageView).setImageBitmap(imageBitmap)*/
-
+            val selectedImageUri = data!!.data
+            cameraimg.setImageURI(selectedImageUri)
+            val riversRef = storage.getReference().child("photo2/").child(auth.uid!!).child(title).child("1")
+            riversRef.putFile(selectedImageUri!!)
+                .addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+                    Toast.makeText(baseContext, "upload!", Toast.LENGTH_SHORT).show()
+                })
+                .addOnFailureListener(OnFailureListener {
+                    Toast.makeText(baseContext, "fail!", Toast.LENGTH_SHORT).show()
+                })//////갤러리에서 골라서 스토리지에 1로 저장
         }
+
+
+        if (resultCode == RESULT_OK&&requestCode == Camera) {
+            val extras = data?.getExtras()
+            val imageBitmap = extras?.get("data") as Bitmap
+            (findViewById(R.id.cameraimg) as ImageView).setImageBitmap(imageBitmap)
+            val selectedImageUri=getImageUriFromBitmap(this,imageBitmap)
+            val riversRef = storage.getReference().child("photo2/").child(auth.uid!!).child(title).child("1")
+            riversRef.putFile(selectedImageUri!!)
+                .addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+                    Toast.makeText(baseContext, "upload!", Toast.LENGTH_SHORT).show()
+                })
+                .addOnFailureListener(OnFailureListener {
+                    Toast.makeText(baseContext, "fail!", Toast.LENGTH_SHORT).show()
+                })/////카메라에서 골라서 스토리지에 1로 저장
+        }
+
+
+        /*val storageRef = storage.reference
+        var ref = storageRef.child("photo2/" + "${cuser!!.uid}" + "/" + "${title}" + "/" + "1")
+        ref.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Any> { uri ->
+            val imageURL = uri.toString()
+            Glide.with(this).load(imageURL).into(cameraimg)
+        }).addOnFailureListener(OnFailureListener {
+            print("download failed")
+        })/////스토리지에 있는 1 화면에 띄우기*/
+
     }
+
+
+    private fun takePhotoFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE)
+        intent.setType("image/*")
+        startActivityForResult(intent, PICK_IMAGE)
+    }
+    fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        return Uri.parse(path.toString())
+    }
+    fun deletedata(){
+        fun EncodeString(title:String):String {
+            return title.replace(".", " ")
+        }
+        val bookinfo by lazy { intent.extras!!["result"] as BookInfo }
+        var title=EncodeString(bookinfo.title)
+        FirebaseStorage.getInstance().getReference().child("photo2").child(auth.uid!!).child(title).child("1").delete()
+            .addOnSuccessListener({ taskSnapshot ->
+                Toast.makeText(baseContext, "success!", Toast.LENGTH_SHORT).show()
+            })
+            .addOnFailureListener(OnFailureListener {
+                Toast.makeText(baseContext, "fail!", Toast.LENGTH_SHORT).show()
+            })
+    }
+
+
 }
+/*Bitmap newImage=Bitmap.createBitmap(bitmap).copy(Config.ARGB_8888,true)
+        Canvas canvas=new Canvas(newImage)
+        canvas.drawCircle(100,100,50,pnt)
+        canvas.drawBitmap(bitImage,x,y,pnt)*/

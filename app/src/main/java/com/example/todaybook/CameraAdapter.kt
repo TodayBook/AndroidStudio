@@ -1,12 +1,14 @@
 package com.example.todaybook
 
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +45,7 @@ class CameraAdapter(val context: Context, private val CameraDataModelList: Array
 
             /*val imageBitmap:Bitmap? = StringToBitmap(CameraDataModel.photourl)
             imageView.setImageBitmap(imageBitmap)*/
+
             /*val uri= Uri.parse(CameraDataModel.photourl)
             imageView.setImageURI(uri)*/
 
@@ -59,16 +62,20 @@ class CameraAdapter(val context: Context, private val CameraDataModelList: Array
             }*/
 
 
-
+            /*val i=0
             if(cuser!=null) {
-                var ref = storageRef.child("photo/" + cuser.uid + CameraDataModel.title/*+imgBitmap.toString()*/)
-                ref.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Any> { uri ->
-                    val imageURL = uri.toString()
-                    Glide.with(itemView.context).load(imageURL).into(imageView)
-                }).addOnFailureListener(OnFailureListener {
-                    print("download failed")
-                })
-            }
+                while(i<count) {
+                    var ref = storageRef.child("photo/" + "${cuser.uid}" + "/" + "${CameraDataModel.title}" + "/" + "KakaoTalk_20181210_010920433.jpg")
+                    /*var ref = storageRef.child("photo/" + "KakaoTalk_20181210_010920433.jpg")*/////얘됐음
+                    /*var ref = storageRef.child("profileimg/" + cuser.uid)*////얘됐음
+                    ref.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Any> { uri ->
+                        val imageURL = uri.toString()
+                        Glide.with(itemView.context).load(imageURL).into(imageView)
+                    }).addOnFailureListener(OnFailureListener {
+                        print("download failed")
+                    })
+                }
+            }*/
 
             /*Glide.with(itemView.context).load(CameraDataModel.url).into(imageView)*/
 
