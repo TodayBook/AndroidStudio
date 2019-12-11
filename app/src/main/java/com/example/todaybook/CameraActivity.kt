@@ -3,9 +3,11 @@ package com.example.todaybook
 import android.Manifest
 import android.Manifest.permission.CAMERA
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,19 +19,24 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.activity_didbooklib_detail.*
 import kotlinx.android.synthetic.main.activity_mylib.*
 import kotlinx.android.synthetic.main.lib_book.*
 import kotlinx.android.synthetic.main.tester.*
 import android.os.Build
+import android.util.Base64
 import androidx.annotation.NonNull
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentActivity
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.activity_profile.*
+import java.io.ByteArrayOutputStream
 
 
 class CameraActivity : AppCompatActivity() {
@@ -38,12 +45,15 @@ class CameraActivity : AppCompatActivity() {
     var database = FirebaseDatabase.getInstance().reference
     val cuser = FirebaseAuth.getInstance().currentUser
     var Camera=0
-
+    val storage = FirebaseStorage.getInstance()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        auth = FirebaseAuth.getInstance()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+        val mStorageRef: StorageReference
+        mStorageRef = FirebaseStorage.getInstance().getReference()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
@@ -83,7 +93,7 @@ class CameraActivity : AppCompatActivity() {
             val detailIntent = Intent(this, CameraDetailActivity::class.java)
             detailIntent.putExtra(
                 "picture",
-                    CameraDataModel.url
+                    CameraDataModel.photourl
             )
             startActivityForResult(detailIntent, 1)
         }
@@ -102,15 +112,16 @@ class CameraActivity : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
                         var key: String = snapshot.key.toString()
-                        var value = snapshot.getValue(newDB::class.java)
+                        var value = snapshot.getValue(bookDB::class.java)
+                        var value2=snapshot.child("cameraimageurl").getValue()
                         /*var value = snapshot.getValue(CameraDB::class.java)*/
                         photoList.add(
                             CameraDataModel(
                                 value!!.imageurl,
-                                value.imageurl,
                                 key,
                                 value.author,
-                                value.publisher
+                                value.publisher,
+                                value2.toString()
                             )
                         )
                     }
@@ -167,10 +178,39 @@ class CameraActivity : AppCompatActivity() {
             (findViewById(R.id.cameraimg) as ImageView).setImageBitmap(imageBitmap)*//////그냥 tester에 띄우던 코드
             val bookinfo by lazy { intent.extras!!["result"] as BookInfo }
             val extras = data?.getExtras()
-            val imageBitmap = extras?.get("data").toString()
+
+            /*val imageBitmap = extras?.get("data").toString()*/
+            val imgBitmap:Bitmap = extras?.get("data") as Bitmap
+            val selectedImageUri= getImageUriFromBitmap(this,imgBitmap)
+
+
+            /*database.child("users").child(cuser?.uid!!).child("didBook")
+                .child(EncodeString(bookinfo.title)).child("cameraimageurl")
+                .push().setValue(selectedImageUri.toString())////database저장*/
+            val result=EncodeString(bookinfo.title)
+            val refer:DatabaseReference=database.getReference("$result")
+
+
             database.child("users").child(cuser?.uid!!).child("didBook")
-                .child(EncodeString(bookinfo.title))
-                .push().setValue(newDB(imageBitmap))
+                .child(EncodeString(bookinfo.title)).child("cameraimageurl")
+                .push().setValue(selectedImageUri.toString())
+
+
+
+
+            var title=EncodeString(bookinfo.title)
+            val riversRef = storage.getReference().child("photo/").child(auth.uid!!).child(title).child(imgBitmap.toString())
+            riversRef.putFile(selectedImageUri!!)
+                .addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+                    Toast.makeText(baseContext, "upload!", Toast.LENGTH_SHORT).show()
+                })
+                .addOnFailureListener(OnFailureListener {
+                    Toast.makeText(baseContext, "fail!", Toast.LENGTH_SHORT).show()
+                })
+
+
+
+
             val myIdlistener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
@@ -194,6 +234,19 @@ class CameraActivity : AppCompatActivity() {
         val resultIntent = Intent(this,MainActivity::class.java)
         setResult(1,resultIntent)
         super.onBackPressed()
+    }
+    fun BitmapToString(bitmap:Bitmap):String {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos)
+        val bytes = baos.toByteArray()
+        val temp = Base64.encodeToString(bytes, Base64.DEFAULT)
+        return temp
+    }
+    fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri{
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        return Uri.parse(path.toString())
     }
 
 }
