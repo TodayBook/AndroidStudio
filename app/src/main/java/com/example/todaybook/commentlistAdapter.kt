@@ -35,34 +35,50 @@ class commentlistAdapter(val context : Context, val comment_time_array:ArrayList
 
     override fun getView(idx: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.comments_list, parent, false) as View
-        view.findViewById<TextView>(R.id.comments_item).text = comment_array[idx]
-        val namelistener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    var key: String = snapshot.key.toString()
-                    var value = snapshot.value.toString()
-                    if (key == "UserId")
-                        view.findViewById<TextView>(R.id.comment_writer).text = value
-                    break
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        database.child("users").child(comment_writer_array[idx]).addValueEventListener(namelistener)
-
-        view.findViewById<TextView>(R.id.comment_time).text = comment_time_array[idx]
         val friend_profileimg=view.findViewById<ImageView>(R.id.commenter_img)
         val storageRef = storage.reference
-        var ref = storageRef.child("profileimg/"+comment_writer_array[idx])
-        ref.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Any> { uri ->
-            val imageURL = uri.toString()
-            Glide.with(view.context).load(imageURL).into(friend_profileimg)
-        }).addOnFailureListener(OnFailureListener {
-            print("download failed")
-        })
-        return view
-    }
+        view.findViewById<TextView>(R.id.comments_item).text = comment_array[idx]
+        view.findViewById<TextView>(R.id.comment_time).text = comment_time_array[idx]
+        if(comment_writer_array[idx]!="anony") {
+            var ref = storageRef.child("profileimg/" + comment_writer_array[idx])
+            ref.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Any> { uri ->
+                val imageURL = uri.toString()
+                Glide.with(view.context).load(imageURL).into(friend_profileimg)
+            }).addOnFailureListener(OnFailureListener {
+                print("download failed")
+            })
 
+            val namelistener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        var key: String = snapshot.key.toString()
+                        var value = snapshot.value.toString()
+                        if (key == "UserId")
+                            view.findViewById<TextView>(R.id.comment_writer).text = value
+                        break
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w("FFFFFF", "loadPost:onCancelled", databaseError.toException())
+                }
+            }
+            database.child("users").child(comment_writer_array[idx])
+                .addValueEventListener(namelistener)
+
+            return view
+        }
+        else{
+            println(comment_writer_array[idx])
+            view.findViewById<TextView>(R.id.comment_writer).text = "익명"
+            var ref = storageRef.child("profileimg/" + comment_writer_array[idx]+".png")
+            ref.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Any> { uri ->
+                val imageURL = uri.toString()
+                Glide.with(view.context).load(imageURL).into(friend_profileimg)
+            }).addOnFailureListener(OnFailureListener {
+                print("download failed")
+            })
+            return view
+        }
+    }
 }

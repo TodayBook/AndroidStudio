@@ -134,7 +134,7 @@ class ReadOrRead : AppCompatActivity() {
                     comment_time_array.add(key)
                     comment_array.add(value!!.comment_item)
                     comment_writer_array.add(value!!.writer)
-                    comment_anony_array.add("익명")
+                    comment_anony_array.add("anony")
                 }
                 comments_adapter.notifyDataSetChanged()
             }
