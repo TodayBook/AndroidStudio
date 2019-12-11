@@ -191,7 +191,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
         Log.d(MapsActivity.TAG, "onMapReady :")
         mMap = googleMap
         mMap!!.setOnInfoWindowClickListener { marker ->
-            var intent = Intent(this@MapsActivity, MapsActivity::class.java)
+            var intent = Intent(this@MapsActivity, MapsActivity2::class.java)
             var title: String? = marker.title
             intent.putExtra("title", title)
             startActivity(intent)
@@ -241,7 +241,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
             }
         }
         mMap!!.uiSettings.isMyLocationButtonEnabled = true
-        mMap!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
+        mMap!!.animateCamera(CameraUpdateFactory.zoomTo(14.5f))
         mMap!!.setOnMapClickListener { Log.d(MapsActivity.TAG, "onMapClick :") }
     }
 
