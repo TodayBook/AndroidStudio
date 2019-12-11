@@ -5,14 +5,20 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import org.jetbrains.anko.db.NULL
 
 class CameraAdapter(val context: Context, private val CameraDataModelList: ArrayList<CameraDataModel>,val itemClick: (CameraDataModel) -> Unit) : RecyclerView.Adapter<CameraAdapter.ViewHolder>() {
@@ -35,9 +41,23 @@ class CameraAdapter(val context: Context, private val CameraDataModelList: Array
         fun bindItems(CameraDataModel: CameraDataModel) {
             val imageView = itemView.findViewById<ImageView>(R.id.cameraimg)
 
+            /*val imageBitmap:Bitmap? = StringToBitmap(CameraDataModel.photourl)
+            imageView.setImageBitmap(imageBitmap)*/
+            /*val uri= Uri.parse(CameraDataModel.photourl)
+            imageView.setImageURI(uri)*/
 
-            val imageBitmap = StringToBitmap(CameraDataModel.photourl)
-            imageView.setImageBitmap(imageBitmap)
+            val cuser = FirebaseAuth.getInstance().currentUser
+            val storage = FirebaseStorage.getInstance()
+            val storageRef = storage.reference
+            if(cuser!=null) {
+                var ref = storageRef.child("photo/" + cuser.uid+CameraDataModel.title)
+                ref.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Any> { uri ->
+                    val imageURL = CameraDataModel.photourl
+                    Glide.with(itemView.context).load(imageURL).into(imageView)
+                }).addOnFailureListener(OnFailureListener {
+                    print("download failed")
+                })
+            }
 
             /*Glide.with(itemView.context).load(CameraDataModel.url).into(imageView)*/
 
