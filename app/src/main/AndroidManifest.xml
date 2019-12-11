@@ -42,7 +42,6 @@
 
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
-        <activity android:name=".CameraActivity2"></activity>
 
         <activity android:name=".friendfindLib" />
         <activity android:name=".Guestlib" />
