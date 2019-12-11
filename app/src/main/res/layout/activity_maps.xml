@@ -35,12 +35,13 @@
                 android:layout_height="485dp"
                 tools:context="com.example.abcd.googlemap.MapsActivity" />
 
-        <Button
+        <ImageButton
                 android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="178dp"
+                android:layout_height="173dp"
+                android:layout_gravity="center"
                 android:layout_weight="0.2"
-                android:background="@drawable/button1"
+                android:background="@drawable/loupe"
                 android:text="검색" />
 
     </LinearLayout>
