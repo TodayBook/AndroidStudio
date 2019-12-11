@@ -54,22 +54,18 @@ class MainActivity : AppCompatActivity() {
             })
         }
             bt_mylib.setOnClickListener {
-                if(cuser!=null) {
                     val detailIntent = Intent(this, MylibActivity::class.java)
                     startActivityForResult(detailIntent, 1)
-                }
+
             }
             bt_friendlib.setOnClickListener {
-                if(cuser!=null) {
                     val detailIntent = Intent(this, friendList::class.java)
                     startActivityForResult(detailIntent, 1)
-                }
+
             }
             bt_profile.setOnClickListener {
-                if(cuser!=null) {
                     val detailIntent = Intent(this, profile::class.java)
                     startActivityForResult(detailIntent, 1)
-                }
             }
 
         if(cuser==null){
