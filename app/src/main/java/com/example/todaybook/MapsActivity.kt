@@ -82,7 +82,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
 
     //api 서비스 키 입니다.
     val serviceKey =
-        "QgXDwOsi6tiCBiPIVhuyQCouyE%2BDemjMgKb3rf8BVXuVbJur6V%2BH%2BvuvKc7QCJqGE72AmxY5K2LbWrvXANV3hw%3D%3D"
+        "tXbnAEdBkbg%2FJDMf%2FIutPVO5IuduRgVGHbjuvYQAkCuml38A7Ms9QCDEmA1b6q%2Fdx7CUIxV9DUenLnlVw5YJHw%3D%3D"
 
     fun showPlaceInformation(location: LatLng?) {
         mMap!!.clear()
