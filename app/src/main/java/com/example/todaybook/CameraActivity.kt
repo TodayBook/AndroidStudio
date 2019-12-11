@@ -48,6 +48,7 @@ class CameraActivity : AppCompatActivity() {
     val storage = FirebaseStorage.getInstance()
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         auth = FirebaseAuth.getInstance()
         super.onCreate(savedInstanceState)
@@ -81,7 +82,6 @@ class CameraActivity : AppCompatActivity() {
         }
         reload()
 
-
     }
     fun reload() {
         println("reload")
@@ -113,7 +113,7 @@ class CameraActivity : AppCompatActivity() {
                     for (snapshot in dataSnapshot.children) {
                         var key: String = snapshot.key.toString()
                         var value = snapshot.getValue(bookDB::class.java)
-                        var value2=snapshot.child("cameraimageurl").getValue()
+                        var value2=(snapshot.child("cameraimageurl").getValue())
                         /*var value = snapshot.getValue(CameraDB::class.java)*/
                         photoList.add(
                             CameraDataModel(
@@ -184,16 +184,11 @@ class CameraActivity : AppCompatActivity() {
             val selectedImageUri= getImageUriFromBitmap(this,imgBitmap)
 
 
-            /*database.child("users").child(cuser?.uid!!).child("didBook")
-                .child(EncodeString(bookinfo.title)).child("cameraimageurl")
-                .push().setValue(selectedImageUri.toString())////database저장*/
-            val result=EncodeString(bookinfo.title)
-            val refer:DatabaseReference=database.getReference("$result")
 
 
             database.child("users").child(cuser?.uid!!).child("didBook")
                 .child(EncodeString(bookinfo.title)).child("cameraimageurl")
-                .push().setValue(selectedImageUri.toString())
+                .push().setValue(selectedImageUri.toString())////database저장
 
 
 

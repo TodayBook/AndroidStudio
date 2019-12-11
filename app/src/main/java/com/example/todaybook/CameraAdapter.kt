@@ -49,10 +49,21 @@ class CameraAdapter(val context: Context, private val CameraDataModelList: Array
             val cuser = FirebaseAuth.getInstance().currentUser
             val storage = FirebaseStorage.getInstance()
             val storageRef = storage.reference
+
+            /*if(cuser!=null) {
+                val fs = FirebaseStorage.getInstance()
+                val imagesRef = storageRef.child("photo/" + cuser!!.uid + CameraDataModel.title)
+                Glide.with(itemView.context)
+                    .load(imagesRef)
+                    .into(imageView)
+            }*/
+
+
+
             if(cuser!=null) {
-                var ref = storageRef.child("photo/" + cuser.uid+CameraDataModel.title)
+                var ref = storageRef.child("photo/" + cuser.uid + CameraDataModel.title/*+imgBitmap.toString()*/)
                 ref.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Any> { uri ->
-                    val imageURL = CameraDataModel.photourl
+                    val imageURL = uri.toString()
                     Glide.with(itemView.context).load(imageURL).into(imageView)
                 }).addOnFailureListener(OnFailureListener {
                     print("download failed")
