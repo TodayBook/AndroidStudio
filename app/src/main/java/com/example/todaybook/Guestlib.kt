@@ -53,8 +53,8 @@ class Guestlib : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     var key : String = snapshot.key.toString()
-                    var value = snapshot.getValue(bookDB::class.java)
-                    readList.add(ImageDataModel(value!!.imageurl,key,value.author,value.publisher))
+                    var value = snapshot.getValue(newDB::class.java)
+                    readList.add(ImageDataModel(value!!.imageurl,key,value.author,value.publisher,value.cameraimageurl))
                 }
                 rbAdapter.notifyDataSetChanged()
             }
@@ -68,8 +68,8 @@ class Guestlib : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     var key : String = snapshot.key.toString()
-                    var value = snapshot.getValue(bookDB::class.java)
-                    willreadList.add(ImageDataModel(value!!.imageurl,key,value.author,value.publisher))
+                    var value = snapshot.getValue(newDB::class.java)
+                    willreadList.add(ImageDataModel(value!!.imageurl,key,value.author,value.publisher,value.cameraimageurl))
                 }
                 wbAdapter.notifyDataSetChanged()
             }

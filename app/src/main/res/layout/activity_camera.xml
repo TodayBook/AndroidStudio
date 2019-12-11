@@ -1,57 +1,69 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+
     <TextView
             android:id="@+id/nametext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
             android:text="사진추가하기"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerView_photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.135" /><![CDATA[
             android:textSize="24sp" />
 
-    <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="10dp">
-
-        <Button
-                android:id="@+id/bt_camera"
-                android:layout_width="52dp"
-                android:layout_height="61dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:foreground="@android:drawable/ic_menu_camera" />
-    </LinearLayout>
 
 
+    ]]>
 
-    <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+    <Button
+            android:id="@+id/bt_camera"
+            android:layout_width="52dp"
+            android:layout_height="61dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="236dp"
+            android:foreground="@android:drawable/ic_menu_camera"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.21" />
 
-        <Button
-                android:id="@+id/bt_gallery"
-                android:layout_width="52dp"
-                android:layout_height="61dp"
-                android:layout_gravity="bottom|end"
-                android:layout_marginTop="10dp"
-                android:foreground="@android:drawable/ic_menu_gallery"
-                android:textAlignment="center" />
 
-    </LinearLayout>
+    <Button
+            android:id="@+id/bt_gallery"
+            android:layout_width="52dp"
+            android:layout_height="61dp"
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/button2"
+            android:foreground="@android:drawable/ic_menu_gallery"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.874"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/nametext"
+            app:layout_constraintVertical_bias="0.178" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_photo"
-            android:layout_width="match_parent"
-            android:layout_height="651dp"
+            android:layout_width="361dp"
+            android:layout_height="480dp"
+            android:layout_marginTop="232dp"
             android:orientation="vertical"
-            android:padding="10dp"></androidx.recyclerview.widget.RecyclerView>
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"></androidx.recyclerview.widget.RecyclerView>
 
 
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
