@@ -66,22 +66,25 @@
                             android:orientation="horizontal">
 
                         <Button
-                                android:id="@+id/bt_delete"
-                                android:layout_width="52dp"
-                                android:layout_height="61dp"
-                                android:layout_gravity="bottom|end"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginTop="10dp"
-                                android:foreground="@mipmap/ic_delete" />
-
-                        <Button
                                 android:id="@+id/bt_movecamera"
                                 android:layout_width="52dp"
                                 android:layout_height="61dp"
                                 android:layout_gravity="bottom|end"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginTop="10dp"
+                                android:background="@drawable/background"
                                 android:foreground="@mipmap/ic_photo" />
+
+                        <Button
+                                android:id="@+id/bt_delete"
+                                android:layout_width="52dp"
+                                android:layout_height="61dp"
+                                android:layout_gravity="bottom|end"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/background"
+                                android:foreground="@mipmap/ic_delete" />
+
                     </LinearLayout>
 
 
