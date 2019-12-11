@@ -64,7 +64,7 @@ class CameraActivity2 : AppCompatActivity() {
         bt_gallery.setOnClickListener{
 
         }
-        reload()
+        /*reload()*/
 
     }
 
@@ -115,9 +115,8 @@ class CameraActivity2 : AppCompatActivity() {
                 }
             }
             val bookinfo by lazy { intent.extras!!["Info"] as BookInfo2 }
-            database.child("users").child(UserId).child("didBook").child(bookinfo.title)
+            database.child("users").child(UserId).child("didBook").child(bookinfo?.title)
                 .addValueEventListener(photolistener)
-
 
         }
         else {

@@ -101,7 +101,7 @@ class didbooklib_detail : AppCompatActivity() {
         }
         bt_movecamera.setOnClickListener{
             val detailIntent = Intent(this, CameraActivity::class.java)
-            detailIntent.putExtra("result", bookinfo.title)
+            detailIntent.putExtra("result",BookInfo(bookinfo.imageurl,bookinfo.title,bookinfo.author,bookinfo.pub))
             startActivityForResult(detailIntent, 1)
         }
         commentsload()

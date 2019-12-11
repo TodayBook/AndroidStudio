@@ -73,9 +73,11 @@ class willbooklib_detail : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     var key: String = snapshot.key.toString()
-                    var value = snapshot.value.toString()
-                    guestUid.add(key)
-                    guestId.add(value)
+                    if(key!="comments"){
+                        var value = snapshot.value.toString()
+                        guestUid.add(key)
+                        guestId.add(value)
+                    }
                 }
                 adapter.notifyDataSetChanged()
             }

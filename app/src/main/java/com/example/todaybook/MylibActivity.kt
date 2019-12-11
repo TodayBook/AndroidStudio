@@ -96,13 +96,14 @@ class MylibActivity : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
                         var key: String = snapshot.key.toString()
-                        var value = snapshot.getValue(bookDB::class.java)
+                        var value = snapshot.getValue(newDB::class.java)
                         readList.add(
                             ImageDataModel(
                                 value!!.imageurl,
                                 key,
                                 value.author,
-                                value.publisher
+                                value.publisher,
+                                value.cameraimageurl
                             )
                         )
                     }
@@ -120,13 +121,14 @@ class MylibActivity : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
                         var key: String = snapshot.key.toString()
-                        var value = snapshot.getValue(bookDB::class.java)
+                        var value = snapshot.getValue(newDB::class.java)
                         willreadList.add(
                             ImageDataModel(
                                 value!!.imageurl,
                                 key,
-                                value!!.author,
-                                value!!.publisher
+                                value.author,
+                                value.publisher,
+                                value.cameraimageurl
                             )
                         )
                     }
