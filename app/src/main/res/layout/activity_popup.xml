@@ -11,6 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="완료되었습니다"
+            android:textColor="#553B12"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"

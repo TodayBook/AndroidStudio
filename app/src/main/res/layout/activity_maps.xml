@@ -25,7 +25,7 @@
                 android:layout_height="69dp"
                 android:textSize="40dp"
                 android:gravity="center"
-
+                android:textColor="#553B12"
                 android:text="내 주변 도서관 정보" />
 
         <fragment

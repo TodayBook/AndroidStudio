@@ -40,7 +40,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Tittle"
+                            android:text="Title"
+                            android:textColor="#553B12"
                             android:textSize="14sp" />
 
                     <TextView
@@ -49,6 +50,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="author"
+                            android:textColor="#553B12"
                             android:textSize="14sp" />
 
                     <TextView
@@ -57,6 +59,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="publisher"
+                            android:textColor="#553B12"
                             android:textSize="14sp" />
 
                     <LinearLayout
@@ -72,8 +75,8 @@
                                 android:layout_gravity="bottom|end"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginTop="10dp"
-                                android:background="@drawable/background"
-                                android:foreground="@mipmap/ic_photo" />
+                                android:background="@drawable/camera"
+                                android:foreground="@drawable/background" />
 
                         <Button
                                 android:id="@+id/bt_delete"
@@ -82,8 +85,8 @@
                                 android:layout_gravity="bottom|end"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginTop="10dp"
-                                android:background="@drawable/background"
-                                android:foreground="@mipmap/ic_delete" />
+                                android:background="@drawable/garbage"
+                                android:foreground="@drawable/background" />
 
                     </LinearLayout>
 
@@ -97,6 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="별점"
+                    android:textColor="#553B12"
                     android:textAlignment="center"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -118,6 +122,7 @@
                     android:layout_marginRight="10dp"
                     android:ems="10"
                     android:inputType="textPersonName"
+                    android:textColor="#553B12"
                     android:text="후기" />
 
             <Button
@@ -127,6 +132,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/button1"
+                    android:textColor="#553B12"
                     android:text="완료" />
 
             <TextView
@@ -135,6 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
+                    android:textColor="#553B12"
                     android:text="댓글"
                     android:textSize="24sp" />
 
@@ -161,6 +168,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/button1"
+                        android:textColor="#553B12"
                         android:text="등록" />
 
             </LinearLayout>

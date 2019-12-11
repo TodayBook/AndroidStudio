@@ -51,6 +51,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tittle"
+                            android:textColor="#553B12"
                             android:textSize="14sp" />
 
                     <TextView
@@ -59,6 +60,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="author"
+                            android:textColor="#553B12"
                             android:textSize="14sp" />
 
                     <TextView
@@ -67,6 +69,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="publisher"
+                            android:textColor="#553B12"
                             android:textSize="14sp" />
 
                 </LinearLayout>
@@ -80,6 +83,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:text="TextView"
+                    android:textColor="#553B12"
                     android:textSize="18sp" />
 
             <LinearLayout
@@ -99,6 +103,7 @@
                         android:layout_marginLeft="40dp"
                         android:layout_marginRight="35dp"
                         android:layout_weight="1"
+                        android:textColor="#553B12"
                         android:background="@drawable/button1"
                         android:text="읽은 책"
                         android:textSize="14sp" />
@@ -111,6 +116,7 @@
                         android:layout_marginLeft="35dp"
                         android:layout_marginRight="40dp"
                         android:layout_weight="1"
+                        android:textColor="#553B12"
                         android:background="@drawable/button1"
                         android:text="읽을 책"
                         android:textSize="14sp" />
@@ -136,6 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/button1"
+                        android:textColor="#553B12"
                         android:text="등록" />
 
             </LinearLayout>
@@ -148,6 +155,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:text="댓글"
+                    android:textColor="#553B12"
                     android:textSize="24sp" />
 
         </LinearLayout>
