@@ -36,6 +36,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_profile.*
+import org.jetbrains.anko.db.NULL
 import java.io.ByteArrayOutputStream
 
 
@@ -46,6 +47,9 @@ class CameraActivity : AppCompatActivity() {
     val cuser = FirebaseAuth.getInstance().currentUser
     var Camera=0
     val storage = FirebaseStorage.getInstance()
+    var bitmaplist= listOf<String>()
+    var count=-1
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +85,6 @@ class CameraActivity : AppCompatActivity() {
         }
         reload()
 
-
     }
     fun reload() {
         println("reload")
@@ -93,7 +96,7 @@ class CameraActivity : AppCompatActivity() {
             val detailIntent = Intent(this, CameraDetailActivity::class.java)
             detailIntent.putExtra(
                 "picture",
-                    CameraDataModel.photourl
+                    CameraDataModel.title
             )
             startActivityForResult(detailIntent, 1)
         }
@@ -113,17 +116,16 @@ class CameraActivity : AppCompatActivity() {
                     for (snapshot in dataSnapshot.children) {
                         var key: String = snapshot.key.toString()
                         var value = snapshot.getValue(bookDB::class.java)
-                        var value2=snapshot.child("cameraimageurl").getValue()
+                        var value2=(snapshot.child("cameraimageurl").getValue())
                         /*var value = snapshot.getValue(CameraDB::class.java)*/
-                        photoList.add(
-                            CameraDataModel(
-                                value!!.imageurl,
-                                key,
-                                value.author,
-                                value.publisher,
-                                value2.toString()
+                            photoList.add(
+                                CameraDataModel(
+                                    key,
+                                    count
+                                )
+
                             )
-                        )
+
                     }
                     photoAdapter.notifyDataSetChanged()
                 }
@@ -182,24 +184,22 @@ class CameraActivity : AppCompatActivity() {
             /*val imageBitmap = extras?.get("data").toString()*/
             val imgBitmap:Bitmap = extras?.get("data") as Bitmap
             val selectedImageUri= getImageUriFromBitmap(this,imgBitmap)
+            count=count+1
 
 
-            /*database.child("users").child(cuser?.uid!!).child("didBook")
-                .child(EncodeString(bookinfo.title)).child("cameraimageurl")
-                .push().setValue(selectedImageUri.toString())////database저장*/
-            val result=EncodeString(bookinfo.title)
-            val refer:DatabaseReference=database.getReference("$result")
+
+
 
 
             database.child("users").child(cuser?.uid!!).child("didBook")
                 .child(EncodeString(bookinfo.title)).child("cameraimageurl")
-                .push().setValue(selectedImageUri.toString())
+                .setValue(bitmaplist)////database저장
 
 
 
 
             var title=EncodeString(bookinfo.title)
-            val riversRef = storage.getReference().child("photo/").child(auth.uid!!).child(title).child(imgBitmap.toString())
+            val riversRef = storage.getReference().child("photo/").child(auth.uid!!).child(title).child(count.toString())
             riversRef.putFile(selectedImageUri!!)
                 .addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
                     Toast.makeText(baseContext, "upload!", Toast.LENGTH_SHORT).show()

@@ -100,7 +100,7 @@ class didbooklib_detail : AppCompatActivity() {
             Toast.makeText(baseContext, "삭제되었습니다!!", Toast.LENGTH_SHORT).show()
         }
         bt_movecamera.setOnClickListener{
-            val detailIntent = Intent(this, CameraActivity::class.java)
+            val detailIntent = Intent(this, CameraActivity2::class.java)
             detailIntent.putExtra("result",BookInfo(bookinfo.imageurl,bookinfo.title,bookinfo.author,bookinfo.pub))
             startActivityForResult(detailIntent, 1)
         }
