@@ -35,15 +35,6 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-    /*var bookList = arrayListOf<Book>(
-        Book("데이터베이스기초", "황수찬", "1", "dog00"),
-        Book("이산수학", "이인복", "2", "dog01"),
-        Book("대중문화의 이해", "이승준", "3", "dog02"),
-        Book("컴퓨터구조론", "길현영", "4", "dog03"),
-        Book("사회봉사", "고병무", "5", "dog04")
-    )*/
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -52,22 +43,7 @@ class SearchActivity : AppCompatActivity() {
         AsyncTaskBook().execute(title)
 
 
-        /*val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.search_listview_item, mainListView, true)*/
-        /*var button:Button = mainListView.findViewById(R.id.bt_addtolib)
 
-        button.setOnClickListener {
-
-            val detailIntent = Intent(this@SearchActivity, ReadOrRead::class.java)
-            startActivityForResult(detailIntent, 1)
-        }*/
-
-
-        /*mainListView.setOnItemClickListener { parent, view, position, id ->
-            val element = parent.getItemAtPosition(position) // The item that was clicked
-            val intent = Intent(this, ReadOrRead::class.java)
-            startActivity(intent)
-        }*/
 
 
 
@@ -102,18 +78,6 @@ class SearchActivity : AppCompatActivity() {
                     br = BufferedReader(InputStreamReader(con.errorStream))
                     return br.toString()
                 }
-                /*var inputLine: String
-                val response = StringBuffer()
-                do {
-                    if (br.readLine() == null){
-                        break
-                    }
-                    inputLine = br.readLine()
-                    response.append(inputLine)
-                } while (inputLine != null)
-
-                br.close()
-                return (response.toString())*/
 
             } catch (e: Exception) {
                 return (e.toString())
@@ -123,15 +87,6 @@ class SearchActivity : AppCompatActivity() {
 
             var json=result
 
-
-            /*val jObject = JSONObject(json)
-            var jsonresult = jObject.getJSONArray("documents")*///방법1
-
-            /*val parser=JsonParser()
-            val rootObj=parser.parse(json)////type=JsonElement
-                .getAsJsonObject().get("documents")*////방법2
-
-            /*textView3.setText(rootObj.toString())*/
 
             val gson = GsonBuilder().create()
             var gsonresult=gson.fromJson(json,FocusArea::class.java)////json을 gson으로 convert(jsonresult의 값을 book object로)
