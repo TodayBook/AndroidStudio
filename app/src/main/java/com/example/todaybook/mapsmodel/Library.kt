@@ -1,5 +1,5 @@
 package com.example.todaybook.mapsmodel
-
+// api에서 요청받아야하는 데이터 클래스를 정의한것
 class Library(
     val lbrryNm: String,
     val ctprvnNm: String,

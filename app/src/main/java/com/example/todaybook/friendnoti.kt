@@ -49,7 +49,9 @@ class friendnoti : AppCompatActivity() {
     }
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this, MainActivity::class.java))
+        val detailIntent = Intent(this, MainActivity::class.java)
+        detailIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(detailIntent)
         finish()
     }
 }

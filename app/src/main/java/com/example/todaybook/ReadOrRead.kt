@@ -46,7 +46,7 @@ class ReadOrRead : AppCompatActivity() {
         bt_didbook.setOnClickListener {
             database.child("users").child(cuser?.uid!!).child("didBook")
                 .child(EncodeString(bookinfo.title))
-                .setValue(newDB(bookinfo.imageurl, bookinfo.author, bookinfo.pub))
+                .setValue(bookDB(bookinfo.imageurl, bookinfo.author, bookinfo.pub))
             val myIdlistener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
