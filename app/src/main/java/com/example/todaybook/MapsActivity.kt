@@ -67,15 +67,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
                 markerOptions.title(place.name)
                 markerOptions.snippet(markerSnippet)
                 val item: Marker? =
-                    mMap!!.addMarker(markerOptions)
-                previous_marker!!.add(item)
+                    mMap?.addMarker(markerOptions)
+                previous_marker?.add(item)
             }
             //중복마커 제거
             val hashSet =
                 java.util.HashSet<Marker?>()
             hashSet.addAll(previous_marker!!)
-            previous_marker!!.clear()
-            previous_marker!!.addAll(hashSet)
+            previous_marker?.clear()
+            previous_marker?.addAll(hashSet)
         }
     }
 
@@ -85,11 +85,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
 
 
     fun showPlaceInformation(location: LatLng?) {//지도에서 보여주는 부분
-        mMap!!.clear()
+        mMap?.clear()
 
         val str = URLDecoder.decode(serviceKey, "UTF-8");
 
-        if (previous_marker != null) previous_marker!!.clear()//지역정보 마커 클리어
+        if (previous_marker != null) previous_marker?.clear()//지역정보 마커 클리어
 
 
         //레트로핏 이용해서 통신하는 코드들
@@ -129,7 +129,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
                                         title(libName)
                                         snippet(libAddress)
                                     }
-                                    mMap!!.addMarker(markerOptions)
+                                    mMap?.addMarker(markerOptions)
                                 }
                             }
                         }
@@ -147,9 +147,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
 
 
     override fun onPlacesFinished() {}
-    private var mMap: GoogleMap? = null
+    private var mMap: GoogleMap? = null //여기 kt 파일 내에서만
     private var currentMarker: Marker? = null
-    internal var needRequest = false
+    internal var needRequest = false //같은 모듈에서
     // 앱을 실행하기 위해 필요한 퍼미션을 정의
     internal var REQUIRED_PERMISSIONS: Array<String?>? = arrayOf(
         permission.ACCESS_FINE_LOCATION,
@@ -168,7 +168,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
     internal var previous_marker: MutableList<Marker?>? =
         null //위 placelistener에 필요한 변수
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) { //이 메소드에서 getmapsync()메소드 호출해서 구글맵객체 준비될때 실행될 콜백 등록
         super.onCreate(savedInstanceState)
         window.setFlags(
             LayoutParams.FLAG_KEEP_SCREEN_ON,
@@ -190,13 +190,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
         val mapFragment =
             supportFragmentManager
                 .findFragmentById(id.maps) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)
+        mapFragment?.getMapAsync(this) //getmapsync 메소드가 메인쓰레드에서 호출 되어야 메인스레드에서 onreadymap 콜백 실행됨
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReady(googleMap: GoogleMap?) {//맵이 사용할 준비가 되었을 때(NULL이 아닌 GoogleMap 객체를 파라미터로 제공해 줄 수 있을 때)  호출되어지는 메소드
         Log.d(MapsActivity.TAG, "onMapReady :")
         mMap = googleMap
-        mMap!!.setOnInfoWindowClickListener { marker ->
+        mMap?.setOnInfoWindowClickListener { marker ->
             var intent = Intent(this@MapsActivity, MapsActivity2::class.java)
             var title: String? = marker.title
             intent.putExtra("title", title)
@@ -255,9 +255,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
                 )
             }
         }
-        mMap!!.uiSettings.isMyLocationButtonEnabled = true
-        mMap!!.animateCamera(CameraUpdateFactory.zoomTo(14.5f))
-        mMap!!.setOnMapClickListener { Log.d(MapsActivity.TAG, "onMapClick :") }
+        mMap?.uiSettings?.isMyLocationButtonEnabled = true
+        mMap?.animateCamera(CameraUpdateFactory.zoomTo(14.5f))
+        mMap?.setOnMapClickListener { Log.d(MapsActivity.TAG, "onMapClick :") }
     }
 
     internal var locationCallback: LocationCallback? =
@@ -314,12 +314,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
                 MapsActivity.TAG,
                 "startLocationUpdates : call mFusedLocationClient.requestLocationUpdates"
             )
-            mFusedLocationClient!!.requestLocationUpdates(
+            mFusedLocationClient?.requestLocationUpdates(
                 locationRequest,
                 locationCallback,
                 Looper.myLooper()
             )
-            if (checkPermission()) mMap!!.isMyLocationEnabled = true
+            if (checkPermission()) mMap?.isMyLocationEnabled = true
         }
     }
 
@@ -331,8 +331,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
                 MapsActivity.TAG,
                 "onStart : call mFusedLocationClient.requestLocationUpdates"
             )
-            mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
-            if (mMap != null) mMap!!.isMyLocationEnabled = true
+            mFusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null)
+            if (mMap != null) mMap?.isMyLocationEnabled = true
         }
     }
 
@@ -340,7 +340,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
         super.onStop()
         if (mFusedLocationClient != null) {
             Log.d(MapsActivity.TAG, "onStop : call stopLocationUpdates")
-            mFusedLocationClient!!.removeLocationUpdates(locationCallback)
+            mFusedLocationClient?.removeLocationUpdates(locationCallback)
         }
     }
 
@@ -373,7 +373,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
             "주소 미발견"
         } else {
             val address = addresses[0]
-            address!!.getAddressLine(0).toString()
+            address?.getAddressLine(0).toString()
 
         }
     }
@@ -390,7 +390,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
         markerTitle: String?,
         markerSnippet: String?
     ) {
-        if (currentMarker != null) currentMarker!!.remove()
+        if (currentMarker != null) currentMarker?.remove()
         val currentLatLng =
             LatLng(
                 location!!.latitude,
@@ -406,10 +406,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
             snippet(markerSnippet)
             draggable(true)
         }
-        currentMarker = mMap!!.addMarker(markerOptions)
+        currentMarker = mMap?.addMarker(markerOptions)
         val cameraUpdate: CameraUpdate? =
             CameraUpdateFactory.newLatLng(currentLatLng)
-        mMap!!.moveCamera(cameraUpdate)
+        mMap?.moveCamera(cameraUpdate)
     }
 
     fun setDefaultLocation() {
@@ -421,7 +421,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
             LatLng(37.56, 126.97)
         val markerTitle = "위치정보 가져올 수 없음"
         val markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요"
-        if (currentMarker != null) currentMarker!!.remove()
+        if (currentMarker != null) currentMarker?.remove()
         val markerOptions =
             MarkerOptions()
         markerOptions.run {
@@ -431,10 +431,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
             draggable(true)
             icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
         }
-        currentMarker = mMap!!.addMarker(markerOptions)
+        currentMarker = mMap?.addMarker(markerOptions)
         val cameraUpdate: CameraUpdate? =
             CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15f)
-        mMap!!.moveCamera(cameraUpdate)
+        mMap?.moveCamera(cameraUpdate)
     }
 
     //여기부터는 런타임 퍼미션 처리을 위한 메소드들
@@ -521,7 +521,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnRequestPermissio
                     Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivityForResult(callGPSSettingIntent, MapsActivity.GPS_ENABLE_REQUEST_CODE)
             }
-            setNegativeButton("취소") { dialog, id -> dialog!!.cancel() }
+            setNegativeButton("취소") { dialog, id -> dialog?.cancel() }
             create().show()
         }
     }

@@ -21,7 +21,7 @@ class MapsActivity2 : AppCompatActivity() {
     val serviceKey =
         "tXbnAEdBkbg%2FJDMf%2FIutPVO5IuduRgVGHbjuvYQAkCuml38A7Ms9QCDEmA1b6q%2Fdx7CUIxV9DUenLnlVw5YJHw%3D%3D"
 
-    lateinit var lib: Library
+    lateinit var lib: Library//늦은초기화
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_maps2)
